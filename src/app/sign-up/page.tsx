@@ -4,6 +4,7 @@ import * as React from 'react';
 import { useSignUp } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import { ClerkAPIErrorJSON } from '@clerk/types';
+import InputAuth from '@/presentation/components/InputAuth';
 
 export default function Page() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -13,39 +14,32 @@ export default function Page() {
   const [code, setCode] = React.useState("");
   const router = useRouter();
  
-  // This function will handle the user submitting their email and password
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isLoaded) return;
     
-    // Start the sign-up process using the email and password provided
     try {
       await signUp.create({
         emailAddress, password
       });
  
-      // Send the user an email with the verification code
       await signUp.prepareEmailAddressVerification({
         strategy: 'email_code'
       });
  
-      // Set 'verifying' true to display second form and capture the OTP code
       setVerifying(true);
     }
     catch (err: any) {
-      // This can return an array of errors.
       // See https://clerk.com/docs/custom-flows/error-handling to learn about error handling
       console.error('Error:', JSON.stringify(err, null, 2));
     }
   }
  
-  // This function will handle the user submitting a code for verification
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isLoaded) return;
  
     try {
-      // Submit the code that the user provides to attempt verification
       const completeSignUp = await signUp.attemptEmailAddressVerification({
         code
       });
@@ -56,11 +50,8 @@ export default function Page() {
         console.log(JSON.stringify(completeSignUp, null, 2));
       }
  
-      // Check the status to see if it is complete
-      // If complete, the user has been created -- set the session active
       if (completeSignUp.status === "complete") {
         await setActive({ session: completeSignUp.createdSessionId });
-        // Redirect the user to a post sign-up route
         router.push("/");
       }
     }
@@ -71,31 +62,31 @@ export default function Page() {
     }
   }
  
-  // Once the sign-up form was submitted, verifying was set to true and as a result, this verification form is presented to the user to input their verification code.
   if (verifying) {
     return (
-      <form onSubmit={handleVerify}>
-        <label id="code">Code</label>
-        <input className='text-black border border-black' value={code} id="code" name="code" onChange={(e) => setCode(e.target.value)} />
-        <button className='text-black' type="submit">Complete Sign Up</button>
-      </form>
+      <section className='flex justify-center items-center min-h-screen'>
+        <form onSubmit={handleVerify} className='px-4'>
+          <h1 className='text-center text-4xl font-bold'>Refrikar</h1>
+          <p className='text-center mb-8'>Panel de administración para los servicios ofrecidos por refrikar</p>
+          <InputAuth fieldName='code' fieldValue={code} label='Code' setFieldValue={setCode} />
+          <button className='bg-blue-600 text-white w-full py-2 rounded-md mt-2' type="submit">Completar registro</button>
+        </form>
+      </section>
     )
   }
   
   // Display the initial sign-up form to capture the email and password
   return (
     <section className='flex justify-center items-center min-h-screen'>
-      <form onSubmit={handleSubmit}>
-        <div className='flex flex-col'>
-          <label className='text-black' htmlFor="email">Email address</label>
-          <input className='text-black border border-black' id="email" type='email' name="email" value={emailAddress} onChange={(e) => setEmailAddress(e.target.value)} />
-        </div>
-        <div className='flex flex-col'>
-          <label className="block text-sm" htmlFor="password">Password</label>
-          <input className='text-black border border-black' id="password" type='password' name="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        </div>
-        <div className='flex'>
-          <button type="submit">Verify Email</button>
+      <form onSubmit={handleSubmit} className='px-4'>
+        <h1 className='text-center text-4xl font-bold'>Refrikar</h1>
+        <p className='text-center mb-8'>Panel de administración para los servicios ofrecidos por refrikar</p>
+        <div className="flex flex-col gap-y-4">
+          <InputAuth fieldName='email' fieldValue={emailAddress} label='Email address' setFieldValue={setEmailAddress} />
+          <InputAuth fieldName='password' fieldValue={password} label='Password' setFieldValue={setPassword} />
+          <div className='flex'>
+            <button className='bg-blue-600 text-white w-full py-2 rounded-md' type="submit">Registrarse</button>
+          </div>
         </div>
       </form>
     </section>

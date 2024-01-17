@@ -47,6 +47,7 @@ export default function SignInForm() {
   return (
     <div>
       <form onSubmit={(e) => handleSubmit(e)}>
+        <h1 className="text-center">Refrikar Inc.</h1>
         <div>
           <label htmlFor="email">Email</label>
           <input className="text-black" onChange={(e) => setEmail(e.target.value)} id="email" name="email" type="email" value={email} />
