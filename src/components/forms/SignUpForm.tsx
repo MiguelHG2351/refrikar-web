@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { useSignUp } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
-import { ClerkAPIErrorJSON, SignUpResource } from '@clerk/types';
+// import { ClerkAPIErrorJSON, SignUpResource } from '@clerk/types';
 import InputAuth from '@/components/forms/InputAuth';
 
 
