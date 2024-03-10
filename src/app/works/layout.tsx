@@ -1,4 +1,4 @@
-import Sidebar from '@/presentation/components/Sidebar'
+import Sidebar from '@/components/Sidebar'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
