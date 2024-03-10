@@ -1,18 +1,21 @@
-import Sidebar from '@/components/Sidebar'
+import Sidebar from '@/presentation/components/Sidebar'
 import { Metadata } from 'next'
-import Image from 'next/image'
 
 export const metadata: Metadata = {
   title: 'Dashboard'
 }
 
-export default function Home() {
+export default function LayoutWork({
+  children
+}: {
+  children: React.ReactNode
+}){
   return (
     <main className="min-h-screen md:grid md:grid-cols-[auto_1fr]">
       <Sidebar />
-      <section>
-        <h2>xd</h2>
-      </section>
+      <div>
+        { children }
+      </div>
     </main>
   )
 }

@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useSignUp } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import { ClerkAPIErrorJSON, SignUpResource } from '@clerk/types';
-import InputAuth from '@/presentation/components/forms/InputAuth';
+import InputAuth from '@/components/forms/InputAuth';
 
 
 const  SignUpForm = () => {
@@ -64,7 +64,7 @@ const  SignUpForm = () => {
     }
   }
 
-  if (!verifying) {
+  if (verifying) {
     return (
       <form onSubmit={handleVerify} className='px-4'>
         <InputAuth fieldName='code' fieldValue={code} label='Ingresa el código enviado por correo' setFieldValue={setCode} />
