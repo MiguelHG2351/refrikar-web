@@ -19,3 +19,10 @@
 html {
   color-scheme: light;
 }
+
+:root {
+  --color-primary: #0094DA;
+  --color-secondary: #008676;
+  --color-accent-1: #FBFAFE;
+  --color-accent-2: #F5F5F5;
+}
