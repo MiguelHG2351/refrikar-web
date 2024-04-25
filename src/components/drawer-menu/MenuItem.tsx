@@ -38,8 +38,7 @@ export default function MenuItem({ state = 'inactive', text, icon: Icon, iconSiz
       icon: 'fill-black'
     },
   }
-  console.log(iconSize)
-  
+
   return (
     <li>
       <Link
