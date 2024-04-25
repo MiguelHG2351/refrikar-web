@@ -43,14 +43,13 @@ export default function Sidebar() {
           <MenuItem icon={AirIcon} iconSize={{ width: 20, height: 20 }} text="Equipos" />
         </Menu>
         <Menu title="Inventario">
-          <MenuItem text="Dashboard" icon={DashBoardIcon} iconSize={{ width: 20, height: 20 }} />
-          <MenuItem icon={ClientIcon} iconSize={{ width: 20, height: 20 }} text="Cliente" />
-          <MenuItem icon={ClientIcon} iconSize={{ width: 20, height: 20 }} text="Empleados" />
-          <MenuItem icon={AirIcon} iconSize={{ width: 20, height: 20 }} text="Equipos" />
+          <MenuItem icon={DashBoardIcon} iconSize={{ width: 20, height: 20 }} text="Productos" />
+          <MenuItem icon={ClientIcon} iconSize={{ width: 20, height: 20 }} text="Proveedores" />
+          <MenuItem icon={ClientIcon} iconSize={{ width: 20, height: 20 }} text="Facturas" />
         </Menu>
         <Menu title="Otros">
-          <MenuItem text="Dashboard" icon={DashBoardIcon} iconSize={{ width: 20, height: 20 }} />
-          <MenuItem icon={ClientIcon} iconSize={{ width: 20, height: 20 }} text="Cliente" />
+          <MenuItem icon={DashBoardIcon} iconSize={{ width: 20, height: 20 }} text="Financia" />
+          <MenuItem icon={ClientIcon} iconSize={{ width: 20, height: 20 }} text="Créditos" />
         </Menu>
       </section>
     </section>
