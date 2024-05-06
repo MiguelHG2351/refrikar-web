@@ -19,8 +19,9 @@ const mockupMenu = [
   }
 ]
 
-export default function Sidebar() {
+export default function Sidebar({ data }: any) {
   // const [title, setTitle] = useState('loading...')
+  console.log(data)
   const [openMenu, setOpenMenu] = useState(false)
 
   // useEffect(() => {

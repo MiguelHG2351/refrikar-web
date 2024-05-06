@@ -1,10 +1,12 @@
 import type { Config } from 'tailwindcss'
+import { nextui } from '@nextui-org/react'
 
 const config: Config = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}'
   ],
   theme: {
     extend: {
@@ -16,12 +18,25 @@ const config: Config = {
       colors: {
         primary: "var(--color-primary)",
         secondary: "var(--color-secondary)",
+        gray: {
+          primary: "var(--color-gray)",
+        },
+        red: {
+          primary: "#DC2626",
+        },
+        green: {
+          primary: "#008676",
+        },
         "accent-1": "var(--color-accent-1)",
         "accent-2": "var(--color-accent-2)",
+      },
+      boxShadow: {
+        "card-primary": "0px 0px 12.2px 1px rgba(0, 0, 0, 0.25)",
+        "card-secondary": "0px 0px 4px 0px rgba(0, 0, 0, 0.25)",
       }
     },
   },
   darkMode: 'class',
-  plugins: [],
+  plugins: [nextui()],
 }
 export default config

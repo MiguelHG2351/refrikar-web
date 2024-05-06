@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { ClerkProvider } from '@clerk/nextjs'
-import ClientsProvider from '@/providers/ReduxProvider'
+import ReduxProvider from '@/providers/ReduxProvider'
+import NextUIProvider from '@/providers/NextUI'
 import '@/styles/globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -18,11 +19,15 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <ClientsProvider>
         <html lang="en">
-          <body className={inter.className}>{children}</body>
+          <body className={inter.className}>
+            <ReduxProvider>
+              <NextUIProvider>
+                {children}
+              </NextUIProvider>
+            </ReduxProvider>
+          </body>
         </html>
-      </ClientsProvider>
     </ClerkProvider>
   )
 }
