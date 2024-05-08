@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: 'Dashboard',
 }
 
-async function getProduct() {
+async function getProducts() {
   const data = await prisma.productos.findMany({
     include: {
       inventario: true,
@@ -30,12 +30,30 @@ async function getProduct() {
   return result;
 }
 
+async function getClientes () {
+  const data = await prisma.clientes.findMany({
+    include: {
+      tipo_cliente: true
+    }
+  });
+
+  return data;
+}
+
+async function getTipoCliente () {
+  const data = await prisma.tipo_cliente.findMany();
+
+  return data;
+}
+
 export default async function Dashboard() {
-  const data = await getProduct()
+  const productos = await getProducts()
+  const clientes = await getClientes()
+  const tipoCliente = await getTipoCliente()
 
   return (
       <main className="md:h-screen md:overflow-hidden md:grid md:grid-cols-[auto_1fr]">
-        <Sidebar data={data} />
+        <Sidebar data={productos} />
         <section className="bg-accent-1 overflow-y-auto">
           <header className="sticky top-0 bg-white flex justify-between items-center py-2 px-4 border-b">
             <div className="flex items-center gap-x-2">
@@ -142,7 +160,7 @@ export default async function Dashboard() {
                     </div>
                   </div>
                   <div className="flex flex-col md:flex-row gap-2">
-                    <Inventario inventario={data} />
+                    <Inventario inventario={productos} />
                   </div>
                 </div>
               </section>
@@ -163,7 +181,7 @@ export default async function Dashboard() {
                         </svg>
                       </button>
                     </form>
-                    <ClientTable />
+                    <ClientTable clients={clientes}  />
                   </div>
                 </div>
               </section>
