@@ -8,106 +8,103 @@ datasource db {
 }
 
 model inventario {
-  InventarioID Int        @id
-  ProductoID   String?    @db.VarChar(50)
-  Stock        String?    @db.VarChar(50)
-  productos    productos? @relation(fields: [ProductoID], references: [ProductoID], onDelete: NoAction, onUpdate: NoAction, map: "inventario_ibfk_1")
+  inventarioid Int        @id
+  productoid   String?    @db.VarChar(50)
+  stock        String?    @db.VarChar(50)
+  productos    productos? @relation(fields: [productoid], references: [productoid], onDelete: NoAction, onUpdate: NoAction, map: "inventario_ibfk_1")
 
-  @@index([ProductoID], map: "ProductoID")
+  @@index([productoid], map: "productoid")
 }
 
 model recursos {
-  RecursoID  String      @id @default(cuid()) @db.VarChar(50)
-  ProductoID String?     @db.VarChar(50)
-  EmpleadoID String?     @db.VarChar(50)
-  Costo      Decimal?    @db.Decimal(10, 2)
-  productos  productos?  @relation(fields: [ProductoID], references: [ProductoID], onDelete: NoAction, onUpdate: NoAction, map: "recursos_ibfk_1")
-  empleados  empleados?  @relation(fields: [EmpleadoID], references: [EmpleadoID], onDelete: NoAction, onUpdate: NoAction, map: "recursos_ibfk_2")
-  servicios  servicios[]
+  recursoid         String            @id @db.VarChar(50)
+  productoid        String?           @db.VarChar(50)
+  detalleservicioid String?           @db.VarChar(50)
+  costo             Decimal?          @db.Decimal(10, 2)
+  cantidad_producto Int?
+  empleadoid        String?           @db.VarChar(50)
+  productos         productos?        @relation(fields: [productoid], references: [productoid], onDelete: NoAction, onUpdate: NoAction, map: "recursos_ibfk_1")
+  detalle_servicio  detalle_servicio? @relation(fields: [detalleservicioid], references: [detalleservicioid], onDelete: NoAction, onUpdate: NoAction, map: "recursos_ibfk_2")
+  empleados         empleados?        @relation(fields: [empleadoid], references: [empleadoid], onDelete: NoAction, onUpdate: NoAction, map: "recursos_ibfk_3")
 
-  @@index([EmpleadoID], map: "EmpleadoID")
-  @@index([ProductoID], map: "ProductoID")
+  @@index([detalleservicioid], map: "detalleservicioid")
+  @@index([empleadoid], map: "empleadoid")
+  @@index([productoid], map: "productoid")
 }
 
 model suministro {
-  suministroID       String               @id @default(cuid()) @db.VarChar(50)
-  ProveedorID        String?              @db.VarChar(50)
-  EgresoID           String?              @db.VarChar(50)
-  fecha              DateTime?            @db.Date
+  suministroid       String               @id @db.VarChar(50)
+  proveedorid        String?              @db.VarChar(50)
+  egresoid           String?              @db.VarChar(50)
   detalle_suministro detalle_suministro[]
-  proveedores        proveedores?         @relation(fields: [ProveedorID], references: [ProveedorID], onDelete: NoAction, onUpdate: NoAction, map: "suministro_ibfk_1")
-  egresos            egresos?             @relation(fields: [EgresoID], references: [EgresoID], onDelete: NoAction, onUpdate: NoAction, map: "suministro_ibfk_2")
+  proveedores        proveedores?         @relation(fields: [proveedorid], references: [proveedorid], onDelete: NoAction, onUpdate: NoAction, map: "suministro_ibfk_1")
+  egresos            egresos?             @relation(fields: [egresoid], references: [egresoid], onDelete: NoAction, onUpdate: NoAction, map: "suministro_ibfk_2")
 
-  @@index([EgresoID], map: "EgresoID")
-  @@index([ProveedorID], map: "ProveedorID")
+  @@index([egresoid], map: "egresoid")
+  @@index([proveedorid], map: "proveedorid")
 }
 
 model cargo_empleado {
-  CargoID   String      @id @default(cuid()) @db.VarChar(50)
-  Nombre    String?     @db.VarChar(255)
+  cargoid   String      @id @db.VarChar(50)
+  nombre    String?     @db.VarChar(255)
   empleados empleados[]
 }
 
 model categoria_producto {
-  CategoriaID String      @id @default(cuid()) @db.VarChar(50)
-  Descripcion String?     @db.VarChar(255)
+  categoriaid String      @id @db.VarChar(50)
+  descripcion String?     @db.VarChar(255)
   productos   productos[]
 }
 
 model clientes {
-  ClienteID     String        @id @default(cuid()) @db.VarChar(50)
-  TipoClienteID String?       @db.VarChar(50)
+  clienteid     String        @id @db.VarChar(50)
+  tipoclienteid String?       @db.VarChar(50)
   nombre        String?       @db.VarChar(255)
   apellido      String?       @db.VarChar(255)
   telefono      Int?
-  Entidad       String?       @db.VarChar(255)
-  RUC           String?       @unique(map: "RUC") @db.VarChar(50)
-  tipo_cliente  tipo_cliente? @relation(fields: [TipoClienteID], references: [TipoClienteID], onDelete: NoAction, onUpdate: NoAction, map: "clientes_ibfk_1")
-  equipo        equipo[]
+  entidad       String?       @db.VarChar(255)
+  ruc           String?       @unique(map: "ruc") @db.VarChar(50)
+  tipo_cliente  tipo_cliente? @relation(fields: [tipoclienteid], references: [tipoclienteid], onDelete: NoAction, onUpdate: NoAction, map: "clientes_ibfk_1")
   servicios     servicios[]
 
-  @@index([TipoClienteID], map: "TipoClienteID")
+  @@index([tipoclienteid], map: "tipoclienteid")
 }
 
 model detalle_servicio {
-  DetalleServicioID String         @id @default(cuid()) @db.VarChar(50)
-  TipoServicioID    String?        @db.VarChar(50)
-  equipoID          String?        @db.VarChar(50)
-  servicioID        String?        @db.VarChar(50)
-  Costo             Decimal?       @db.Decimal(10, 2)
+  detalleservicioid String         @id @db.VarChar(50)
+  tiposervicioid    String?        @db.VarChar(50)
+  equipoid          String?        @db.VarChar(50)
+  servicioid        String?        @db.VarChar(50)
+  costo             Decimal?       @db.Decimal(10, 2)
   fecha             DateTime?      @db.Date
-  notas             String?        @db.VarChar(255)
-  tipo_servicio     tipo_servicio? @relation(fields: [TipoServicioID], references: [TipoServicioID], onDelete: NoAction, onUpdate: NoAction, map: "detalle_servicio_ibfk_1")
-  equipo            equipo?        @relation(fields: [equipoID], references: [EquipoID], onDelete: NoAction, onUpdate: NoAction, map: "detalle_servicio_ibfk_2")
-  servicios         servicios?     @relation(fields: [servicioID], references: [ServicioID], onDelete: NoAction, onUpdate: NoAction, map: "detalle_servicio_ibfk_3")
+  direccion         String?        @db.VarChar(255)
+  tipo_servicio     tipo_servicio? @relation(fields: [tiposervicioid], references: [tiposervicioid], onDelete: NoAction, onUpdate: NoAction, map: "detalle_servicio_ibfk_1")
+  equipo            equipo?        @relation(fields: [equipoid], references: [equipoid], onDelete: NoAction, onUpdate: NoAction, map: "detalle_servicio_ibfk_2")
+  servicios         servicios?     @relation(fields: [servicioid], references: [servicioid], onDelete: NoAction, onUpdate: NoAction, map: "detalle_servicio_ibfk_3")
+  personal          personal[]
+  recursos          recursos[]
 
-  @@index([TipoServicioID], map: "TipoServicioID")
-  @@index([equipoID], map: "equipoID")
-  @@index([servicioID], map: "servicioID")
+  @@index([equipoid], map: "equipoid")
+  @@index([servicioid], map: "servicioid")
+  @@index([tiposervicioid], map: "tiposervicioid")
 }
 
 model detalle_suministro {
-  DetalleSuministroID String      @id @default(cuid()) @db.VarChar(50)
-  SuministroID        String?     @db.VarChar(50)
-  ProductoID          String?     @db.VarChar(50)
+  detallesuministroid String      @id @db.VarChar(50)
+  suministroid        String?     @db.VarChar(50)
+  productoid          String?     @db.VarChar(50)
   costo               Decimal?    @db.Decimal(10, 2)
   cantidad            Int?
-  suministro          suministro? @relation(fields: [SuministroID], references: [suministroID], onDelete: NoAction, onUpdate: NoAction, map: "detalle_suministro_ibfk_1")
-  productos           productos?  @relation(fields: [ProductoID], references: [ProductoID], onDelete: NoAction, onUpdate: NoAction, map: "detalle_suministro_ibfk_2")
+  suministro          suministro? @relation(fields: [suministroid], references: [suministroid], onDelete: NoAction, onUpdate: NoAction, map: "detalle_suministro_ibfk_1")
+  productos           productos?  @relation(fields: [productoid], references: [productoid], onDelete: NoAction, onUpdate: NoAction, map: "detalle_suministro_ibfk_2")
 
-  @@index([ProductoID], map: "ProductoID")
-  @@index([SuministroID], map: "SuministroID")
-}
-
-model direcciones {
-  DireccionID String   @id @default(cuid()) @db.VarChar(50)
-  Descripcion String?  @db.VarChar(255)
-  equipo      equipo[]
+  @@index([productoid], map: "productoid")
+  @@index([suministroid], map: "suministroid")
 }
 
 model egresos {
-  EgresoID      String          @id @default(cuid()) @db.VarChar(50)
-  Monto         Decimal?        @db.Decimal(10, 2)
+  egresoid      String          @id @db.VarChar(50)
+  monto         Decimal?        @db.Decimal(10, 2)
   fecha         DateTime?       @db.Date
   gastos_varios gastos_varios[]
   pago_empleado pago_empleado[]
@@ -116,81 +113,76 @@ model egresos {
 }
 
 model empleados {
-  EmpleadoID     String          @id @default(cuid()) @db.VarChar(50)
-  CargoID        String?         @db.VarChar(50)
+  empleadoid     String          @id @db.VarChar(50)
+  cargoid        String?         @db.VarChar(50)
   nombre         String?         @db.VarChar(255)
   apellido       String?         @db.VarChar(255)
   telefono       Int?
   cedula         String?         @unique(map: "cedula") @db.VarChar(50)
-  cargo_empleado cargo_empleado? @relation(fields: [CargoID], references: [CargoID], onDelete: NoAction, onUpdate: NoAction, map: "empleados_ibfk_1")
+  cargo_empleado cargo_empleado? @relation(fields: [cargoid], references: [cargoid], onDelete: NoAction, onUpdate: NoAction, map: "empleados_ibfk_1")
   pago_empleado  pago_empleado[]
+  personal       personal[]
   recursos       recursos[]
 
-  @@index([CargoID], map: "CargoID")
+  @@index([cargoid], map: "cargoid")
 }
 
 model equipo {
-  EquipoID         String             @id @default(cuid()) @db.VarChar(50)
-  TipoEquipoID     String?            @db.VarChar(50)
-  DireccionID      String?            @db.VarChar(50)
-  ClienteID        String?            @db.VarChar(50)
-  Capacidad        Int?
+  equipoid         String             @id @db.VarChar(50)
+  tipoequipoid     String?            @db.VarChar(50)
+  capacidad        Int?
   marca            String?            @db.VarChar(50)
-  numeroSerie      String?            @db.VarChar(50)
+  numero_serie     String?            @db.VarChar(50)
   detalle_servicio detalle_servicio[]
-  tipo_equipo      tipo_equipo?       @relation(fields: [TipoEquipoID], references: [TipoEquipoID], onDelete: NoAction, onUpdate: NoAction, map: "equipo_ibfk_1")
-  direcciones      direcciones?       @relation(fields: [DireccionID], references: [DireccionID], onDelete: NoAction, onUpdate: NoAction, map: "equipo_ibfk_2")
-  clientes         clientes?          @relation(fields: [ClienteID], references: [ClienteID], onDelete: NoAction, onUpdate: NoAction, map: "equipo_ibfk_3")
+  tipo_equipo      tipo_equipo?       @relation(fields: [tipoequipoid], references: [tipoequipoid], onDelete: NoAction, onUpdate: NoAction, map: "equipo_ibfk_1")
 
-  @@index([ClienteID], map: "ClienteID")
-  @@index([DireccionID], map: "DireccionID")
-  @@index([TipoEquipoID], map: "TipoEquipoID")
+  @@index([tipoequipoid], map: "tipoequipoid")
 }
 
 model gastos_varios {
-  GastoID     String   @id @default(cuid()) @db.VarChar(50)
-  EgresoID    String?  @db.VarChar(50)
+  gastoid     String   @id @db.VarChar(50)
+  egresoid    String?  @db.VarChar(50)
   descripcion String?  @db.VarChar(255)
-  egresos     egresos? @relation(fields: [EgresoID], references: [EgresoID], onDelete: NoAction, onUpdate: NoAction, map: "gastos_varios_ibfk_1")
+  egresos     egresos? @relation(fields: [egresoid], references: [egresoid], onDelete: NoAction, onUpdate: NoAction, map: "gastos_varios_ibfk_1")
 
-  @@index([EgresoID], map: "EgresoID")
+  @@index([egresoid], map: "egresoid")
 }
 
 model pago_empleado {
-  SalarioID  String     @id @default(cuid()) @db.VarChar(50)
-  EmpleadoID String?    @db.VarChar(50)
-  EgresoID   String?    @db.VarChar(50)
-  Concepto   String?    @db.VarChar(255)
-  empleados  empleados? @relation(fields: [EmpleadoID], references: [EmpleadoID], onDelete: NoAction, onUpdate: NoAction, map: "pago_empleado_ibfk_1")
-  egresos    egresos?   @relation(fields: [EgresoID], references: [EgresoID], onDelete: NoAction, onUpdate: NoAction, map: "pago_empleado_ibfk_2")
+  salarioid  String     @id @db.VarChar(50)
+  empleadoid String?    @db.VarChar(50)
+  egresoid   String?    @db.VarChar(50)
+  concepto   String?    @db.VarChar(255)
+  empleados  empleados? @relation(fields: [empleadoid], references: [empleadoid], onDelete: NoAction, onUpdate: NoAction, map: "pago_empleado_ibfk_1")
+  egresos    egresos?   @relation(fields: [egresoid], references: [egresoid], onDelete: NoAction, onUpdate: NoAction, map: "pago_empleado_ibfk_2")
 
-  @@index([EgresoID], map: "EgresoID")
-  @@index([EmpleadoID], map: "EmpleadoID")
+  @@index([egresoid], map: "egresoid")
+  @@index([empleadoid], map: "empleadoid")
 }
 
 model pago_impuesto {
-  ImpuestoID    String   @id @default(cuid()) @db.VarChar(50)
-  EgresoID      String?  @db.VarChar(50)
-  nombreEntidad String?  @db.VarChar(255)
-  egresos       egresos? @relation(fields: [EgresoID], references: [EgresoID], onDelete: NoAction, onUpdate: NoAction, map: "pago_impuesto_ibfk_1")
+  impuestoid     String   @id @db.VarChar(50)
+  egresoid       String?  @db.VarChar(50)
+  nombre_entidad String?  @db.VarChar(255)
+  egresos        egresos? @relation(fields: [egresoid], references: [egresoid], onDelete: NoAction, onUpdate: NoAction, map: "pago_impuesto_ibfk_1")
 
-  @@index([EgresoID], map: "EgresoID")
+  @@index([egresoid], map: "egresoid")
 }
 
 model productos {
-  ProductoID         String               @id @default(cuid()) @db.VarChar(50)
-  CategoriaID        String?              @db.VarChar(50)
-  Nombre             String?              @db.VarChar(255)
+  productoid         String               @id @db.VarChar(50)
+  categoriaid        String?              @db.VarChar(50)
+  nombre             String?              @db.VarChar(255)
   detalle_suministro detalle_suministro[]
   inventario         inventario[]
-  categoria_producto categoria_producto?  @relation(fields: [CategoriaID], references: [CategoriaID], onDelete: NoAction, onUpdate: NoAction, map: "productos_ibfk_1")
+  categoria_producto categoria_producto?  @relation(fields: [categoriaid], references: [categoriaid], onDelete: NoAction, onUpdate: NoAction, map: "productos_ibfk_1")
   recursos           recursos[]
 
-  @@index([CategoriaID], map: "CategoriaID")
+  @@index([categoriaid], map: "categoriaid")
 }
 
 model proveedores {
-  ProveedorID String       @id @default(cuid()) @db.VarChar(50)
+  proveedorid String       @id @db.VarChar(50)
   nombre      String?      @db.VarChar(255)
   apellido    String?      @db.VarChar(255)
   telefono    Int?
@@ -200,33 +192,41 @@ model proveedores {
 }
 
 model servicios {
-  ServicioID       String             @id @default(cuid()) @db.VarChar(50)
-  RecursosID       String?            @db.VarChar(50)
-  ClienteID        String?            @db.VarChar(50)
+  servicioid       String             @id @db.VarChar(50)
+  clienteid        String?            @db.VarChar(50)
   detalle_servicio detalle_servicio[]
-  recursos         recursos?          @relation(fields: [RecursosID], references: [RecursoID], onDelete: NoAction, onUpdate: NoAction, map: "servicios_ibfk_1")
-  clientes         clientes?          @relation(fields: [ClienteID], references: [ClienteID], onDelete: NoAction, onUpdate: NoAction, map: "servicios_ibfk_2")
+  clientes         clientes?          @relation(fields: [clienteid], references: [clienteid], onDelete: NoAction, onUpdate: NoAction, map: "servicios_ibfk_1")
 
-  @@index([ClienteID], map: "ClienteID")
-  @@index([RecursosID], map: "RecursosID")
+  @@index([clienteid], map: "clienteid")
 }
 
 model tipo_cliente {
-  TipoClienteID String     @id @default(cuid()) @db.VarChar(50)
-  TipoCliente   String?    @db.VarChar(50)
+  tipoclienteid String     @id @db.VarChar(50)
+  tipo_cliente  String?    @db.VarChar(50)
   clientes      clientes[]
 }
 
 model tipo_equipo {
-  TipoEquipoID String   @id @default(cuid()) @db.VarChar(50)
-  Tipo         String?  @db.VarChar(50)
-  Descripcion  String?  @db.VarChar(255)
+  tipoequipoid String   @id @db.VarChar(50)
+  tipo         String?  @db.VarChar(50)
+  descripcion  String?  @db.VarChar(255)
   equipo       equipo[]
 }
 
 model tipo_servicio {
-  TipoServicioID   String             @id @default(cuid()) @db.VarChar(50)
-  Tipo             String?            @db.VarChar(50)
-  Descripcion      String?            @db.VarChar(255)
+  tiposervicioid   String             @id @db.VarChar(50)
+  tipo             String?            @db.VarChar(50)
+  descripcion      String?            @db.VarChar(255)
   detalle_servicio detalle_servicio[]
+}
+
+model personal {
+  pid               Int               @id
+  detalleservicioid String?           @db.VarChar(50)
+  empleadoid        String?           @db.VarChar(50)
+  detalle_servicio  detalle_servicio? @relation(fields: [detalleservicioid], references: [detalleservicioid], onDelete: NoAction, onUpdate: NoAction, map: "personal_ibfk_1")
+  empleados         empleados?        @relation(fields: [empleadoid], references: [empleadoid], onDelete: NoAction, onUpdate: NoAction, map: "personal_ibfk_2")
+
+  @@index([detalleservicioid], map: "detalleservicioid")
+  @@index([empleadoid], map: "empleadoid")
 }
