@@ -21,7 +21,7 @@ const mockupMenu = [
 
 export default function Sidebar({ data }: any) {
   // const [title, setTitle] = useState('loading...')
-  console.log(data)
+  // console.log(data)
   const [openMenu, setOpenMenu] = useState(false)
 
   // useEffect(() => {
@@ -45,7 +45,6 @@ export default function Sidebar({ data }: any) {
               <MenuItem state="active" text="Dashboard" icon={DashBoardIcon} iconSize={{width: 20, height: 20}}/>
               <MenuItem icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Cliente"/>
               <MenuItem icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Empleados"/>
-              <MenuItem icon={AirIcon} iconSize={{width: 20, height: 20}} text="Equipos"/>
             </Menu>
             <Menu title="Inventario">
               <MenuItem icon={DashBoardIcon} iconSize={{width: 20, height: 20}} text="Productos"/>

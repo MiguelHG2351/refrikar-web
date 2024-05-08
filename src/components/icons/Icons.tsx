@@ -60,3 +60,98 @@ export const AddressIcon: React.FunctionComponent<IconProps> = ({ className = 'f
     </svg>
   )
 }
+
+export const PlusIcon: React.FunctionComponent<IconProps> = ({ className = 'fill-black', width, height }: IconProps) => {
+  return (
+    <svg
+    aria-hidden="true"
+    fill="none"
+    focusable="false"
+    height={height}
+    role="presentation"
+    viewBox="0 0 24 24"
+    width={width}
+  >
+    <g
+        className={className}
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.5}
+      >
+        <path d="M6 12h12" />
+        <path d="M12 18V6" />
+      </g>
+    </svg>
+  )
+}
+
+export const VerticalDotsIcon: React.FunctionComponent<IconProps> = ({ className = 'fill-black', width, height }: IconProps) => {
+  return (
+    <svg
+    aria-hidden="true"
+    fill="none"
+    focusable="false"
+    height={height}
+    role="presentation"
+    viewBox="0 0 24 24"
+    width={width}
+  >
+    <path
+      d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 12c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"
+      className={className}
+    />
+  </svg>
+  )
+}
+
+export const SearchIcon: React.FunctionComponent<IconProps> = ({ className = 'fill-black', width, height }: IconProps) => {
+  return (
+    <svg
+    aria-hidden="true"
+    fill="none"
+    focusable="false"
+    height={height}
+    role="presentation"
+    viewBox="0 0 24 24"
+    width={width}
+    >
+      <path
+        d="M11.5 21C16.7467 21 21 16.7467 21 11.5C21 6.25329 16.7467 2 11.5 2C6.25329 2 2 6.25329 2 11.5C2 16.7467 6.25329 21 11.5 21Z"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+      />
+      <path
+        d="M22 22L20 20"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+      />
+    </svg>
+  )
+}
+
+export const ChevronDownIcon: React.FunctionComponent<IconProps> = ({ className = 'fill-black', width, height }: IconProps) => {
+  return (
+    <svg
+    aria-hidden="true"
+    fill="none"
+    focusable="false"
+    height={height}
+    role="presentation"
+    viewBox="0 0 24 24"
+    width={width}
+    >
+      <path
+        d="M6 9L12 15L18 9"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+      />
+    </svg>
+  )
+}

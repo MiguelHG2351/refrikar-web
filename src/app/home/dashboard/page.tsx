@@ -1,5 +1,6 @@
 import { Inventario } from '@/components/cards/dashboard/Inventario'
 import Sidebar from '@/components/drawer-menu/Sidebar'
+import ClientTable from '@/components/table/ClientTable'
 import prisma from '@/config/prisma'
 import { Metadata } from 'next'
 import Image from 'next/image'
@@ -33,10 +34,10 @@ export default async function Dashboard() {
   const data = await getProduct()
 
   return (
-      <main className="min-h-screen md:grid md:grid-cols-[auto_1fr]">
+      <main className="md:h-screen md:overflow-hidden md:grid md:grid-cols-[auto_1fr]">
         <Sidebar data={data} />
-        <section className="bg-accent-1">
-          <header className="flex justify-between items-center py-2 px-4 border-b">
+        <section className="bg-accent-1 overflow-y-auto">
+          <header className="sticky top-0 bg-white flex justify-between items-center py-2 px-4 border-b">
             <div className="flex items-center gap-x-2">
               <button className="md:hidden">
                 <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 36 36" fill="none">
@@ -162,6 +163,7 @@ export default async function Dashboard() {
                         </svg>
                       </button>
                     </form>
+                    <ClientTable />
                   </div>
                 </div>
               </section>

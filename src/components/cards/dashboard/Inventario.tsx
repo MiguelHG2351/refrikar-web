@@ -7,7 +7,7 @@ export const Inventario = ({ inventario }: { inventario: any }) => {
     <>
       {Object.keys(inventario).map((inv, index) => {
         const stock = inventario[inv].reduce((acc: number, item: any) => {
-          if (item.inventario[0].Stock - 0 === 0) {
+          if (item.inventario[0]?.stock - 0 === 0) {
             acc += 1
           }
           return acc
