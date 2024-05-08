@@ -53,7 +53,7 @@ export default async function Dashboard() {
 
   return (
       <main className="md:h-screen md:overflow-hidden md:grid md:grid-cols-[auto_1fr]">
-        <Sidebar data={productos} />
+        <Sidebar />
         <section className="bg-accent-1 overflow-y-auto">
           <header className="sticky top-0 bg-white flex justify-between items-center py-2 px-4 border-b">
             <div className="flex items-center gap-x-2">

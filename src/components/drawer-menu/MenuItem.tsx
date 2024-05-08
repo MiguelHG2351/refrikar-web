@@ -21,9 +21,10 @@ type MenuItemProps = {
   icon: React.FC<any>;
   // icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   iconSize: IconSize;
+  path?: string;
 };
 
-export default function MenuItem({ state = 'inactive', text, icon: Icon, iconSize }: MenuItemProps) {
+export default function MenuItem({ state = 'inactive', text, icon: Icon, iconSize, path = '#' }: MenuItemProps) {
   const colorVariant: Record<MenuItemState, any> = {
     active: {
       text: 'bg-secondary inline-flex items-center gap-x-2 text-white py-2 px-2 rounded-md w-full',
@@ -42,7 +43,7 @@ export default function MenuItem({ state = 'inactive', text, icon: Icon, iconSiz
   return (
     <li>
       <Link
-        href="#"
+        href={path}
         className={colorVariant[state].text}>
         <Icon width={iconSize.width} height={iconSize.height} className={colorVariant[state].icon} />
         {text}

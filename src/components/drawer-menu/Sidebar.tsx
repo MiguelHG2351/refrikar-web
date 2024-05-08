@@ -19,7 +19,7 @@ const mockupMenu = [
   }
 ]
 
-export default function Sidebar({ data }: any) {
+export default function Sidebar() {
   // const [title, setTitle] = useState('loading...')
   // console.log(data)
   const [openMenu, setOpenMenu] = useState(false)
@@ -44,7 +44,7 @@ export default function Sidebar({ data }: any) {
             <Menu title="Menu principal">
               <MenuItem state="active" text="Dashboard" icon={DashBoardIcon} iconSize={{width: 20, height: 20}}/>
               <MenuItem icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Cliente"/>
-              <MenuItem icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Empleados"/>
+              <MenuItem icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Servicios" path="/home/servicios" />
             </Menu>
             <Menu title="Inventario">
               <MenuItem icon={DashBoardIcon} iconSize={{width: 20, height: 20}} text="Productos"/>
