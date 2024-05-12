@@ -9,6 +9,8 @@ export default authMiddleware({
     "/sign-up",
     "/home/dashboard",
     "/home/servicios",
+    "/api/services/count",
+    "/api/clients",
   ],
 });
 

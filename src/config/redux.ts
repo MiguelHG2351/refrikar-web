@@ -1,11 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
 import menuReducer from "@/storage/menuSlice";
+import { RefrikarApi } from "@/storage/api/refrikarApi";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
-      menu: menuReducer
-    } 
+      menu: menuReducer,
+      [RefrikarApi.reducerPath]: RefrikarApi.reducer     
+    },
+    middleware: (getDefaultMiddleware) => 
+      getDefaultMiddleware().concat(RefrikarApi.middleware)
   })
 }
 
