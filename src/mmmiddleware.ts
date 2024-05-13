@@ -11,6 +11,7 @@ export default authMiddleware({
     "/home/servicios",
     "/api/services/count",
     "/api/clients",
+    "/api/tipo-cliente",
   ],
 });
 

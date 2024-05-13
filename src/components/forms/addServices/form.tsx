@@ -2,23 +2,36 @@
 import { useGetAllClientsQuery } from "@/storage/api/clientes";
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem, useDisclosure } from "@nextui-org/react";
 import { useState } from "react";
+import CreateAndAddClient from "./CreateAndAddClient";
 
 export default function AddServiceModal() {
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
+  const [isDisabled, setIsDisabled] = useState(false)
   const { data: listOfClients } = useGetAllClientsQuery('')
   const [serviceId, setServiceId] = useState('')
-  // <Button onPress={onOpen}>Open Modal</Button>
+
   async function handlerAddService() {
+    setIsDisabled(true)
+    console.log('click')
     const request = await fetch('/api/services/count')
     const response = await request.json()
-    setServiceId(`${response.total}`.padStart(6, 'SV0000'))
+    setServiceId(`${response.total + 1}`.padStart(6, 'SV0000'))
     onOpen()
+    setIsDisabled(true)
+  }
+
+  // add type for submit event
+  function handlerSubmit(e: React.FormEvent) {
+    e.preventDefault()
+
+    const formData = new FormData(e.target as HTMLFormElement)
+    console.log(formData.get('service_id'))
   }
   
 
   return (
     <>
-      <Button onPress={handlerAddService}>Agregar servicio</Button>
+      <Button isDisabled={isDisabled} onPress={handlerAddService}>Agregar servicio</Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} backdrop="blur">
         <ModalContent>
           {(onClose) => (
@@ -27,9 +40,9 @@ export default function AddServiceModal() {
                 <h2>Agregar servicio</h2>
               </ModalHeader>
               <ModalBody>
-                <form action="#" className="flex flex-wrap gap-4">
+                <form onSubmit={handlerSubmit} className="flex flex-wrap gap-4">
                   <div className="flex flex-col w-full gap-y-2">
-                    <label htmlFor="service_id">ID</label>
+                    <label htmlFor="service_id" className="font-medium">ID</label>
                     <input className="border border-[#667085] py-2 px-2 bg-white rounded-md" type="text"  placeholder={serviceId} disabled id="service_id"/>
                   </div>
                   <div className="flex flex-col w-full gap-y-4">
@@ -37,6 +50,7 @@ export default function AddServiceModal() {
                       label="Clientes"
                       className="w-full"
                       variant="flat"
+                      name="client_id"
                     >
                       {listOfClients.map((client: any) => (
                         <SelectItem key={client.clientid} value={client.nombre}>
@@ -44,16 +58,13 @@ export default function AddServiceModal() {
                         </SelectItem>
                       ))}
                     </Select>
-                    <p>No existe? <a href="#" className="underline">Crea cliente</a></p>
+                    <CreateAndAddClient />
                   </div>
                 </form>
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Close
-                </Button>
-                <Button color="primary" onPress={onClose}>
-                  Resumuen &gt;
+                <Button color="primary" fullWidth={true} onPress={onClose}>
+                  Registrar servicio
                 </Button>
               </ModalFooter>
             </>
