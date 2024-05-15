@@ -67,6 +67,7 @@ export default function CreateAndAddClient() {
                         <Select
                           items={data}
                           labelPlacement="outside"
+                          variant="flat"
                           classNames={{
                             label: 'font-medium text-base',
                             mainWrapper: 'pt-2',
@@ -78,7 +79,7 @@ export default function CreateAndAddClient() {
                           className="max-w-xs"
                           name="tipo_cliente"
                         >
-                          {(animal) => <SelectItem key={animal.tipoclienteid}>{animal.tipo_cliente}</SelectItem>}
+                          {(tipo) => <SelectItem key={tipo.tipoclienteid}>{tipo.tipo_cliente}</SelectItem>}
                         </Select>
                       </div>
                       <div className="flex flex-col gap-y-2">

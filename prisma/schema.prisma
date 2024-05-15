@@ -75,6 +75,7 @@ model detalle_servicio {
   tiposervicioid    String?        @db.VarChar(50)
   equipoid          String?        @db.VarChar(50)
   servicioid        String?        @db.VarChar(50)
+  descripcion       String?        @db.Text
   costo             Decimal?       @db.Decimal(10, 2)
   fecha             DateTime?      @db.Date
   direccion         String?        @db.VarChar(255)

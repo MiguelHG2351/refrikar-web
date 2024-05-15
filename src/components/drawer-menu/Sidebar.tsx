@@ -3,19 +3,20 @@ import { useEffect, useState } from "react"
 import Menu from "./Menu"
 import MenuItem from "./MenuItem"
 import { AirIcon, ClientIcon, DashBoardIcon } from "../icons/Icons"
+import { usePathname } from "next/navigation"
 
 const mockupMenu = [
   {
     id: 1,
     name: 'Dashboard',
     icon: 'dashboard',
-    href: '/dashboard'
+    href: '/home/dashboard'
   },
   {
     id: 2,
-    name: 'Users',
+    name: 'Servicios',
     icon: 'users',
-    href: ''
+    href: '/home/servicios'
   }
 ]
 
@@ -23,6 +24,8 @@ export default function Sidebar() {
   // const [title, setTitle] = useState('loading...')
   // console.log(data)
   const [openMenu, setOpenMenu] = useState(false)
+  const navigation = usePathname()
+  console.log(navigation)
 
   // useEffect(() => {
   //   setTitle(document.title)
@@ -42,9 +45,9 @@ export default function Sidebar() {
           </div>
           <section>
             <Menu title="Menu principal">
-              <MenuItem state="active" text="Dashboard" icon={DashBoardIcon} iconSize={{width: 20, height: 20}}/>
-              <MenuItem icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Cliente"/>
-              <MenuItem icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Servicios" path="/home/servicios" />
+              <MenuItem state={navigation === '/home/dashboard' ? "active" : 'inactive'} path="/home/dashboard" text="Dashboard" icon={DashBoardIcon} iconSize={{width: 20, height: 20}}/>
+              {/* <MenuItem state={navigation === '/home/dashboard' ? "active" : 'inactive'} icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Cliente"/> */}
+              <MenuItem state={navigation === '/home/servicios' ? "active" : 'inactive'} icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Servicios" path="/home/servicios" />
             </Menu>
             <Menu title="Inventario">
               <MenuItem icon={DashBoardIcon} iconSize={{width: 20, height: 20}} text="Productos"/>
