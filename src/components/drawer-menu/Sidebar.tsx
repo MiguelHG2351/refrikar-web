@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import Menu from "./Menu"
 import MenuItem from "./MenuItem"
-import { AirIcon, ClientIcon, DashBoardIcon } from "../icons/Icons"
+import { AirIcon, BillIcon, ClientIcon, DashBoardIcon, HomeIcon } from "../icons/Icons"
 import { usePathname } from "next/navigation"
 
 const mockupMenu = [
@@ -45,9 +45,10 @@ export default function Sidebar() {
           </div>
           <section>
             <Menu title="Menu principal">
+              <MenuItem icon={HomeIcon} iconSize={{width: 24, height: 24}} text="Presentación" path="/home/presentation"/>
               <MenuItem state={navigation === '/home/dashboard' ? "active" : 'inactive'} path="/home/dashboard" text="Dashboard" icon={DashBoardIcon} iconSize={{width: 20, height: 20}}/>
               {/* <MenuItem state={navigation === '/home/dashboard' ? "active" : 'inactive'} icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Cliente"/> */}
-              <MenuItem state={navigation === '/home/servicios' ? "active" : 'inactive'} icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Servicios" path="/home/servicios" />
+              <MenuItem state={(navigation === '/home/servicios' || navigation === '/home/servicios/add') ? "active" : 'inactive'} icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Servicios" path="/home/servicios" />
             </Menu>
             <Menu title="Inventario">
               <MenuItem icon={DashBoardIcon} iconSize={{width: 20, height: 20}} text="Productos"/>
@@ -55,7 +56,7 @@ export default function Sidebar() {
               <MenuItem icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Facturas"/>
             </Menu>
             <Menu title="Otros">
-              <MenuItem icon={DashBoardIcon} iconSize={{width: 20, height: 20}} text="Financia"/>
+              <MenuItem icon={BillIcon} iconSize={{width: 20, height: 20}} text="Financia"/>
               <MenuItem icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Créditos"/>
             </Menu>
           </section>

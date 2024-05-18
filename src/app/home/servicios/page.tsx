@@ -1,10 +1,10 @@
 import Sidebar from "@/components/drawer-menu/Sidebar";
 import Image from "next/image";
 
-import { Button, Input } from '@nextui-org/react'
+import { Input, Link } from '@nextui-org/react'
 import prisma from "@/config/prisma";
 import Servicio from "@/components/cards/servicios/Servicio";
-import AddServiceModal from "@/components/forms/addServices/form";
+import AddServiceModal from "@/components/forms/addServices/Form";
 
 async function getServicios() {
   const data = await prisma.servicios.findMany({
@@ -22,7 +22,7 @@ export default async function Servicios() {
   
   return (
     <main className="md:h-screen md:overflow-hidden md:grid md:grid-cols-[auto_1fr]">
-        <Sidebar />
+      <Sidebar />
       <section className="bg-accent-1 overflow-y-auto">
         <header className="sticky top-0 bg-white flex justify-between items-center py-2 px-4 border-b">
           <div className="flex items-center gap-x-2">
@@ -67,9 +67,7 @@ export default async function Servicios() {
             <AddServiceModal />
           </form>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {servicios.map((servicio: any) => (
-              <Servicio key={servicio.id} data={servicio} />
-            ))}
+            <Link href="/home/servicios/add">Agregar servicio</Link>
           </div>
         </section>
       </section>
