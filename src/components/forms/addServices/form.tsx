@@ -1,6 +1,6 @@
 'use client'
 import { useGetAllClientsQuery } from "@/storage/api/clientes";
-import { Select, SelectItem, useDisclosure, Selection } from "@nextui-org/react";
+import { Select, SelectItem, useDisclosure, Selection, Button } from "@nextui-org/react";
 import { useState } from "react";
 import CreateAndAddClient from "./CreateAndAddClient";
 import DetallesForm from "./DetallesForm";
@@ -23,11 +23,14 @@ const columns = [
 
 export default function AddServiceForm() {
   const [isDisabled, setIsDisabled] = useState(false)
-  const { data: listOfClients } = useGetAllClientsQuery('')
-  const [currentUser, setCurrentUser] = useState('');
+  const { data: listOfClients, isError, isLoading } = useGetAllClientsQuery('')
+  const [currentUser, setCurrentUser] = useState<any | null>(null)
   const [serviceId, setServiceId] = useState('')
 
-  console.log(listOfClients)
+  // console.log(listOfClients, isError, isLoading)
+  if (listOfClients!?.length > 0) {
+    console.log(listOfClients)
+  }
   async function handlerAddService() {
     setIsDisabled(true)
     console.log('click')
@@ -41,14 +44,13 @@ export default function AddServiceForm() {
   function handlerSubmit(e: React.FormEvent) {
     e.preventDefault()
 
-    const formData = new FormData(e.target as HTMLFormElement)
-    console.log(formData.get('service_id'))
+    // const formData = new FormData(e.target as HTMLFormElement)
+    // console.log(formData.get('service_id'))s
   }
 
   function handlerClientSelect(e: React.ChangeEvent<HTMLSelectElement>) {
     console.log(e.target.value)
-    setCurrentUser(e.target.value)
-    console.log(currentUser)
+    setCurrentUser(listOfClients.find((client: any) => client.clienteid === e.target.value))
   }
   return (
     <>
@@ -72,9 +74,9 @@ export default function AddServiceForm() {
               </SelectItem>
             ))}
           </Select>
-          <CreateAndAddClient />
+          {/* <CreateAndAddClient /> */}
           {
-            currentUser.length > 0 && (
+            currentUser && (
               <Table aria-label="Example static collection table">
                 <TableHeader>
                   <TableColumn>Nombre</TableColumn>
@@ -84,31 +86,25 @@ export default function AddServiceForm() {
                 </TableHeader>
                 <TableBody>
                   <TableRow key="1">
-                          <TableCell>ASD ``{listOfClients[0].nombre}</TableCell>
-                          <TableCell>ASD {listOfClients[0].apellido}</TableCell>
-                          <TableCell>ASD {listOfClients[0].apellido}</TableCell>
-                          <TableCell>ASD {listOfClients[0].apellido}</TableCell>
+                    <TableCell>{currentUser.nombre}</TableCell>
+                    <TableCell>{currentUser.nombre}</TableCell>
+                    <TableCell>{currentUser.nombre}</TableCell>
+                    <TableCell>{currentUser.nombre}</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
             )
           }
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3">
-          <div className="flex flex-col w-full gap-y-2">
-            <label htmlFor="service_id" className="font-medium">ID</label>
-            <input className="border border-[#667085] py-2 px-2 bg-white rounded-md" type="text"  placeholder={'SV00002'} disabled id="service_id"/>
-          </div>
-          <div className="flex flex-col w-full gap-y-2">
-            <label htmlFor="service_id" className="font-medium">Nombre</label>
-            <h2>Miguel</h2>
-          </div>
-        </div>
+        
         <div className="flex flex-col w-full gap-y-2">
           <h3 className="font-medium">Detalles de servicio</h3>
           <DetallesForm />
         </div>
-        
+        <footer className="flex gap-x-2 justify-end">
+          <Button type="submit" disabled={isDisabled} variant="shadow" color="primary" onClick={handlerAddService}>Volver a servicios</Button>
+          <Button type="submit" disabled={isDisabled} variant="shadow" color="primary" onClick={handlerAddService}>Agregar servicio</Button>
+        </footer>
       </form>
     </>
   )
