@@ -23,6 +23,12 @@ export async function POST(req: NextRequest) {
         entidad: body.cliente.entidad,
       }
     }
+  } else {
+    cliente = {
+      connect: {
+        clienteid: body.cliente.clienteid
+      }
+    }
   }
 
   let detalleServicio = body.detalle_servicio.map((detalle: Prisma.detalle_servicioCreateManyInput, index: number) => {
