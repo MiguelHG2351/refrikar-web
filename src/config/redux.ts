@@ -1,13 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import menuReducer from "@/storage/menuSlice";
-import addServiceSlice from "@/storage/addService";
+import serviceSlice from "@/storage/serviceSlice";
 import { RefrikarApi } from "@/storage/api/refrikarApi";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       menu: menuReducer,
-      addService: addServiceSlice,
+      addService: serviceSlice,
       [RefrikarApi.reducerPath]: RefrikarApi.reducer
     },
     middleware: (getDefaultMiddleware) => 

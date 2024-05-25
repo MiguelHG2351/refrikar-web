@@ -1,32 +1,21 @@
 import { useAddClientMutation, useGetAllTipoClientsQuery } from "@/storage/api/clientes";
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem, useDisclosure } from "@nextui-org/react";
+import { UseFormRegister } from "react-hook-form";
 
-export default function CreateAndAddClient() {
+import { FormData } from "./Form";
+
+type CreateAndAddClientProps = {
+  register: UseFormRegister<FormData>
+}
+
+export default function CreateAndAddClient({ register }: CreateAndAddClientProps) {
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
   const { data, isLoading } = useGetAllTipoClientsQuery("")
-  // const [ postNewProject ] = useAddClientMutation()
   console.log(data)
 
   function onHandlerClick() {
     onOpen()
   }
-
-  // async function onHandlerSubmit(e: React.FormEvent) {
-  //   e.preventDefault()
-  //   const formData = new FormData(e.target as HTMLFormElement)
-
-  //   await postNewProject({
-  //     ruc: formData.get('ruc') as string,
-  //     nombre: formData.get('nombre') as string,
-  //     apellido: formData.get('apellido') as string,
-  //     telefono: parseInt(formData.get('telefono') as string),
-  //     entidad: formData.get('entidad') as string,
-  //     tipoclienteid: formData.get('tipo_cliente') as string,
-  //   }).unwrap()
-  //   .then(res => {
-  //     console.log(res)
-  //   })
-  // }
   
   return (
     <>
@@ -43,19 +32,19 @@ export default function CreateAndAddClient() {
                   <div className="flex flex-wrap gap-4">
                     <div className="flex flex-col w-full gap-y-2">
                       <label htmlFor="service_id" className="font-medium">RUC</label>
-                      <input className="border border-[#667085] py-2 px-2 bg-white rounded-md" placeholder="#0099FFDADSSARF" type="text" name="ruc" />
+                      <input className="border border-[#667085] py-2 px-2 bg-white rounded-md" placeholder="#0099FFDADSSARF" type="text" {...register('ruc')} />
                     </div>
                     <div className="flex flex-col w-full gap-y-2">
                       <label htmlFor="service_id" className="font-medium">Nombre</label>
-                      <input className="border border-[#667085] py-2 px-2 bg-white rounded-md" placeholder="John Juan" type="text" name="nombre" />
+                      <input className="border border-[#667085] py-2 px-2 bg-white rounded-md" placeholder="John Juan" type="text" {...register('nombre')} />
                     </div>
                     <div className="flex flex-col w-full gap-y-2">
                       <label htmlFor="service_id" className="font-medium">Apellido</label>
-                      <input className="border border-[#667085] py-2 px-2 bg-white rounded-md" placeholder="Doe Perez" type="text" name="apellido" />
+                      <input className="border border-[#667085] py-2 px-2 bg-white rounded-md" placeholder="Doe Perez" type="text" {...register('apellido')} />
                     </div>
                     <div className="flex flex-col w-full gap-y-2">
                       <label htmlFor="service_id" className="font-medium">Telefono</label>
-                      <input className="border border-[#667085] py-2 px-2 bg-white rounded-md" placeholder="78703875" type="text" name="apellido" />
+                      <input className="border border-[#667085] py-2 px-2 bg-white rounded-md" placeholder="78703875" type="text" {...register('telefono')} />
                     </div>
                     <div className="bg-accent-2 px-2 py-4 w-full grid grid-cols-1 md:grid-cols-2 gap-2 rounded-lg">
                       <div className="gap-y-2">
@@ -72,14 +61,14 @@ export default function CreateAndAddClient() {
                           label="Tipo de cliente"
                           placeholder={!isLoading ? data![0].tipo_cliente : "Cargando datos..."}
                           className="max-w-xs"
-                          name="tipo_cliente"
+                          {...register('tipo_cliente')}
                         >
                           {(tipo) => <SelectItem key={tipo.tipoclienteid}>{tipo.tipo_cliente}</SelectItem>}
                         </Select>
                       </div>
                       <div className="flex flex-col gap-y-2">
                         <label htmlFor="service_id" className="font-medium">Entidad</label>
-                        <input className="border border-[#667085] py-2 px-2 bg-white rounded-md" placeholder="Empresa A" type="text" name="entidad" />
+                        <input className="border border-[#667085] py-2 px-2 bg-white rounded-md" placeholder="Empresa A" type="text" {...register('entidad')} />
                       </div>
                     </div>
                     <Button type="submit" fullWidth={true} color="primary">

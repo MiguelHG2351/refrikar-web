@@ -1,4 +1,5 @@
 import { RefrikarApi } from "./refrikarApi";
+import {tipoServicioAdapter} from "@/storage/api/adapters/servicio";
 
 export const clientesApi = RefrikarApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -9,22 +10,19 @@ export const clientesApi = RefrikarApi.injectEndpoints({
           method: 'POST',
         }
       }
+    }),
+    getTipoServicios: builder.query({
+        query: () => {
+            return {
+              url: '/api/tipo-servicio',
+              method: 'GET',
+            }
+        },
+      transformResponse(response: any) {
+        return tipoServicioAdapter(response)
+      }
     })
   })
 })
 
-const pruebaData = {
-  service_id: 'SV0001',
-  client_id: 'CL0001',
-  service_details: 'Service details',
-  detalles: [
-    {
-      detalle_id: 'DE0001',
-      cantidad: 1,
-      precio: 100,
-      total: 100
-    }
-  ]
-}
-
-export const { useCreateServiceMutation } = clientesApi
+export const { useCreateServiceMutation, useGetTipoServiciosQuery } = clientesApi
