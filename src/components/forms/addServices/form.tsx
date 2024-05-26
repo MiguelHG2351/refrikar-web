@@ -18,10 +18,12 @@ import {
   TableRow,
   TableCell
 } from "@nextui-org/table";
+import { useGetTipoServiciosQuery } from "@/storage/api/service";
+import { Cliente } from "@/dtos";
 
 export type FormData = {
   client_id: string
-  ruc: string, // <-- clients
+  ruc: string,
   nombre: string,
   apellido: string,
   telefono: string,
@@ -41,9 +43,10 @@ const schema = yup.object().shape({
 
 export default function AddServiceForm() {
   const { data: listOfClients } = useGetAllClientsQuery('')
-  const [currentUser, setCurrentUser] = useState<any | null>(null)
+  const [currentUser, setCurrentUser] = useState<Cliente | null>(null)
   const service = useAppSelector(state => state.addService)
-  const {isOpen, onOpen, onOpenChange} = useDisclosure();
+  const { data: tipoServicios, isLoading: isLoadingTipoServicios } = useGetTipoServiciosQuery('')
+  const {isOpen, onClose, onOpen, onOpenChange} = useDisclosure();
 
 
   const { register, handleSubmit } = useForm<FormData>({
@@ -55,12 +58,12 @@ export default function AddServiceForm() {
   })
 
   function handlerClientSelect(e: React.ChangeEvent<HTMLSelectElement>) {
-    console.log(e.target.value)
-    setCurrentUser(listOfClients.find((client: any) => client.clienteid === e.target.value))
+    const cliente = listOfClients!.find((client: Cliente) => client.clienteid === e.target.value)
+    setCurrentUser(cliente!)
   }
   return (
     <>
-      <DetallesForm isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange} />
+      <DetallesForm isOpen={isOpen} onClose={onClose} onOpenChange={onOpenChange} />
       <form onSubmit={onSubmit} className="flex flex-wrap gap-4">
         <div className="mt-12 flex flex-col w-full gap-y-4">
           <Select
@@ -94,9 +97,9 @@ export default function AddServiceForm() {
                 <TableBody>
                   <TableRow key="1">
                     <TableCell>{currentUser.nombre}</TableCell>
-                    <TableCell>{currentUser.nombre}</TableCell>
-                    <TableCell>{currentUser.nombre}</TableCell>
-                    <TableCell>{currentUser.nombre}</TableCell>
+                    <TableCell>{currentUser.apellido}</TableCell>
+                    <TableCell>{currentUser.tipo_cliente.tipo_cliente}</TableCell>
+                    <TableCell>{currentUser.entidad}</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
@@ -114,31 +117,34 @@ export default function AddServiceForm() {
               <TableColumn>Tipo de servicio</TableColumn>
               <TableColumn>Costo</TableColumn>
               <TableColumn>Descripción</TableColumn>
-              <TableColumn>dirección</TableColumn>
+              <TableColumn>Dirección</TableColumn>
               <TableColumn>Equipo</TableColumn>
               <TableColumn>Recursos</TableColumn>
             </TableHeader>
             <TableBody>
-              <TableRow key="1">
-                <TableCell>Reparación</TableCell>
-                <TableCell>$180</TableCell>
-                <TableCell>Había una rata muerta en el aire</TableCell>
-                <TableCell>Residencial Bolonia, Casa #5</TableCell>
-                <TableCell>Xiaomi, 1T SN00004</TableCell>
-                <TableCell>
-                  <Button color="primary">Ver recursos</Button>
-                </TableCell>
-              </TableRow>
-              <TableRow key="2">
-                <TableCell>Instalación</TableCell>
-                <TableCell>$180</TableCell>
-                <TableCell>Se instalo en un cuarto de 20x20 metros</TableCell>
-                <TableCell>Residencial montecielo, Casa #5</TableCell>
-                <TableCell>Xiaomi, 1T SN00004</TableCell>
-                <TableCell>
-                  <Button color="primary">Ver recursos</Button>
-                </TableCell>
-              </TableRow>
+              {service.detalle_servicio.length == 0 ?
+                <TableRow key="1">
+                  <TableCell>No data</TableCell>
+                  <TableCell>No data</TableCell>
+                  <TableCell>No data</TableCell>
+                  <TableCell>No data</TableCell>
+                  <TableCell>No data</TableCell>
+                  <TableCell>No data</TableCell>
+                </TableRow>
+               :
+                service.detalle_servicio.map((detalle) => (
+                  <TableRow key={detalle.tiposervicioid}>
+                    <TableCell>{tipoServicios?.find(tipo => tipo.tiposervicioid === detalle.tiposervicioid)?.tipo}</TableCell>
+                    <TableCell>{detalle.costo}</TableCell>
+                    <TableCell>{detalle.descripcion}</TableCell>
+                    <TableCell>{detalle.direccion}</TableCell>
+                    <TableCell>{detalle.equipoid}</TableCell>
+                    <TableCell>
+                      <Button type="button" variant="shadow">Ver recursos</Button>
+                    </TableCell>
+                  </TableRow>
+                ))
+               }
             </TableBody>
           </Table>
 

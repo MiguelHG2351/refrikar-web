@@ -4,7 +4,11 @@ import { ClienteRequest } from '@/dtos/Cliente';
 
 
 export async function GET() {
-  const servicesCount = await prisma.clientes.findMany();
+  const servicesCount = await prisma.clientes.findMany({
+    include: {
+      tipo_cliente: true
+    }
+  });
   
   return NextResponse.json(servicesCount)
 }

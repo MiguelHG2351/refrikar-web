@@ -3,6 +3,10 @@ import AddServiceForm from '@/components/forms/addServices/Form'
 import Image from 'next/image'
 import React from 'react'
 
+export const metadata = {
+  title: 'Agregar servicio',
+}
+
 export default function AddService() {
   
   return (

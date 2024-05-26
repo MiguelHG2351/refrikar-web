@@ -1,4 +1,4 @@
-import { useAddClientMutation, useGetAllTipoClientsQuery } from "@/storage/api/clientes";
+import { useGetAllTipoClientsQuery } from "@/storage/api/clientes";
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem, useDisclosure } from "@nextui-org/react";
 import { UseFormRegister } from "react-hook-form";
 
@@ -11,7 +11,6 @@ type CreateAndAddClientProps = {
 export default function CreateAndAddClient({ register }: CreateAndAddClientProps) {
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
   const { data, isLoading } = useGetAllTipoClientsQuery("")
-  console.log(data)
 
   function onHandlerClick() {
     onOpen()
@@ -71,7 +70,7 @@ export default function CreateAndAddClient({ register }: CreateAndAddClientProps
                         <input className="border border-[#667085] py-2 px-2 bg-white rounded-md" placeholder="Empresa A" type="text" {...register('entidad')} />
                       </div>
                     </div>
-                    <Button type="submit" fullWidth={true} color="primary">
+                    <Button type="button" fullWidth={true} color="primary">
                       Agregar
                     </Button>
                   </div>

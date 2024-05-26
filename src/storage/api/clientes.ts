@@ -1,5 +1,5 @@
 import { ClienteRequest } from "@/dtos/Cliente";
-import { tipoClienteAdapter } from "./adapters/clientes";
+import { clienteAdapter, tipoClienteAdapter } from "./adapters/clientes";
 import { RefrikarApi } from "./refrikarApi";
 
 export const clientesApi = RefrikarApi.injectEndpoints({
@@ -10,7 +10,10 @@ export const clientesApi = RefrikarApi.injectEndpoints({
           url: '/api/clients',
           method: 'GET',
         }
-      }
+      },
+      transformResponse(data: any) {
+        return clienteAdapter(data)
+      },
     }),
     getAllTipoClients: builder.query({
       query: () => {

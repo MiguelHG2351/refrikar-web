@@ -1,6 +1,10 @@
-export const DateInputFormat = (date: Date | null | undefined) => {
+export const DateInputFormat = (date: Date | string | null | undefined) => {
   if (!date) return ''
   let currentDate = new Date(date)
+  // validate if the currentDate is a valid date
+  if (isNaN(currentDate.getTime())) {
+    return ''
+  }
 
   const formatDate = new Intl.DateTimeFormat('es', {
     year: 'numeric',
