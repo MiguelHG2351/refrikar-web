@@ -22,13 +22,6 @@ import { now, getLocalTimeZone } from '@internationalized/date'
 import { setDetalleServicio } from '@/storage/serviceSlice'
 import { DateInputFormat } from "@/utils/date";
 
-
-type DetallesFormProps = {
-  isOpen: boolean
-  onClose: () => void
-  onOpenChange: () => void
-}
-
 const schema = yup.object().shape({
   costo: yup.number().required('Este campo es requerido'),
   tiposervicioid: yup.string().required('Este campo es requerido'),
@@ -47,14 +40,14 @@ export type FormData = {
   equipo: string
 }
 
-export default function DetallesForm({ isOpen, onClose, onOpenChange }: DetallesFormProps) {
+export default function DetallesForm() {
   const { data: equipos, isLoading: isLoadingEquipos } = useGetEquiposQuery('')
   const { data: tipoServicios, isLoading: isLoadingTipoServicios } = useGetTipoServiciosQuery('')
   const dispatch = useAppDispatch()
+  const {isOpen, onClose, onOpen, onOpenChange} = useDisclosure();
   const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm<FormData>({
     resolver: yupResolver(schema)
   })
-  console.log(errors)
 
   const onSubmit = handleSubmit((data: FormData) => {
     console.log('submit', data)
@@ -74,6 +67,7 @@ export default function DetallesForm({ isOpen, onClose, onOpenChange }: Detalles
 
   return (
     <>
+      <Button onPress={() => onOpen()}> Agregar detalles</Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} backdrop="blur">
         <ModalContent>
           {(onClose) => (

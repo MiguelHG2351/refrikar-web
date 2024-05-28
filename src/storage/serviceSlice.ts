@@ -1,14 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface AddServiceState {
-  cliente?: {
+  cliente: {
     clienteid?: string;
     ruc: string;
     nombre: string;
-    apellido: string;
-    telefono: string;
+    apellido?: string;
+    telefono: number;
     entidad: string;
     isNew: boolean;
+    tipo_cliente: {
+      tipo_clienteid: string;
+      tipo_cliente: string;
+    }
   },
   detalle_servicio: {
     costo: number;
@@ -26,8 +30,12 @@ const initialState: AddServiceState = {
     ruc: '',
     nombre: '',
     apellido: '',
-    telefono: '',
+    telefono: 0,
     entidad: '',
+    tipo_cliente: {
+      tipo_clienteid: '',
+      tipo_cliente: ''
+    },
     isNew: false
   },
   detalle_servicio: []
@@ -43,10 +51,13 @@ const addServiceSlice = createSlice({
     setCliente: create.reducer((state, action: PayloadAction<AddServiceState["cliente"]>) => {
       state.cliente = action.payload
     }),
+    clearCliente: create.reducer((state) => {
+      state.cliente = initialState.cliente
+    }),
   })
 });
 
 
 // export const { openMenu, closeMenu } = menuSlice.actions
-export const { setDetalleServicio } = addServiceSlice.actions
+export const { setDetalleServicio, setCliente, clearCliente } = addServiceSlice.actions
 export default addServiceSlice.reducer

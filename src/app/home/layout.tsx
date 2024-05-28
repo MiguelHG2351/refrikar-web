@@ -1,5 +1,6 @@
 import Sidebar from "@/components/drawer-menu/Sidebar"
 import Image from "next/image"
+import { ToastContainer } from "react-toastify";
 
 export default function HomeLayout({
   children, // will be a page or nested layout
@@ -48,6 +49,7 @@ export default function HomeLayout({
           </header>
           {children}
       </section>
+      <ToastContainer />
     </main>
   )
 }

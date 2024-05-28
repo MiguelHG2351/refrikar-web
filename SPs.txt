@@ -1,0 +1,30 @@
+
+use refrikar;
+
+DELIMITER //
+
+CREATE PROCEDURE sp_CountTabla()
+BEGIN
+    -- Declarar variables para almacenar los recuentos
+    DECLARE CountCliente INT;
+    DECLARE CountServicio INT;
+    DECLARE CountDetalleServicio INT;
+
+    -- Contar registros en la tabla cliente
+    SELECT COUNT(*) INTO CountCliente FROM clientes;
+
+    -- Contar registros en la tabla servicio
+    SELECT COUNT(*) INTO CountServicio FROM servicios;
+
+    -- Contar registros en la tabla detalle_servicio
+    SELECT COUNT(*) INTO CountDetalleServicio FROM detalle_servicio;
+
+    -- Devolver los recuentos
+    SELECT 'clientes' AS Tabla, CountCliente AS Total
+    UNION ALL
+    SELECT 'servicios' AS Tabla, CountServicio AS Total
+    UNION ALL
+    SELECT 'detalle_Servicio' AS Tabla, CountDetalleServicio AS Total;
+END //
+
+DELIMITER ;

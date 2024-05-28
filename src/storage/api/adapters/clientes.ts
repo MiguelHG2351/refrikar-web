@@ -1,5 +1,4 @@
-import { Cliente } from "@/dtos"
-import { TipoCliente } from "@/dtos/tipoCliente"
+import { Cliente, TipoCliente } from "@/dtos"
 
 export const clienteAdapter = (responseData: any[]): Cliente[] => {
   const mappedData = responseData.map((data: any) => {
