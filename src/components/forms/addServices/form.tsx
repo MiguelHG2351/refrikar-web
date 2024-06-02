@@ -11,12 +11,13 @@ import {
   TableRow,
   TableCell
 } from "@nextui-org/table";
-import { useGetTipoServiciosQuery } from "@/storage/api/service";
+import {useCreateServiceMutation, useGetTipoServiciosQuery} from "@/storage/api/service";
 import { toast } from "react-toastify";
 
 export default function AddServiceForm() {
   const service = useAppSelector(state => state.addService)
   const { data: tipoServicios, isLoading: isLoadingTipoServicios } = useGetTipoServiciosQuery('')
+  const [onService, { isLoading, isError, error }] = useCreateServiceMutation()
 
   const handlerAddService = () => {
     console.log('add service')
@@ -27,6 +28,19 @@ export default function AddServiceForm() {
       return
     }
     console.log(service)
+    onService(service).unwrap()
+        .then((data) => {
+          console.log('data', data)
+          toast('Servicio creado', {
+            type: 'success'
+          })
+        })
+        .catch((error) => {
+          console.log('error', error)
+          toast('Error al crear el servicio', {
+            type: 'error'
+          })
+        })
     // debe haber al menos un detalle para poder crear la factura
   }
 

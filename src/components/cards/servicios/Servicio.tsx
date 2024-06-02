@@ -16,7 +16,7 @@ export default function Servicio({ data }: {data: any}) {
         <p>Fecha: { DateInputFormat(data.detalle_servicio[0].fecha) }</p>
         <p className="text-xl font-bold">Total: C$ {data.detalle_servicio.reduce((acc: number, curr: any) => acc + (curr.costo - 0), 0)}</p>
       </div>
-      <BtnViewService />
+      <BtnViewService serviceId={data.servicioid} />
     </div>
   )
 }

@@ -4,10 +4,11 @@ import {tipoServicioAdapter} from "@/storage/api/adapters/servicio";
 export const clientesApi = RefrikarApi.injectEndpoints({
   endpoints: (builder) => ({
     createService: builder.mutation({
-      query: () => {
+      query: (data: any) => {
         return {
-          url: '/api/service',
+          url: '/api/services',
           method: 'POST',
+          body: data
         }
       }
     }),

@@ -88,7 +88,7 @@ export default function DetallesForm() {
                     defaultValue={now(getLocalTimeZone())}
                     showMonthAndYearPickers
                     onChange={(date) => {
-                      setValue('fecha', date.toString())
+                      setValue('fecha', date.toDate().toString())
                     }}
                   />
                   <div className="bg-accent-2 px-2 py-4 grid grid-cols-1 md:grid-cols-2 w-full gap-2 rounded-lg">

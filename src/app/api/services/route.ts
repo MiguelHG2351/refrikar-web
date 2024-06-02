@@ -5,13 +5,14 @@ import prisma from "@/config/prisma";
 export const dynamic = 'force-dynamic' // defaults to auto
 
 export async function POST(req: NextRequest) {
+  console.log('here')
   const body  = await req.json()
   let cliente;
   type countList = {
     f1: number
   }
   const countList: countList[] = await prisma.$queryRaw`CALL refrikar.sp_CountTabla()`
-
+  console.log('here')
   if (body.cliente.isNew) {
     cliente = {
       create: {
@@ -31,10 +32,12 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  console.log(body.detalle_servicio)
   let detalleServicio = body.detalle_servicio.map((detalle: Prisma.detalle_servicioCreateManyInput, index: number) => {
     let detalleServicioId = `${countList[2]?.f1 + index + 1}`.padStart(8, 'DSV00004')
     return {
       costo: detalle.costo,
+      // transform string to date with ISO-8601 DateTime
       fecha: detalle.fecha,
       detalleservicioid: detalleServicioId,
       descripcion: detalle.descripcion,
