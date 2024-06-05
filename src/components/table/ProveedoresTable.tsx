@@ -1,5 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
-import React from "react";
 import {
   Table,
   TableHeader,
@@ -18,13 +18,15 @@ import {
   SortDescriptor
 } from "@nextui-org/react";
 import { PlusIcon, VerticalDotsIcon, ChevronDownIcon, SearchIcon } from "@/components/icons/Icons";
+import { useGetProveedoresQuery } from "@/storage/api/proveedores"
+import React from "react";
+import { Proveedores } from "@/dtos";
 import { capitalize } from "@/utils/capitalize";
 
 const INITIAL_VISIBLE_COLUMNS = ["nombre", "apellido", "ruc", "actions"];
 
-
-export default function ClientTable({ clients }: { clients: any }) {
-
+export default function ProveedoresTable() {
+  const { data: proveedorList, isLoading, isError } = useGetProveedoresQuery("")
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]));
   const [visibleColumns, setVisibleColumns] = React.useState<Selection>(new Set(INITIAL_VISIBLE_COLUMNS));
@@ -35,19 +37,18 @@ export default function ClientTable({ clients }: { clients: any }) {
     direction: "ascending",
   });
   
-  const users = clients
-  type User = typeof users[0];
   const columns = [
     {name: "Nombre", uid: "nombre", sortable: true},
     {name: "apellido", uid: "apellido", sortable: true},
-    {name: "Entidad", uid: "entidad"},
+    {name: "Telefono", uid: "telefono"},
     {name: "RUC", uid: "ruc"},
     {name: "ACTIONS", uid: "actions"},
   ];
 
   const [page, setPage] = React.useState(1);
-
+  console.log(page)
   const hasSearchFilter = Boolean(filterValue);
+  console.log(!isLoading ? proveedorList : [])
 
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === "all") return columns;
@@ -56,7 +57,8 @@ export default function ClientTable({ clients }: { clients: any }) {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredUsers = [...users];
+    let _proveedorList = proveedorList || [];
+    let filteredUsers = [..._proveedorList];
 
     if (hasSearchFilter) {
       filteredUsers = filteredUsers.filter((user) => {
@@ -64,15 +66,16 @@ export default function ClientTable({ clients }: { clients: any }) {
       });
     }
 
-    if (statusFilter !== "all") {
-      filteredUsers = filteredUsers.filter((user) =>
-        Array.from(statusFilter).includes(user.status),
-      );
-    }
+    // if (statusFilter !== "all") {
+    //   filteredUsers = filteredUsers.filter((user) =>
+    //     Array.from(statusFilter).includes(user.),
+    //   );
+    // }
     return filteredUsers;
-  }, [users, filterValue, statusFilter]);
+  }, [proveedorList, filterValue, statusFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
+  console.log(pages)
 
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
@@ -82,9 +85,9 @@ export default function ClientTable({ clients }: { clients: any }) {
   }, [page, filteredItems, rowsPerPage]);
 
   const sortedItems = React.useMemo(() => {
-    const data = [...items].sort((a: User, b: User) => {
-      const first = a[sortDescriptor.column as keyof User] as number;
-      const second = b[sortDescriptor.column as keyof User] as number;
+    const data = [...items].sort((a: Proveedores, b: Proveedores) => {
+      const first = a[sortDescriptor.column as keyof Proveedores] as number;
+      const second = b[sortDescriptor.column as keyof Proveedores] as number;
       const cmp = first < second ? -1 : first > second ? 1 : 0;
 
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
@@ -93,8 +96,8 @@ export default function ClientTable({ clients }: { clients: any }) {
     return data
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((user: User, columnKey: React.Key) => {
-    const cellValue = user[columnKey as keyof User];
+  const renderCell = React.useCallback((user: Proveedores, columnKey: React.Key) => {
+    const cellValue = user[columnKey as keyof Proveedores];
 
     switch (columnKey) {
       case "nombre":
@@ -109,7 +112,7 @@ export default function ClientTable({ clients }: { clients: any }) {
             <p className="text-bold text-small capitalize">{cellValue}</p>
           </div>
         );
-      case "entidad":
+      case "telefono":
         return (
           <div className="flex">
             <p className="text-bold text-small capitalize">{cellValue}</p>
@@ -215,7 +218,7 @@ export default function ClientTable({ clients }: { clients: any }) {
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">Total {users.length} clientes</span>
+          <span className="text-default-400 text-small">Total {proveedorList?.length} clientes</span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
             <select
@@ -236,7 +239,7 @@ export default function ClientTable({ clients }: { clients: any }) {
     visibleColumns,
     onSearchChange,
     onRowsPerPageChange,
-    users.length,
+    proveedorList?.length || 0,
     hasSearchFilter,
   ]);
 
@@ -297,10 +300,10 @@ export default function ClientTable({ clients }: { clients: any }) {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={"No users found"} items={sortedItems}>
-        {(item) => {
+      <TableBody emptyContent={"No users found"} items={sortedItems}> 
+        {(item: Proveedores) => {
           return (
-            <TableRow key={item.clienteid}>
+            <TableRow key={item.proveedorid}>
               {(columnKey) => {
                 return (<TableCell>{renderCell(item, columnKey)}</TableCell>)
               }}

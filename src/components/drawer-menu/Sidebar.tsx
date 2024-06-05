@@ -52,7 +52,7 @@ export default function Sidebar() {
             </Menu>
             <Menu title="Inventario">
               <MenuItem icon={DashBoardIcon} iconSize={{width: 20, height: 20}} text="Productos"/>
-              <MenuItem icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Proveedores"/>
+              <MenuItem state={(navigation === '/home/proveedores') ? "active" : 'inactive'} path="/home/proveedores" icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Proveedores"/>
               <MenuItem icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Facturas"/>
             </Menu>
             <Menu title="Otros">
