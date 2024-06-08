@@ -45,13 +45,13 @@ export default function Sidebar() {
           </div>
           <section>
             <Menu title="Menu principal">
-              <MenuItem icon={HomeIcon} iconSize={{width: 24, height: 24}} text="Presentación" path="/home/presentation"/>
+              <MenuItem state={(navigation === '/home/presentation') ? "active" : 'inactive'} icon={HomeIcon} iconSize={{width: 24, height: 24}} text="Presentación" path="/home/presentation"/>
               <MenuItem state={navigation === '/home/dashboard' ? "active" : 'inactive'} path="/home/dashboard" text="Dashboard" icon={DashBoardIcon} iconSize={{width: 20, height: 20}}/>
               {/* <MenuItem state={navigation === '/home/dashboard' ? "active" : 'inactive'} icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Cliente"/> */}
               <MenuItem state={(navigation === '/home/servicios' || navigation === '/home/servicios/add') ? "active" : 'inactive'} icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Servicios" path="/home/servicios" />
             </Menu>
             <Menu title="Inventario">
-              <MenuItem icon={DashBoardIcon} iconSize={{width: 20, height: 20}} text="Productos"/>
+              <MenuItem state={(navigation === '/home/productos') ? "active" : 'inactive'} path="/home/productos" icon={DashBoardIcon} iconSize={{width: 20, height: 20}} text="Productos"/>
               <MenuItem state={(navigation === '/home/proveedores') ? "active" : 'inactive'} path="/home/proveedores" icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Proveedores"/>
               <MenuItem icon={ClientIcon} iconSize={{width: 20, height: 20}} path="/home/empleados" text="Empleados"/>
             </Menu>
