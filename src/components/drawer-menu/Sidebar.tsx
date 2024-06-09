@@ -49,11 +49,12 @@ export default function Sidebar() {
               <MenuItem state={navigation === '/home/dashboard' ? "active" : 'inactive'} path="/home/dashboard" text="Dashboard" icon={DashBoardIcon} iconSize={{width: 20, height: 20}}/>
               {/* <MenuItem state={navigation === '/home/dashboard' ? "active" : 'inactive'} icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Cliente"/> */}
               <MenuItem state={(navigation === '/home/servicios' || navigation === '/home/servicios/add') ? "active" : 'inactive'} icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Servicios" path="/home/servicios" />
+              <MenuItem state={(navigation === '/home/clientes') ? "active" : 'inactive'} path="/home/clientes" icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Clientes"/>
             </Menu>
             <Menu title="Inventario">
               <MenuItem state={(navigation === '/home/productos') ? "active" : 'inactive'} path="/home/productos" icon={DashBoardIcon} iconSize={{width: 20, height: 20}} text="Productos"/>
               <MenuItem state={(navigation === '/home/proveedores') ? "active" : 'inactive'} path="/home/proveedores" icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Proveedores"/>
-              <MenuItem icon={ClientIcon} iconSize={{width: 20, height: 20}} path="/home/empleados" text="Empleados"/>
+              <MenuItem state={(navigation === '/home/empleados') ? "active" : 'inactive'} icon={ClientIcon} iconSize={{width: 20, height: 20}} path="/home/empleados" text="Empleados"/>
             </Menu>
             <Menu title="Otros">
               <MenuItem icon={BillIcon} iconSize={{width: 20, height: 20}} text="Financia"/>

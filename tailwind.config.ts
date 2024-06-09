@@ -34,6 +34,9 @@ const config: Config = {
       boxShadow: {
         "card-primary": "0px 0px 12.2px 1px rgba(0, 0, 0, 0.25)",
         "card-secondary": "0px 0px 4px 0px rgba(0, 0, 0, 0.25)",
+      },
+      screens: {
+        '1xl': '1440px',
       }
     },
   },
