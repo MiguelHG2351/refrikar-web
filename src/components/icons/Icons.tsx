@@ -275,3 +275,21 @@ export const EditIcon: React.FunctionComponent<IconProps> = ({ className = 'fill
   )
 }
 
+export const OpenIcon: React.FunctionComponent<IconProps> = ({ className = 'fill-black', width, height }: IconProps) => {
+  return (
+      <svg
+          aria-hidden="true"
+          fill="none"
+          focusable="false"
+          height={height}
+          role="presentation"
+          viewBox="0 0 26 26"
+          width={width}
+      >
+        <path
+            className={className}
+            d="M7.719 5.688c-1.122 0-2.032.91-2.032 2.03v10.563c0 1.122.91 2.032 2.032 2.032H18.28c1.122 0 2.032-.91 2.032-2.032v-2.437a1.218 1.218 0 112.437 0v2.437a4.469 4.469 0 01-4.469 4.469H7.72a4.469 4.469 0 01-4.469-4.469V7.72A4.469 4.469 0 017.719 3.25h2.437a1.219 1.219 0 110 2.438H7.72zM13 4.468a1.219 1.219 0 011.219-1.218h7.312a1.219 1.219 0 011.219 1.219v7.312a1.218 1.218 0 11-2.438 0v-4.37l-5.232 5.233a1.218 1.218 0 11-1.723-1.724l5.233-5.232h-4.371A1.219 1.219 0 0113 4.468z"
+        ></path>
+      </svg>
+  )
+}

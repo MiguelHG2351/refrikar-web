@@ -11,11 +11,18 @@ export interface Cliente {
   entidad: string;
 }
 
-export interface ClienteRequest {
+export interface ClienteCreateRequest {
   ruc?: string;
   nombre?: string;
   apellido?: string;
   telefono?: number;
   entidad?: string;
   tipoclienteid?: string;
+}
+
+export interface ClienteUpdateRequest {
+  clienteid: string;
+  nombre?: string;
+  apellido?: string;
+  entidad?: string;
 }

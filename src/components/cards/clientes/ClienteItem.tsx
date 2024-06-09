@@ -1,10 +1,12 @@
 import {ClienteService} from "@/services/Clientes";
 import {User} from "@nextui-org/user";
-import {Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure} from "@nextui-org/react";
+import { Cliente } from "@/dtos"
+import {Button, Link } from "@nextui-org/react";
 import {Card, CardBody, CardFooter, CardHeader} from "@nextui-org/card";
 import {EditClienteModal} from "@/components/modals/Cliente/EditClienteModal";
+import {OpenIcon} from "@/components/icons/Icons";
 
-export default function ClienteItem({ cliente }: { cliente: ClienteService[0] }) {
+export default function ClienteItem({ cliente }: { cliente: Cliente }) {
 
   return (
     <Card>
@@ -17,14 +19,15 @@ export default function ClienteItem({ cliente }: { cliente: ClienteService[0] })
               description: "text-sm text-gray-500 dark:text-gray-400"
             }}
         />
-        <div className="text-sm text-gray-500 dark:text-gray-400">{cliente.entidad || "Sin entidad"}</div>
+        <p className="text-sm text-gray-500 dark:text-gray-400">{cliente.entidad || "Sin entidad"}</p>
+        <p className="text-sm text-gray-500 dark:text-gray-400 max-w-full text-ellipsis" title={cliente.ruc as string}>{cliente.ruc}</p>
       </CardHeader>
       <CardBody>
         <div className="flex gap-2">
-          <Button variant="bordered" size="sm">
-            Servcios
+          <Button as={Link} href={`/home/servicios?cliente_id=${cliente.clienteid}`} target="_blank" size="sm" className="text-black" endContent={<OpenIcon width={18} height={18} className="fill-gray-400" />}>
+          Servicios
           </Button>
-          <EditClienteModal />
+          <EditClienteModal cliente={cliente} />
           {/*<Button variant="bordered" size="sm" color="danger">*/}
           {/*  Borrar*/}
           {/*</Button>*/}

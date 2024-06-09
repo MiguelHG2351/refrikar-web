@@ -12,5 +12,5 @@ export const RefrikarApi = createApi({
     // },
   }),
   endpoints: (build) => ({}),
-  tagTypes: [],
+  tagTypes: ['Cliente'],
 })

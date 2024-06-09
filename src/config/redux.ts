@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import menuReducer from "@/storage/menuSlice";
 import serviceSlice from "@/storage/serviceSlice";
+import clienteSlice from "@/storage/clienteSlice";
 import { RefrikarApi } from "@/storage/api/refrikarApi";
 
 export const makeStore = () => {
@@ -8,6 +9,7 @@ export const makeStore = () => {
     reducer: {
       menu: menuReducer,
       addService: serviceSlice,
+      clientes: clienteSlice,
       [RefrikarApi.reducerPath]: RefrikarApi.reducer
     },
     middleware: (getDefaultMiddleware) => 

@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import prisma from "@/config/prisma";
-import { ClienteRequest } from '@/dtos/Cliente';
+import { ClienteCreateRequest } from '@/dtos/Cliente';
 
 
 export async function GET() {
@@ -14,9 +14,9 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const body: ClienteRequest  = await req.json()
+  const body: ClienteCreateRequest  = await req.json()
 
-  const clienteObj: ClienteRequest = {
+  const clienteObj: ClienteCreateRequest = {
     ruc: body.ruc,
     nombre: body.nombre,
     apellido: body.apellido,
@@ -44,4 +44,27 @@ export async function POST(req: NextRequest) {
   })
 
   return NextResponse.json(client)
+}
+
+export async function PUT(req: NextRequest) {
+  const body = await req.json()
+  const availableFields = ['nombre', 'apellido', 'entidad', 'clienteid']
+
+  console.log()
+  if (Object.keys(body).some(key => !availableFields.includes(key))) {
+    return NextResponse.json({
+      error: 'Invalid fields'
+    }, {
+      status: 400
+    })
+  }
+
+  const cliente = await prisma.clientes.update({
+    where: {
+      clienteid: body.clienteid
+    },
+    data: body
+  });
+
+  return NextResponse.json(cliente)
 }

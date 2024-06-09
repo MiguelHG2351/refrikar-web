@@ -1,7 +1,7 @@
 import { RefrikarApi } from "./refrikarApi";
 import {tipoServicioAdapter} from "@/storage/api/adapters/servicio";
 
-export const clientesApi = RefrikarApi.injectEndpoints({
+export const servicioApi = RefrikarApi.injectEndpoints({
   endpoints: (builder) => ({
     createService: builder.mutation({
       query: (data: any) => {
@@ -26,4 +26,4 @@ export const clientesApi = RefrikarApi.injectEndpoints({
   })
 })
 
-export const { useCreateServiceMutation, useGetTipoServiciosQuery } = clientesApi
+export const { useCreateServiceMutation, useGetTipoServiciosQuery } = servicioApi

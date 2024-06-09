@@ -1,4 +1,4 @@
-import { ClienteRequest } from "@/dtos/Cliente";
+import {ClienteCreateRequest, ClienteUpdateRequest} from "@/dtos/Cliente";
 import { clienteAdapter, tipoClienteAdapter } from "./adapters/clientes";
 import { RefrikarApi } from "./refrikarApi";
 
@@ -14,6 +14,7 @@ export const clientesApi = RefrikarApi.injectEndpoints({
       transformResponse(data: any) {
         return clienteAdapter(data)
       },
+      providesTags: ['Cliente']
     }),
     getAllTipoClients: builder.query({
       query: () => {
@@ -24,18 +25,33 @@ export const clientesApi = RefrikarApi.injectEndpoints({
       },
       transformResponse: (response: any) => {
         return tipoClienteAdapter(response)
-      }
+      },
+      providesTags: ['Cliente']
     }),
     addClient: builder.mutation({
-      query: (client: ClienteRequest) => {
+      query: (client: ClienteCreateRequest) => {
         return {
           url: '/api/clients',
           method: 'POST',
           body: client
         }
       }
+    }),
+    editClient: builder.mutation({
+      query: (client: ClienteUpdateRequest) => {
+        return {
+          url: '/api/clients',
+          method: 'PUT',
+          body: client
+        }
+      },
+      invalidatesTags: ['Cliente']
     })
   })
 })
 
-export const { useGetAllClientsQuery, useGetAllTipoClientsQuery, useAddClientMutation } = clientesApi
+export const {
+  useGetAllClientsQuery,
+  useGetAllTipoClientsQuery,
+  useEditClientMutation, useAddClientMutation
+} = clientesApi

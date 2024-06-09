@@ -1,47 +1,91 @@
 'use client'
 
-import {Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure} from "@nextui-org/react";
+import {
+  Button,
+  Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  useDisclosure
+} from "@nextui-org/react";
+import {useEditClientMutation, useGetAllTipoClientsQuery} from "@/storage/api/clientes";
+import {useForm} from "react-hook-form";
+import {ClienteService} from "@/services/Clientes";
+import * as yup from "yup";
+import {yupResolver} from "@hookform/resolvers/yup";
+import {useEffect} from "react";
+import {toast} from "react-toastify";
+import {Cliente} from "@/dtos";
 
-export function EditClienteModal() {
+const schema = yup.object().shape({
+  nombre: yup.string().required(),
+  apellido: yup.string(),
+  entidad: yup.string()
+})
+
+export function EditClienteModal({ cliente }: { cliente: Cliente }) {
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      nombre: cliente.nombre as string,
+      entidad: cliente.entidad as string,
+      apellido: cliente.apellido as string
+    }
+  })
+  const [ onEditClient ] = useEditClientMutation()
+
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
+  const { data, error } = useGetAllTipoClientsQuery("")
+
+  const onSubmitEdit = handleSubmit((data) => {
+    console.log(data)
+    onEditClient({
+      clienteid: cliente.clienteid,
+      entidad: data.entidad,
+      nombre: data.nombre,
+      apellido: data.apellido
+    }).unwrap()
+        .then((data) => {
+          console.log('data', data)
+          toast('Cliente editado', {
+            type: 'success'
+          })
+          onOpenChange()
+        })
+        .catch(error => {
+          toast('Error al editar el cliente', {
+            type: 'error'
+          })
+        })
+  })
 
   return (
       <>
-        <Button variant="bordered" size="sm">
+        <Button variant="bordered" size="sm" onPress={() => onOpen()}>
           Editar
         </Button>
         <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
           <ModalContent>
             {(onClose) => (
                 <>
-                  <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
+                  <ModalHeader className="flex flex-col gap-1">Editar a: {cliente.nombre}</ModalHeader>
                   <ModalBody>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Nullam pulvinar risus non risus hendrerit venenatis.
-                      Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                    </p>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Nullam pulvinar risus non risus hendrerit venenatis.
-                      Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                    </p>
-                    <p>
-                      Magna exercitation reprehenderit magna aute tempor cupidatat consequat elit
-                      dolor adipisicing. Mollit dolor eiusmod sunt ex incididunt cillum quis.
-                      Velit duis sit officia eiusmod Lorem aliqua enim laboris do dolor eiusmod.
-                      Et mollit incididunt nisi consectetur esse laborum eiusmod pariatur
-                      proident Lorem eiusmod et. Culpa deserunt nostrud ad veniam.
-                    </p>
+                    <form className="flex flex-col gap-y-4" onSubmit={onSubmitEdit}>
+                      <Input type="text" label="Nombre" labelPlacement="outside" variant="flat" {...register('nombre')} />
+                      <Input type="text" label="Apellido" labelPlacement="outside" variant="flat" {...register('apellido')} />
+                      <Input type="text" label="Entidad" labelPlacement="outside" variant="flat" {...register('entidad')} />
+                      <div className="flex flex-row gap-2 py-4 justify-end">
+                        <Button color="danger" variant="light" onPress={onClose}>
+                          Cancelar
+                        </Button>
+                        <Button type="submit" color="primary">
+                          Guardar
+                        </Button>
+                      </div>
+                    </form>
                   </ModalBody>
-                  <ModalFooter>
-                    <Button color="danger" variant="light" onPress={onClose}>
-                      Close
-                    </Button>
-                    <Button color="primary" onPress={onClose}>
-                      Action
-                    </Button>
-                  </ModalFooter>
                 </>
             )}
           </ModalContent>
