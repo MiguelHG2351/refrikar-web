@@ -1,18 +1,20 @@
 import {
+  Autocomplete,
   Button,
   Input,
   Modal,
   ModalBody,
   ModalContent,
   ModalFooter,
-  ModalHeader,
+  ModalHeader, Tab, Tabs,
   useDisclosure
 } from "@nextui-org/react";
 import {useForm} from "react-hook-form";
 
 export default function AddProductoModal({ categoria }: { categoria: string | null }) {
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
-  const { register, handleSubmit, formState: { errors } } = useForm()
+  const { register, setValue,  handleSubmit, formState: { errors } } = useForm()
+
 
   return (
       <>
@@ -30,6 +32,24 @@ export default function AddProductoModal({ categoria }: { categoria: string | nu
                       <Input label="Nombre" type="text" labelPlacement="outside" variant="flat"
                              placeholder="Filtro de evaporador split..." {...register('nombre')} />
                       <Input label="Stock" type="number" labelPlacement="outside" variant="flat" placeholder="120" />
+                      <Tabs>
+                        <Tab key="selects" title="Seleccionar suministro">
+                          <section>
+                            <Autocomplete
+                                label="Cliente"
+                                labelPlacement="outside"
+                                variant="flat"
+                                onSelectionChange={(key) => setValue('client_id', key?.toString() || '')}
+                                placeholder="Seleccione un cliente"
+                            >
+
+                            </Autocomplete>
+                          </section>
+                        </Tab>
+                        <Tab key="create" title="Crear un suministro">
+                          <section>assasad</section>
+                        </Tab>
+                      </Tabs>
                     </form>
                   </ModalBody>
                   <ModalFooter>

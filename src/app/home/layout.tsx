@@ -11,7 +11,7 @@ export default function HomeLayout({
     <main className="md:h-screen md:overflow-hidden md:grid md:grid-cols-[auto_1fr]">
       <Sidebar />
       <section className="bg-accent-1 overflow-y-auto">
-      <header className="sticky top-0 bg-white flex justify-between items-center py-2 px-4 border-b">
+      <header className="sticky top-0 bg-white flex justify-between items-center py-2 px-4 border-b z-50">
             <div className="flex items-center gap-x-2">
               <button className="md:hidden">
                 <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 36 36" fill="none">
