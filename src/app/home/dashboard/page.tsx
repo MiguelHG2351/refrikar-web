@@ -48,7 +48,7 @@ export default async function Dashboard() {
       <section className="flex flex-col md:flex-row gap-x-6 gap-y-4 mt-4">
         <article className="bg-white shadow-card-primary flex-[100%] md:flex-1 p-3 rounded-lg flex flex-col gap-y-2">
           <h2 className="text-gray-primary font-bold">Pérdidas</h2>
-          <span className="text-3xl font-bold">C$ 2,000</span>
+          <span className="text-3xl font-bold">C$ 1,100</span>
           <div className="flex items-center gap-x-2">
             <div className="bg-red-primary/50 flex items-center rounded-md gap-x-1 px-1">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -61,7 +61,7 @@ export default async function Dashboard() {
         </article>
         <article className="bg-white shadow-card-primary flex-[100%] md:flex-1 p-3 rounded-lg flex flex-col gap-y-2">
           <h2 className="text-gray-primary font-bold">Ganancia del mes</h2>
-          <span className="text-3xl font-bold">C$ 2,000</span>
+          <span className="text-3xl font-bold">C$ 11,000</span>
           <div className="flex items-center gap-x-2">
             <div className="bg-green-primary/50 flex items-center rounded-md gap-x-1 px-1">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -74,7 +74,7 @@ export default async function Dashboard() {
         </article>
         <article className="bg-white shadow-card-primary flex-[100%] md:flex-1 p-3 rounded-lg flex flex-col gap-y-2">
           <h2 className="text-gray-primary font-bold">Ingresos del mes</h2>
-          <span className="text-3xl font-bold">C$ 2,000</span>
+          <span className="text-3xl font-bold">C$ 24,000</span>
           <div className="flex items-center gap-x-2">
             <div className="bg-red-primary/50 flex items-center rounded-md gap-x-1 px-1">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -94,7 +94,7 @@ export default async function Dashboard() {
             <div className="flex justify-between border rounded-lg px-2 flex-wrap py-4">
               <div>
                 <h4 className="font-bold">Egresos de inventario</h4>
-                <p className="font-bold text-2xl my-4">C$ 12,000</p>
+                <p className="font-bold text-2xl my-4">C$ 8,010</p>
                 <p className="font-medium">3 productos sin stock</p>
               </div>
               <div className="flex flex-col items-end gap-4">

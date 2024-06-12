@@ -1,11 +1,16 @@
-import { Input, Link } from '@nextui-org/react'
+import { Input } from '@nextui-org/react'
+import { Link } from '@nextui-org/link'
 import prisma from "@/config/prisma";
 import Servicio from "@/components/cards/servicios/Servicio";
 
 async function getServicios() {
   const data = await prisma.servicios.findMany({
     include: {
-      clientes: true,
+      clientes: {
+        include: {
+          tipo_cliente: true
+        }
+      },
       detalle_servicio: true
     }
   })
