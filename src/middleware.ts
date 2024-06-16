@@ -8,11 +8,6 @@ export default authMiddleware({
     "/sign-in",
     "/sign-up",
     "/home/dashboard",
-    "/home/servicios",
-    "/home/empleados",
-    "/api/services/count",
-    "/api/clients",
-    "/api/tipo-cliente",
   ],
 });
 

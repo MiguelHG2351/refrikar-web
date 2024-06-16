@@ -3,6 +3,7 @@
 import * as React from "react";
 import { useSignIn } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
  
 export default function SignInForm() {
   const { isLoaded, signIn, setActive } = useSignIn();
@@ -34,7 +35,7 @@ export default function SignInForm() {
         // If complete, user exists and provided password match -- set session active
         await setActive({ session: completeSignIn.createdSessionId });
         // Redirect the user to a post sign-in route
-        router.push('/');
+        router.push('/home/dashboard');
       }
     } catch (err: any) {
       // This can return an array of errors.
@@ -45,18 +46,40 @@ export default function SignInForm() {
  
   // Display a form to capture the user's email and password
   return (
-    <div>
-      <form onSubmit={(e) => handleSubmit(e)}>
-        <h1 className="text-center">Refrikar Inc.</h1>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input className="text-black" onChange={(e) => setEmail(e.target.value)} id="email" name="email" type="email" value={email} />
+    <div className="flex justify-center items-center h-screen">
+      <form className="shadow-card-secondary max-w-96 w-full px-4 py-2 rounded-xl" onSubmit={(e) => handleSubmit(e)}>
+        <Image
+            className="max-w-full mx-auto"
+            src="/images/pingu-login.png"
+            alt="Logo del login"
+            width={125}
+            height={125} />
+        <h1 className="text-center font-bold text-2xl mb-4">Iniciar sesión</h1>
+        <p>Sistema de control de inventario y registro de servicios o algo así</p>
+        <div className="py-6 flex flex-col gap-y-2">
+          <div>
+            <input
+                className="text-black border border-gray-400 w-full p-2 rounded-xl"
+                placeholder="admin@gmail.com"
+                onChange={(e) => setEmail(e.target.value)}
+                id="email"
+                name="email"
+                type="email"
+                value={email}
+            />
+          </div>
+          <div>
+            <input
+                className="text-black border border-gray-400 w-full p-2 rounded-xl"
+                placeholder="**********"
+                onChange={(e) => setPassword(e.target.value)}
+                id="password"
+                name="password"
+                type="password"
+                value={password} />
+          </div>
+          <button type="submit" className="bg-primary w-full text-white rounded-md py-2 hover:bg-primary/30">Sign In</button>
         </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <input className="text-black" onChange={(e) => setPassword(e.target.value)} id="password" name="password" type="password" value={password} />
-        </div>
-        <button type="submit">Sign In</button>
       </form>
     </div>
   );
