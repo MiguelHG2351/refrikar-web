@@ -33,8 +33,6 @@ function getVisibleColumns(columns: any) {
 
 export default function EmpleadosTable({ empleados }: { empleados: any }) {
 
-  const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
-  const [visibleColumns, setVisibleColumns] = useState<Selection>(new Set(getVisibleColumns(getColumns(empleados))));
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
     column: "nombre",
     direction: "ascending",
@@ -91,10 +89,9 @@ export default function EmpleadosTable({ empleados }: { empleados: any }) {
 
   const headerColumns = useMemo(() => {
     const columns = getColumns(empleados);
-    if (visibleColumns === "all") return columns;
+    return columns;
     
-    return columns.filter((column) => Array.from(visibleColumns).includes(column.uid));
-  }, [visibleColumns]);
+  }, [empleados]);
 
   const renderCell = useCallback((user: Empleado, columnKey: React.Key) => {
 
@@ -161,7 +158,7 @@ export default function EmpleadosTable({ empleados }: { empleados: any }) {
             placeholder="Search by name..."
             startContent={<SearchIcon className="fill-current" width={26} height={26} />}
             value={filterValue}
-            onClear={() => onClear()}
+            // onClear={() => onClear()}
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
@@ -175,9 +172,7 @@ export default function EmpleadosTable({ empleados }: { empleados: any }) {
                 disallowEmptySelection
                 aria-label="Table Columns"
                 closeOnSelect={false}
-                selectedKeys={visibleColumns}
                 selectionMode="multiple"
-                onSelectionChange={setVisibleColumns}
               >
                 {getColumns(empleados).map((column) => (
                   <DropdownItem key={column.uid} className="capitalize">
@@ -209,7 +204,6 @@ export default function EmpleadosTable({ empleados }: { empleados: any }) {
     );
   }, [
     filterValue,
-    visibleColumns,
     onSearchChange,
     onRowsPerPageChange,
     empleados.length,

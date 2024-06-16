@@ -35,15 +35,15 @@ export default function AddProductoModal({ categoria }: { categoria: string | nu
                       <Tabs>
                         <Tab key="selects" title="Seleccionar suministro">
                           <section>
-                            <Autocomplete
-                                label="Cliente"
-                                labelPlacement="outside"
-                                variant="flat"
-                                onSelectionChange={(key) => setValue('client_id', key?.toString() || '')}
-                                placeholder="Seleccione un cliente"
-                            >
+                            {/*<Autocomplete*/}
+                            {/*    label="Cliente"*/}
+                            {/*    labelPlacement="outside"*/}
+                            {/*    variant="flat"*/}
+                            {/*    onSelectionChange={(key) => setValue('client_id', key?.toString() || '')}*/}
+                            {/*    placeholder="Seleccione un cliente"*/}
+                            {/*>*/}
 
-                            </Autocomplete>
+                            {/*</Autocomplete>*/}
                           </section>
                         </Tab>
                         <Tab key="create" title="Crear un suministro">

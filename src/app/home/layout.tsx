@@ -1,3 +1,5 @@
+'use client'
+
 import Sidebar from "@/components/drawer-menu/Sidebar"
 import Image from "next/image"
 import { ToastContainer } from "react-toastify";
