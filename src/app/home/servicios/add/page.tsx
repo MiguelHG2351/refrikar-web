@@ -1,5 +1,5 @@
 import React from 'react'
-import AddServiceForm from '@/components/forms/addServices/Form'
+import AddServiceForm from '@/components/forms/addServices/MainForm'
 
 export const metadata = {
   title: 'Agregar servicio',
