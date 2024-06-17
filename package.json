@@ -47,6 +47,7 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.19",
+    "encoding": "^0.1.13",
     "eslint": "^8.57.0",
     "eslint-config-next": "14.0.4",
     "eslint-plugin-storybook": "^0.8.0",
