@@ -1,7 +1,5 @@
-import Sidebar from '@/components/drawer-menu/Sidebar'
-import AddServiceForm from '@/components/forms/addServices/Form'
-import Image from 'next/image'
 import React from 'react'
+import AddServiceForm from '@/components/forms/addServices/Form'
 
 export const metadata = {
   title: 'Agregar servicio',
