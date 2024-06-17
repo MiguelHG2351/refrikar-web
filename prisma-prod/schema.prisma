@@ -1,0 +1,233 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./prod.db"
+}
+
+model inventario {
+  inventarioid Int        @id
+  productoid   String?
+  stock        String?
+  productos    productos? @relation(fields: [productoid], references: [productoid], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([productoid])
+}
+
+model recursos {
+  recursoid         String            @id
+  productoid        String?
+  detalleservicioid String?
+  costo             Decimal?
+  cantidad_producto Int?
+  empleadoid        String?
+  productos         productos?        @relation(fields: [productoid], references: [productoid], onDelete: NoAction, onUpdate: NoAction)
+  detalle_servicio  detalle_servicio? @relation(fields: [detalleservicioid], references: [detalleservicioid], onDelete: NoAction, onUpdate: NoAction)
+  empleados         empleados?        @relation(fields: [empleadoid], references: [empleadoid], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([detalleservicioid])
+  @@index([empleadoid])
+  @@index([productoid])
+}
+
+model suministro {
+  suministroid       String               @id
+  proveedorid        String?
+  egresoid           String?
+  detalle_suministro detalle_suministro[]
+  proveedores        proveedores?         @relation(fields: [proveedorid], references: [proveedorid], onDelete: NoAction, onUpdate: NoAction)
+  egresos            egresos?             @relation(fields: [egresoid], references: [egresoid], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([egresoid])
+  @@index([proveedorid], map: "proveedorid")
+}
+
+model cargo_empleado {
+  cargoid   String      @id
+  nombre    String?
+  empleados empleados[]
+}
+
+model categoria_producto {
+  categoriaid String      @id
+  descripcion String?
+  productos   productos[]
+}
+
+model clientes {
+  clienteid     String        @id
+  tipoclienteid String?
+  nombre        String?
+  apellido      String?
+  telefono      Int?
+  entidad       String?
+  ruc           String?       @unique()
+  tipo_cliente  tipo_cliente? @relation(fields: [tipoclienteid], references: [tipoclienteid], onDelete: NoAction, onUpdate: NoAction)
+  servicios     servicios[]
+
+  @@index([tipoclienteid])
+}
+
+model detalle_servicio {
+  detalleservicioid String         @id
+  tiposervicioid    String?
+  equipoid          String?
+  servicioid        String?
+  descripcion       String?
+  costo             Decimal?
+  fecha             DateTime?
+  direccion         String?
+  tipo_servicio     tipo_servicio? @relation(fields: [tiposervicioid], references: [tiposervicioid], onDelete: NoAction, onUpdate: NoAction)
+  equipo            equipo?        @relation(fields: [equipoid], references: [equipoid], onDelete: NoAction, onUpdate: NoAction)
+  servicios         servicios?     @relation(fields: [servicioid], references: [servicioid], onDelete: NoAction, onUpdate: NoAction)
+  personal          personal[]
+  recursos          recursos[]
+
+  @@index([equipoid])
+  @@index([servicioid])
+  @@index([tiposervicioid])
+}
+
+model detalle_suministro {
+  detallesuministroid String      @id
+  suministroid        String?
+  productoid          String?
+  costo               Decimal?
+  cantidad            Int?
+  suministro          suministro? @relation(fields: [suministroid], references: [suministroid], onDelete: NoAction, onUpdate: NoAction)
+  productos           productos?  @relation(fields: [productoid], references: [productoid], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([productoid])
+  @@index([suministroid])
+}
+
+model egresos {
+  egresoid      String          @id
+  monto         Decimal?
+  fecha         DateTime?
+  gastos_varios gastos_varios[]
+  pago_empleado pago_empleado[]
+  pago_impuesto pago_impuesto[]
+  suministro    suministro[]
+}
+
+model empleados {
+  empleadoid     String          @id
+  cargoid        String?
+  nombre         String?
+  apellido       String?
+  telefono       Int?
+  cedula         String?         @unique(map: "cedula")
+  cargo_empleado cargo_empleado? @relation(fields: [cargoid], references: [cargoid], onDelete: NoAction, onUpdate: NoAction)
+  pago_empleado  pago_empleado[]
+  personal       personal[]
+  recursos       recursos[]
+
+  @@index([cargoid], map: "cargoid")
+}
+
+model equipo {
+  equipoid         String             @id
+  tipoequipoid     String?
+  capacidad        Int?
+  marca            String?
+  numero_serie     String?
+  detalle_servicio detalle_servicio[]
+  tipo_equipo      tipo_equipo?       @relation(fields: [tipoequipoid], references: [tipoequipoid], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([tipoequipoid])
+}
+
+model gastos_varios {
+  gastoid     String   @id
+  egresoid    String?
+  descripcion String?
+  egresos     egresos? @relation(fields: [egresoid], references: [egresoid], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([egresoid])
+}
+
+model pago_empleado {
+  salarioid  String     @id
+  empleadoid String?
+  egresoid   String?
+  concepto   String?
+  empleados  empleados? @relation(fields: [empleadoid], references: [empleadoid], onDelete: NoAction, onUpdate: NoAction)
+  egresos    egresos?   @relation(fields: [egresoid], references: [egresoid], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([egresoid])
+  @@index([empleadoid])
+}
+
+model pago_impuesto {
+  impuestoid     String   @id
+  egresoid       String?
+  nombre_entidad String?
+  egresos        egresos? @relation(fields: [egresoid], references: [egresoid], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([egresoid])
+}
+
+model productos {
+  productoid         String               @id
+  categoriaid        String?
+  nombre             String?
+  detalle_suministro detalle_suministro[]
+  inventario         inventario[]
+  categoria_producto categoria_producto?  @relation(fields: [categoriaid], references: [categoriaid], onDelete: NoAction, onUpdate: NoAction)
+  recursos           recursos[]
+
+  @@index([categoriaid], map: "categoriaid")
+}
+
+model proveedores {
+  proveedorid String       @id
+  nombre      String?
+  apellido    String?
+  telefono    Int?
+  direccion   String?
+  ruc         String?      @unique(map: "ruc")
+  suministro  suministro[]
+}
+
+model servicios {
+  servicioid       String             @id
+  clienteid        String?
+  detalle_servicio detalle_servicio[]
+  clientes         clientes?          @relation(fields: [clienteid], references: [clienteid], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([clienteid], map: "clienteid")
+}
+
+model tipo_cliente {
+  tipoclienteid String     @id
+  tipo_cliente  String?
+  clientes      clientes[]
+}
+
+model tipo_equipo {
+  tipoequipoid String   @id
+  tipo         String?
+  descripcion  String?
+  equipo       equipo[]
+}
+
+model tipo_servicio {
+  tiposervicioid   String             @id
+  tipo             String?
+  descripcion      String?
+  detalle_servicio detalle_servicio[]
+}
+
+model personal {
+  pid               Int               @id
+  detalleservicioid String?
+  empleadoid        String?
+  detalle_servicio  detalle_servicio? @relation(fields: [detalleservicioid], references: [detalleservicioid], onDelete: NoAction, onUpdate: NoAction)
+  empleados         empleados?        @relation(fields: [empleadoid], references: [empleadoid], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([detalleservicioid], map: "detalleservicioid")
+  @@index([empleadoid], map: "empleadoid")
+}
