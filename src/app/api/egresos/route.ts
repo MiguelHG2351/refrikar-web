@@ -14,46 +14,22 @@ export async function GET(req: NextRequest) {
   switch (tipo) {
     case 'pago_impuesto':
       datos = await prisma.pago_impuesto.findMany({
-        orderBy: {
-          egresos: {
-            fecha: {
-              sort: 'desc'
-            }
-          }
-        }, include: { egresos: true }
+        include: { egresos: true }
       });
       break;
     case 'pago_empleado':
       datos = await prisma.pago_empleado.findMany({
-        orderBy: {
-          egresos: {
-            fecha: {
-              sort: 'desc'
-            }
-          }
-        }, include: { egresos: true }
+        include: { egresos: true }
       });
       break;
     case 'suministro':
       datos = await prisma.suministro.findMany({
-        orderBy: {
-          egresos: {
-            fecha: {
-              sort: 'desc'
-            }
-          }
-        }, include: { egresos: true }
+        include: { egresos: true }
       });
       break;
     case 'gastos_varios':
       datos = await prisma.gastos_varios.findMany({
-        orderBy: {
-          egresos: {
-            fecha: {
-              sort: 'desc'
-            }
-          }
-        }, include: { egresos: true }
+        include: { egresos: true }
       });
       break;
     default:
@@ -83,7 +59,7 @@ if(body.monto&&body.fecha){
     data: {
       egresoid: egresoid,
       monto: body.monto,
-      fecha: body.fecha
+      fecha: body.fecha,
     }
   }
   );
@@ -124,6 +100,7 @@ if(body.monto&&body.fecha){
             egresoid: egreso.egresoid,
             salarioid: `${salariocount + 1}`.padStart(7, 'SE00000'),
             empleadoid: body.empleado,
+            concepto: "asdsa"
           }
         });
       break;
