@@ -57,8 +57,8 @@ export default function Sidebar() {
               <MenuItem state={(navigation === '/home/empleados') ? "active" : 'inactive'} icon={ClientIcon} iconSize={{width: 20, height: 20}} path="/home/empleados" text="Empleados"/>
             </Menu>
             <Menu title="Otros">
-              <MenuItem icon={BillIcon} iconSize={{width: 20, height: 20}} text="Egresos*"/>
-              <MenuItem state={(navigation === '/home/empleados') ? "active" : 'inactive'} icon={ClientIcon} iconSize={{width: 20, height: 20}} path="/home/egresos" text="Créditos"/>
+              <MenuItem state={(navigation === '/home/egresos') ? "active" : 'inactive'} icon={BillIcon} iconSize={{width: 20, height: 20}} path="/home/egresos" text="Egresos"/>
+              <MenuItem state={(navigation === '/home/creditos') ? "active" : 'inactive'} icon={ClientIcon} iconSize={{width: 20, height: 20}} path="/home/egresos" text="Créditos"/>
             </Menu>
           </section>
         </section>

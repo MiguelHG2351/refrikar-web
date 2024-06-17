@@ -50,13 +50,12 @@ export default function DetallesForm() {
   })
 
   const onSubmit = handleSubmit((data: FormData) => {
-    console.log('submit', data)
     if (Object.keys(errors).length === 0) {
       dispatch(setDetalleServicio({
         costo: data.costo,
         direccion: data.direccion,
         descripcion: data.descripcion,
-        fecha: DateInputFormat(data.fecha),
+        fecha: data.fecha.toString(),
         tiposervicioid: data.tiposervicioid,
         equipoid: data.equipo
       }))

@@ -54,10 +54,13 @@ const addServiceSlice = createSlice({
     clearCliente: create.reducer((state) => {
       state.cliente = initialState.cliente
     }),
+    clearDetalleServicio: create.reducer((state) => {
+      state.detalle_servicio = initialState.detalle_servicio
+    })
   })
 });
 
 
 // export const { openMenu, closeMenu } = menuSlice.actions
-export const { setDetalleServicio, setCliente, clearCliente } = addServiceSlice.actions
+export const { setDetalleServicio, setCliente, clearCliente, clearDetalleServicio } = addServiceSlice.actions
 export default addServiceSlice.reducer

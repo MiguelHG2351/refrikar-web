@@ -1,7 +1,7 @@
 'use client'
 import {Button, Tooltip} from "@nextui-org/react";
 import CreateAndAddClient from "./CreateAndAddClient";
-import { useAppSelector } from '@/hooks/redux'
+import {useAppDispatch, useAppSelector} from '@/hooks/redux'
 import DetallesForm from "./DetallesForm";
 import {
   Table,
@@ -13,9 +13,11 @@ import {
 } from "@nextui-org/table";
 import {useCreateServiceMutation, useGetTipoServiciosQuery} from "@/storage/api/service";
 import { toast } from "react-toastify";
+import {clearCliente, clearDetalleServicio} from "@/storage/serviceSlice";
 
 export default function AddServiceForm() {
   const service = useAppSelector(state => state.addService)
+  const dispatch = useAppDispatch()
   const { data: tipoServicios, isLoading: isLoadingTipoServicios } = useGetTipoServiciosQuery('')
   const [onService, { isLoading, isError, error }] = useCreateServiceMutation()
 
@@ -34,6 +36,8 @@ export default function AddServiceForm() {
           toast('Servicio creado', {
             type: 'success'
           })
+          dispatch(clearCliente());
+          dispatch(clearDetalleServicio());
         })
         .catch((error) => {
           console.log('error', error)
