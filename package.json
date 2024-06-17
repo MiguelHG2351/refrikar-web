@@ -22,7 +22,7 @@
     "@remixicon/react": "^4.2.0",
     "@tremor/react": "^3.17.2",
     "framer-motion": "^11.2.10",
-    "next": "14.0.4",
+    "next": "14.0.5-canary.60",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.51.5",
