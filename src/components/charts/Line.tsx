@@ -1,86 +1,91 @@
 'use client'
 
 import { LineChart } from '@tremor/react';
+import {SumOfEgresosByDate} from "@/services/Egresos";
 
 const chartdata = [
   {
     date: 'Jan 22',
-    SolarPanels: 2890,
-    'Inverters': 2338,
+    'PagoEmpleado': 2890,
+    'Suministros': 2338,
   },
   {
     date: 'Feb 22',
-    SolarPanels: 2756,
-    'Inverters': 2103,
+    'PagoEmpleado': 2756,
+    'Suministros': 2103,
   },
   {
     date: 'Mar 22',
-    SolarPanels: 3322,
-    'Inverters': 2194,
+    'PagoEmpleado': 3322,
+    'Suministros': 2194,
+  },
+  {
+    date: 'Mar 22',
+    'PagoEmpleado': 3322,
+    'Suministros': 0  ,
   },
   {
     date: 'Apr 22',
-    SolarPanels: 3470,
-    'Inverters': 2108,
+    'PagoEmpleado': 3470,
+    'Suministros': 2108,
   },
   {
     date: 'May 22',
-    SolarPanels: 3475,
-    'Inverters': 1812,
+    'PagoEmpleado': 3475,
+    'Suministros': 1812,
   },
   {
     date: 'Jun 22',
-    SolarPanels: 3129,
-    'Inverters': 1726,
+    'PagoEmpleado': 3129,
+    'Suministros': 1726,
   },
   {
     date: 'Jul 22',
-    SolarPanels: 3490,
-    'Inverters': 1982,
+    'PagoEmpleado': 3490,
+    'Suministros': 1982,
   },
   {
     date: 'Aug 22',
-    SolarPanels: 2903,
-    'Inverters': 2012,
+    'PagoEmpleado': 2903,
+    'Suministros': 2012,
   },
   {
     date: 'Sep 22',
-    SolarPanels: 2643,
-    'Inverters': 2342,
+    'PagoEmpleado': 2643,
+    'Suministros': 2342,
   },
   {
     date: 'Oct 22',
-    SolarPanels: 2837,
-    'Inverters': 2473,
+    'PagoEmpleado': 2837,
+    'Suministros': 2473,
   },
   {
     date: 'Nov 22',
-    SolarPanels: 2954,
-    'Inverters': 3848,
+    'PagoEmpleado': 2954,
+    'Suministros': 3848,
   },
   {
     date: 'Dec 22',
-    SolarPanels: 3239,
-    'Inverters': 3736,
+    'PagoEmpleado': 3239,
+    'Suministros': 3736,
   },
 ];
 
 const valueFormatter = function (number: number) {
-  return '$ ' + new Intl.NumberFormat('us').format(number).toString();
+  return 'C$ ' + new Intl.NumberFormat('us').format(number).toString();
 };
 
-export default function LineChartUsageExample() {
-
+export default function LineChartUsageExample({ egresos }: { egresos: SumOfEgresosByDate[1] }) {
+  console.log(egresos)
 
   return (
       <>
-        <h3 className="text-lg font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong">Newsletter revenue over time (USD)</h3>
         <LineChart
             className="mt-4 h-72"
             data={chartdata}
             index="date"
-            yAxisWidth={65}
-            categories={['SolarPanels', 'Inverters']}
+            yAxisWidth={82}
+            categories={['PagoEmpleado', 'Suministros']}
             colors={['indigo', 'cyan']}
             valueFormatter={valueFormatter}
         />

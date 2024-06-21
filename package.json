@@ -14,6 +14,7 @@
   "dependencies": {
     "@clerk/nextjs": "^4.31.3",
     "@headlessui/react": "^2.0.4",
+    "@headlessui/tailwindcss": "^0.2.1",
     "@hookform/resolvers": "^3.6.0",
     "@internationalized/date": "^3.5.4",
     "@nextui-org/react": "^2.4.1",
