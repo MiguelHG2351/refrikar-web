@@ -21,7 +21,7 @@ export default async function Servicios({ searchParams }: { searchParams?: { [ke
           <ServiceSearch clientes={clientes} />
         </div>
       </div>
-      <ServicioList  cliente={currentClient} />
+      <ServicioList cliente={currentClient} />
     </section>
   )
 }

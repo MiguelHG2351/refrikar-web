@@ -16,7 +16,6 @@ export const servicioApi = RefrikarApi.injectEndpoints({
       query: (data: any) => {
         let apiPath = '/api/services'
 
-        console.log('dfsadsfdasdsas ', data.cliente_id)
         if (data.cliente_id) {
           apiPath += `?cliente_id=${data.cliente_id}`
         }

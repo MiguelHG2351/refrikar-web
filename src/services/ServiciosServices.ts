@@ -36,7 +36,11 @@ type ServiciosWithClientAndDetalles = Prisma.serviciosGetPayload<{
         tipo_cliente: true
       }
     },
-    detalle_servicio: true
+    detalle_servicio: {
+      include: {
+        tipo_servicio: true
+      }
+    }
   },
 }>
 
@@ -55,7 +59,11 @@ export class ServiciosServices {
             tipo_cliente: true
           }
         },
-        detalle_servicio: true
+        detalle_servicio: {
+          include: {
+            tipo_servicio: true
+          }
+        }
       }
     })
 
@@ -80,7 +88,11 @@ export class ServiciosServices {
             tipo_cliente: true
           }
         },
-        detalle_servicio: true
+        detalle_servicio: {
+          include: {
+            tipo_servicio: true
+          }
+        }
       }
     })
 
@@ -108,7 +120,11 @@ export class ServiciosServices {
       detalle_servicio: servicio.detalle_servicio.map((detalle: any) => {
         return {
           ...detalle,
-          costo: Number(detalle.costo)
+          costo: Number(detalle.costo),
+          tipo_servicio: {
+            tipo: detalle.tipo_servicio.tipo,
+            tiposervicioid: detalle.tipo_servicio.tiposervicioid
+          }
         }
       })
     }))

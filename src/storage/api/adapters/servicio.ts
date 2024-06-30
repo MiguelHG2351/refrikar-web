@@ -9,6 +9,7 @@ export const servicioAdapter = (responseData: any[]): any[] => {
                 clienteid: data.clientes.clienteid,
                 nombre: data.clientes.nombre,
                 apellido: data.clientes.apellido,
+                ruc: data.clientes.ruc,
                 tipo_cliente: {
                     tipoclienteid: data.clientes.tipo_cliente.tipoclienteid,
                     tipo: data.clientes.tipo_cliente.tipo_cliente
@@ -21,6 +22,10 @@ export const servicioAdapter = (responseData: any[]): any[] => {
                     costo: detalle.costo,
                     fecha: detalle.fecha,
                     direccion: detalle.direccion,
+                    tipo_servicio: {
+                        tiposervicioid: detalle.tipo_servicio.tiposervicioid,
+                        tipo: detalle.tipo_servicio.tipo
+                    }
                 }
             })
         }

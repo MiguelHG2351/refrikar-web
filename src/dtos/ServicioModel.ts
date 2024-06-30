@@ -17,6 +17,10 @@ export interface ServicioModel {
   detalle_servicio: {
     "detalleservicioid": String,
     "tiposervicioid": String,
+    "tipo_servicio": {
+      "tiposervicioid": String,
+      "tipo": String
+    },
     "equipoid": String,
     "servicioid": String,
     "descripcion": String,

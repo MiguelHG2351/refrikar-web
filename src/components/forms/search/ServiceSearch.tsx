@@ -29,7 +29,6 @@ export default function ServiceSearch({ clientes } : { clientes: ClienteServiceW
   const pathname = usePathname();
   const [selectedClienteIds, setSelectedClienteIds] = useState<Selection>(new Set(removeUnlistedUser({ params: searchParams.get('cliente_id') || '', clientes: clientes }).map((c) => c.clienteid)))
 
-  console.log(getListFromParam(searchParams.get('cliente_id')))
   const onHandlerSelectionChange = (cliente: Selection) => {
     setSelectedClienteIds(cliente)
     let _ids = Array.from(cliente).join(',')

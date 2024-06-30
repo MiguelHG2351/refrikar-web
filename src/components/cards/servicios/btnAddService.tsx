@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 
-export default function BtnViewService({ serviceId }: {serviceId: number}) {
+export default function BtnViewService({ serviceId }: {serviceId: String}) {
   function handlerCurrentServices() {
 
   }
