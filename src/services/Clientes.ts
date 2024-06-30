@@ -11,6 +11,18 @@ async function getClientes() {
   return productos
 }
 
+async function getClientesById(clienteId?: string) {
+  if (!clienteId) {
+    return null
+  }
+
+  return prisma.clientes.findUnique({
+    where: {
+      clienteid: clienteId
+    }
+  })
+}
+
 async function getClientesOnlyWithServices() {
   const clientes = await prisma.clientes.findMany({
     include: {
@@ -32,9 +44,10 @@ export async function getCountClienteServicioAndDetalleServicio() {
 // type ThenArg<T> = T extends PromiseLike<infer U> ? U : T;
 export type ClienteService = ThenArg<ReturnType<typeof getClientes>>;
 export type ClienteServiceWithSomeServices = ThenArg<ReturnType<typeof getClientesOnlyWithServices>>;
-export type CountClienteServicioAndDetalleServicio = ThenArg<ReturnType<typeof getCountClienteServicioAndDetalleServicio>>;
+export type ClienteServiceById = ThenArg<ReturnType<typeof getClientesById>>;
 
 export {
   getClientes,
-  getClientesOnlyWithServices
+  getClientesOnlyWithServices,
+  getClientesById
 }

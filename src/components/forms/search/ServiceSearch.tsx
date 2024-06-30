@@ -14,13 +14,22 @@ import { ClienteServiceWithSomeServices } from "@/services/Clientes";
 import Link from "next/link";
 import React, {useEffect, useState} from "react";
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
+import {getListFromParam} from "@/utils/getListFromParams";
+
+function removeUnlistedUser({ params, clientes }: { params: string, clientes: ClienteServiceWithSomeServices }) {
+  const paramList = getListFromParam(params)
+
+  if ((paramList.length === clientes.length) || (paramList.length === 0 || paramList[0] === '')) return []
+  return clientes.filter((c) => paramList.includes(c.clienteid))
+}
 
 export default function ServiceSearch({ clientes } : { clientes: ClienteServiceWithSomeServices }) {
   const searchParams = useSearchParams()
   const { replace } = useRouter();
   const pathname = usePathname();
-  const [selectedClienteIds, setSelectedClienteIds] = useState<Selection>(new Set(searchParams.get('cliente_id')?.split(',') || []))
+  const [selectedClienteIds, setSelectedClienteIds] = useState<Selection>(new Set(removeUnlistedUser({ params: searchParams.get('cliente_id') || '', clientes: clientes }).map((c) => c.clienteid)))
 
+  console.log(getListFromParam(searchParams.get('cliente_id')))
   const onHandlerSelectionChange = (cliente: Selection) => {
     setSelectedClienteIds(cliente)
     let _ids = Array.from(cliente).join(',')
@@ -41,7 +50,6 @@ export default function ServiceSearch({ clientes } : { clientes: ClienteServiceW
           size="sm"
           selectionMode="multiple"
           name="schema"
-          defaultSelectedKeys={searchParams.get('cliente_id')?.split(',') || []}
           selectedKeys={selectedClienteIds}
           onSelectionChange={onHandlerSelectionChange}
       >
@@ -51,18 +59,6 @@ export default function ServiceSearch({ clientes } : { clientes: ClienteServiceW
             </SelectItem>
         ))}
       </Select>
-      {/*<Input*/}
-      {/*    classNames={{*/}
-      {/*      // base: "max-w-full sm:max-w-[10rem] h-10",*/}
-      {/*      mainWrapper: "h-full",*/}
-      {/*      input: "text-small border-none py-4 outline-none focus:outline-none focus:border-none",*/}
-      {/*      inputWrapper: "focus:border-0 h-full font-normal text-default-500",*/}
-      {/*    }}*/}
-      {/*    placeholder="Juan Pérez"*/}
-      {/*    size="sm"*/}
-      {/*    startContent={<SearchIcon width={18} height={18} className="fill-black"/>}*/}
-      {/*    type="search"*/}
-      {/*/>*/}
       <Dropdown>
         <DropdownTrigger>
           <Button
@@ -105,6 +101,16 @@ export default function ServiceSearch({ clientes } : { clientes: ClienteServiceW
           </DropdownSection>
         </DropdownMenu>
       </Dropdown>
+      <Button
+          className="px-4 py-2 bg-default-100 h-auto shrink-0"
+          variant="bordered"
+          onClick={() => {
+            replace(`${pathname}`)
+            setSelectedClienteIds(new Set([]))
+          }}
+      >
+        Limpiar filtros
+      </Button>
       <Button as={Link} href="/home/servicios/add" className="shrink-0 h-auto bg-primary text-white">
         Agregar servicio
       </Button>
