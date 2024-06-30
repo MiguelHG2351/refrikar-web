@@ -1,40 +1,37 @@
-import { Input } from '@nextui-org/react'
-import { Link } from '@nextui-org/link'
+import {Button, Dropdown, DropdownItem, DropdownMenu, DropdownSection, DropdownTrigger, Input} from '@nextui-org/react'
 import prisma from "@/config/prisma";
-import Servicio from "@/components/cards/servicios/Servicio";
+import Link from "next/link";
+import {SearchIcon} from "@/components/icons/Icons";
+import ServiceSearch from "@/components/forms/search/ServiceSearch";
+import {getClientes, getClientesOnlyWithServices} from "@/services/Clientes";
+import {Metadata} from "next";
+import {getServicios, ServiciosServices} from "@/services/ServiciosServices";
+import ServicioList from "@/components/cards/servicios/ServicioList";
 
-async function getServicios() {
-  const data = await prisma.servicios.findMany({
-    include: {
-      clientes: {
-        include: {
-          tipo_cliente: true
-        }
-      },
-      detalle_servicio: true
-    }
-  })
-
-  return data
+export const metadata: Metadata = {
+  title: "Servicios"
 }
 
-export default async function Servicios() {
-  const servicios = await getServicios()
+const serviciosServices = new ServiciosServices();
 
+export default async function Servicios({ searchParams }: { searchParams?: { [key: string]: string | undefined }; }) {
+
+  const _servicios = await getServicios({ searchParams: searchParams })
+  // transform costo in number, because is Decimal type
+  const servicios = await serviciosServices.getAllServicesByIds({ clientIds: searchParams?.cliente_id ? searchParams.cliente_id!.split(',') : []})
+
+  const clientes = await getClientesOnlyWithServices()
+  console.log(searchParams)
+  console.log(servicios)
   return (
     <section className="px-6 py-4">
-      <h1 className="text-2xl font-bold">Servicios</h1>
-      <form action="#" className="py-4">
-        <Input type="text" label="Buscar" placeholder="Buscar algo..." />
-      </form>
-      <Link href="/home/servicios/add" className="underline">
-        Agregar servicio
-      </Link>
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 py-4">
-          {servicios.map((servicio: any) => (
-            <Servicio key={servicio.servicioid} data={servicio} />
-          ))}
+      <div className="flex justify-between">
+        <h1 className="text-2xl font-bold">Servicios</h1>
+        <div className="filters">
+          <ServiceSearch clientes={clientes} />
+        </div>
       </div>
+      <ServicioList servicios={servicios} />
     </section>
   )
 }

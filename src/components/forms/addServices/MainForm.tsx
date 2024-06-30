@@ -14,6 +14,7 @@ import {
 import {useCreateServiceMutation, useGetTipoServiciosQuery} from "@/storage/api/service";
 import { toast } from "react-toastify";
 import {clearCliente, clearDetalleServicio} from "@/storage/serviceSlice";
+import {Link} from "@nextui-org/link";
 
 export default function AddServiceForm() {
   const service = useAppSelector(state => state.addService)
@@ -97,7 +98,7 @@ export default function AddServiceForm() {
 
         </div>
         <footer className="flex gap-x-2 justify-end">
-          <Button type="button" variant="shadow" color="primary">Volver a servicios</Button>
+          <Button as={Link} href="/home/servicios" type="button" variant="shadow" color="primary">Volver a servicios</Button>
           <Button type="button" variant="shadow" color="primary" onClick={handlerAddService}>Agregar servicio</Button>
         </footer>
       </div>

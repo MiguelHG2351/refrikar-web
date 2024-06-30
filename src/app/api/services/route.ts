@@ -2,8 +2,25 @@ import { NextResponse, type NextRequest } from 'next/server'
 import { Prisma } from '@prisma/client';
 import prisma from "@/config/prisma";
 import {getCountClienteServicioAndDetalleServicio} from "@/services/Clientes";
+import {ServiciosServices} from "@/services/ServiciosServices";
 
 export const dynamic = 'force-dynamic' // defaults to auto
+
+type Where = {
+  clienteid?: {
+    in: string[] | null
+  }
+}
+
+const servicios = new ServiciosServices()
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url)
+  let clienteid = searchParams.get('cliente_id')?.split(',') || []
+
+  let servicios_ = await servicios.getAllServicesByIds({ clientIds: clienteid })
+
+  return NextResponse.json(servicios_)
+}
 
 export async function POST(req: NextRequest) {
   console.log('here')

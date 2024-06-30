@@ -1,8 +1,7 @@
 'use client'
-import { useEffect, useState } from "react"
 import Menu from "./Menu"
 import MenuItem from "./MenuItem"
-import { AirIcon, BillIcon, ClientIcon, DashBoardIcon, HomeIcon } from "../icons/Icons"
+import { BillIcon, ClientIcon, DashBoardIcon, HomeIcon } from "../icons/Icons"
 import { usePathname } from "next/navigation"
 
 const mockupMenu = [
@@ -21,15 +20,8 @@ const mockupMenu = [
 ]
 
 export default function Sidebar() {
-  // const [title, setTitle] = useState('loading...')
-  // console.log(data)
-  const [openMenu, setOpenMenu] = useState(false)
   const navigation = usePathname()
-  console.log(navigation)
 
-  // useEffect(() => {
-  //   setTitle(document.title)
-  // }, [])
 
   return (
       <>

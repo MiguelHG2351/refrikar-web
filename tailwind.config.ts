@@ -19,7 +19,7 @@ const config: Config = {
         'refrikar-gradient': 'linear-gradient(178deg, #0094DA 2.05%, #FFF 97.95%)'
       },
       colors: {
-        primary: "var(--color-primary)",
+        primary: "#0094DA",
         secondary: "var(--color-secondary)",
         gray: {
           primary: "#747474",
@@ -153,6 +153,6 @@ const config: Config = {
     },
   ],
   darkMode: 'class',
-  plugins: [nextui(), require('@headlessui/tailwindcss'), require('@tailwindcss/forms')],
+  plugins: [nextui(), require('@headlessui/tailwindcss')],
 }
 export default config
