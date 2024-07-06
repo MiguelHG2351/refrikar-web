@@ -125,14 +125,6 @@ export default async function Dashboard() {
                 <h4 className="font-bold">Total de clientes</h4>
                 <p className="font-bold my-4">Todos los clientes ordenados por más recientes</p>
               </div>
-              <form className="flex items-center gap-x-2">
-                <input type="text" className="border border-gray-primary placeholder:text-gray-primary rounded-md p-2" placeholder='Escribe algo...' />
-                <button>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="26" height="27" viewBox="0 0 26 27" fill="none">
-                    <path d="M20.5833 21.0834H5.41667V9.16671H20.5833M17.3333 1.58337V3.75004H8.66667V1.58337H6.5V3.75004H5.41667C4.21417 3.75004 3.25 4.71421 3.25 5.91671V21.0834C3.25 21.658 3.47827 22.2091 3.8846 22.6154C4.29093 23.0218 4.84203 23.25 5.41667 23.25H20.5833C21.158 23.25 21.7091 23.0218 22.1154 22.6154C22.5217 22.2091 22.75 21.658 22.75 21.0834V5.91671C22.75 5.34207 22.5217 4.79097 22.1154 4.38464C21.7091 3.97831 21.158 3.75004 20.5833 3.75004H19.5V1.58337M18.4167 13.5H13V18.9167H18.4167V13.5Z" fill="black"/>
-                  </svg>
-                </button>
-              </form>
               <ClientTable clients={clientes}  />
             </div>
           </div>

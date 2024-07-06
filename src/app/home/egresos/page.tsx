@@ -14,7 +14,7 @@ export const metadata: Metadata ={
 
 export default  async function Egresos() {
   const egresosList = await getLatestEgresos()
-  const sumAndAllEgresos = await getSumAndAllEgresosByDate(new Date('2022-01-01'), new Date('2022-12-31'))
+  const sumAndAllEgresos = await getSumAndAllEgresosByDate(new Date('2024-06-01'), new Date('2024-07-31'))
   return (
       <section className="px-6 py-4 h-[calc(100vh - 59px)]">
         <h1 className="text-2xl font-bold">Egresos</h1>

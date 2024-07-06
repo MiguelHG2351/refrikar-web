@@ -184,7 +184,7 @@ export default function ProveedoresTable() {
           <Input
             isClearable
             className="w-full sm:max-w-[44%]"
-            placeholder="Search by name..."
+            placeholder="Buscar por nombre..."
             startContent={<SearchIcon className="fill-current" width={26} height={26} />}
             value={filterValue}
             onClear={() => onClear()}

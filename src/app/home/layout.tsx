@@ -5,7 +5,8 @@ import Image from "next/image"
 import { ToastContainer } from "react-toastify";
 import { useAuth } from "@clerk/nextjs"
 import { useUser } from "@clerk/nextjs"
-import {Dropdown, DropdownItem, DropdownMenu, DropdownSection, DropdownTrigger} from "@nextui-org/react";
+import {Button, Dropdown, DropdownItem, DropdownMenu, DropdownSection, DropdownTrigger} from "@nextui-org/react";
+import Link from "next/link"
 
 export default function HomeLayout({
   children, // will be a page or nested layout
@@ -40,6 +41,13 @@ export default function HomeLayout({
               <Dropdown>
                 <DropdownTrigger>
                   <div className="inline-flex items-center gap-x-2 cursor-pointer">
+                    {
+                      user?.publicMetadata?.role === 'admin' && (
+                          <Button as={Link} href="/home/admin" className="bg-primary text-white rounded-md text-center">
+                            Admin
+                          </Button>
+                      )
+                    }
                     <p>{user?.fullName}</p>
                     <div className="inline-block rounded-full bg-primary overflow-hidden">
                       <Image src="/images/user-profile.png" alt="Foto de perfil del usuario" width={42} height={42}/>

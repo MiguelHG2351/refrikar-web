@@ -12,7 +12,7 @@
     "postinstall": "prisma generate --schema=./prisma-prod/schema.prisma"
   },
   "dependencies": {
-    "@clerk/nextjs": "^4.31.3",
+    "@clerk/nextjs": "^5.2.1",
     "@headlessui/react": "^2.0.4",
     "@headlessui/tailwindcss": "^0.2.1",
     "@hookform/resolvers": "^3.6.0",

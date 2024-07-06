@@ -51,6 +51,7 @@ export default function SignInForm() {
         <Image
             className="max-w-full mx-auto"
             src="/images/pingu-login.png"
+            priority
             alt="Logo del login"
             width={125}
             height={125} />
