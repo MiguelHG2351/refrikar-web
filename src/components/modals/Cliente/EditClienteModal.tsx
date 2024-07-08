@@ -12,10 +12,8 @@ import {
 } from "@nextui-org/react";
 import {useEditClientMutation, useGetAllTipoClientsQuery} from "@/storage/api/clientes";
 import {useForm} from "react-hook-form";
-import {ClienteService} from "@/services/Clientes";
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup";
-import {useEffect} from "react";
 import {toast} from "react-toastify";
 import {Cliente} from "@/dtos";
 

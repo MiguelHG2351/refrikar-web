@@ -19,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <ClerkProvider afterSignInUrl="/home/dashboard">
+    <ClerkProvider signInFallbackRedirectUrl="/home/dashboard">
         <html lang="en">
           <body className={inter.className}>
             <ReduxProvider>
