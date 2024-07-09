@@ -191,7 +191,7 @@ export default function ClientTable({ clients }: { clients: any }) {
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button endContent={<ChevronDownIcon className="text-small" width={22} height={22} />}>
-                  Columns
+                  Columnas
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
@@ -210,7 +210,7 @@ export default function ClientTable({ clients }: { clients: any }) {
               </DropdownMenu>
             </Dropdown>
             <Button color="primary" endContent={<PlusIcon className="fill" width={32} height={32} />}>
-              Add New
+              Agregar cliente
             </Button>
           </div>
         </div>

@@ -4,10 +4,8 @@ import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, getKey
 import { Key } from "react"
 
 export default function DetallesServicio({ detalles }: {detalles: any[]}) {
-  console.log(detalles)
 
   function CellValue({ columnKey, item }: {columnKey: Key, item: any}) {
-    console.log(columnKey)
     switch (columnKey) {
       case 'cantidad':
         return 1

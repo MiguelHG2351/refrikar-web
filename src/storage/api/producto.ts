@@ -13,4 +13,4 @@ export const productoApi = RefrikarApi.injectEndpoints({
   })
 })
 
-export const { useGetSuministrosQuery } = productoApi
+// export const { useGetSuministrosQuery } = productoApi

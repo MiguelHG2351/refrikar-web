@@ -4,24 +4,29 @@ import MenuItem from "./MenuItem"
 import { BillIcon, ClientIcon, DashBoardIcon, HomeIcon } from "../icons/Icons"
 import { usePathname } from "next/navigation"
 
-const mockupMenu = [
-  {
-    id: 1,
-    name: 'Dashboard',
-    icon: 'dashboard',
-    href: '/home/dashboard'
-  },
-  {
-    id: 2,
-    name: 'Servicios',
-    icon: 'users',
-    href: '/home/servicios'
-  }
-]
+const pageMap = {
+  'presentation': ['/home/presentation'],
+  'dashboard': ['/home/dashboard'],
+  'servicios': ['/home/servicios', '/home/servicios/add'],
+  'clientes': ['/home/clientes'],
+  'suministros': ['/home/suministros'],
+  'productos': ['/home/productos'],
+  'proveedores': ['/home/proveedores'],
+  'empleados': ['/home/empleados'],
+  'egresos': ['/home/egresos'],
+  'creditos': ['/home/creditos']
+}
+
+type Path = keyof typeof pageMap
+
+function isCurrentPage(pathName: Path, path: string) {
+  const findPath = pageMap[pathName].find(p => p.includes(path))
+  return !!(findPath?.includes(path));
+}
 
 export default function Sidebar() {
   const navigation = usePathname()
-
+  console.log('render')
 
   return (
       <>
@@ -37,20 +42,20 @@ export default function Sidebar() {
           </div>
           <section>
             <Menu title="Menu principal">
-              <MenuItem state={(navigation === '/home/presentation') ? "active" : 'inactive'} icon={HomeIcon} iconSize={{width: 24, height: 24}} text="Presentación" path="/home/presentation"/>
-              <MenuItem state={navigation === '/home/dashboard' ? "active" : 'inactive'} path="/home/dashboard" text="Dashboard" icon={DashBoardIcon} iconSize={{width: 20, height: 20}}/>
-              {/* <MenuItem state={navigation === '/home/dashboard' ? "active" : 'inactive'} icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Cliente"/> */}
-              <MenuItem state={(navigation === '/home/servicios' || navigation === '/home/servicios/add') ? "active" : 'inactive'} icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Servicios" path="/home/servicios" />
-              <MenuItem state={(navigation === '/home/clientes') ? "active" : 'inactive'} path="/home/clientes" icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Clientes"/>
+              <MenuItem state={pageMap.presentation.includes(navigation) ? "active" : 'inactive'} icon={HomeIcon} iconSize={{width: 24, height: 24}} text="Presentación" path="/home/presentation"/>
+              <MenuItem state={pageMap.dashboard.includes(navigation) ? "active" : 'inactive'} path="/home/dashboard" text="Dashboard" icon={DashBoardIcon} iconSize={{width: 20, height: 20}}/>
+              <MenuItem state={(isCurrentPage('servicios', navigation) || navigation.includes('/home/servicios/view')) ? "active" : 'inactive'} icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Servicios" path="/home/servicios" />
+              <MenuItem state={pageMap.clientes.includes(navigation) ? "active" : 'inactive'} path="/home/clientes" icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Clientes"/>
             </Menu>
             <Menu title="Inventario">
-              <MenuItem state={(navigation === '/home/productos') ? "active" : 'inactive'} path="/home/productos" icon={DashBoardIcon} iconSize={{width: 20, height: 20}} text="Productos"/>
-              <MenuItem state={(navigation === '/home/proveedores') ? "active" : 'inactive'} path="/home/proveedores" icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Proveedores"/>
-              <MenuItem state={(navigation === '/home/empleados') ? "active" : 'inactive'} icon={ClientIcon} iconSize={{width: 20, height: 20}} path="/home/empleados" text="Empleados"/>
+              <MenuItem state={pageMap.suministros.includes(navigation) ? "active" : 'inactive'} path="/home/suministros" icon={DashBoardIcon} iconSize={{width: 20, height: 20}} text="Suministros"/>
+              <MenuItem state={pageMap.productos.includes(navigation) ? "active" : 'inactive'} path="/home/productos" icon={DashBoardIcon} iconSize={{width: 20, height: 20}} text="Productos"/>
+              <MenuItem state={pageMap.proveedores.includes(navigation) ? "active" : 'inactive'} path="/home/proveedores" icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Proveedores"/>
+              <MenuItem state={pageMap.empleados.includes(navigation) ? "active" : 'inactive'} icon={ClientIcon} iconSize={{width: 20, height: 20}} path="/home/empleados" text="Empleados"/>
             </Menu>
             <Menu title="Otros">
-              <MenuItem state={(navigation === '/home/egresos') ? "active" : 'inactive'} icon={BillIcon} iconSize={{width: 20, height: 20}} path="/home/egresos" text="Egresos"/>
-              <MenuItem state={(navigation === '/home/creditos') ? "active" : 'inactive'} icon={ClientIcon} iconSize={{width: 20, height: 20}} path="/home/egresos" text="Créditos"/>
+              <MenuItem state={pageMap.egresos.includes(navigation) ? "active" : 'inactive'} icon={BillIcon} iconSize={{width: 20, height: 20}} path="/home/egresos" text="Egresos"/>
+              <MenuItem state={pageMap.creditos.includes(navigation) ? "active" : 'inactive'} icon={ClientIcon} iconSize={{width: 20, height: 20}} path="/home/egresos" text="Créditos"/>
             </Menu>
           </section>
         </section>

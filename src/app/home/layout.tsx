@@ -7,6 +7,7 @@ import { useAuth } from "@clerk/nextjs"
 import { useUser } from "@clerk/nextjs"
 import {Button, Dropdown, DropdownItem, DropdownMenu, DropdownSection, DropdownTrigger} from "@nextui-org/react";
 import Link from "next/link"
+import {usePathname} from "next/navigation";
 
 export default function HomeLayout({
   children, // will be a page or nested layout
@@ -15,6 +16,8 @@ export default function HomeLayout({
 }) {
   const { signOut } = useAuth()
   const { user } = useUser()
+  const pathname = usePathname()
+
   return (
     <main className="md:h-screen md:overflow-hidden md:grid md:grid-cols-[auto_1fr]">
       <Sidebar />
@@ -35,7 +38,7 @@ export default function HomeLayout({
               </defs>
             </svg>
           </button>
-          <p>/Home/Dashboard</p>
+          <p>{pathname}</p>
         </div>
         <div className="flex items-center gap-x-4">
           {
