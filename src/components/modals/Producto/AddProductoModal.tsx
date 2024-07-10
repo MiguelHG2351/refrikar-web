@@ -18,7 +18,10 @@ export default function AddProductoModal({ categoria }: { categoria: string | nu
 
   return (
       <>
-        <Button color="primary" onPress={onOpen}>Agregar producto</Button>
+
+        <div className="flex items-center">
+          <Button color="primary" onPress={onOpen}>Agregar producto</Button>
+        </div>
         <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
           <ModalContent>
             {(onClose) => (

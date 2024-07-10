@@ -2,6 +2,8 @@
 
 import { LineChart } from '@tremor/react';
 import {SumOfEgresosByDate} from "@/services/Egresos";
+import {useMemo} from "react";
+import {DateInputFormat} from "@/utils/date";
 
 const chartdata = [
   {
@@ -10,7 +12,7 @@ const chartdata = [
     'Suministros': 2338,
   },
   {
-    date: 'Feb 22',
+    date: 'Feb 2244',
     'PagoEmpleado': 2756,
     'Suministros': 2103,
   },
@@ -75,18 +77,69 @@ const valueFormatter = function (number: number) {
   return 'C$ ' + new Intl.NumberFormat('us').format(number).toString();
 };
 
+function formatearFecha(fecha) {
+  // Array con los nombres de los meses abreviados
+  const mesesAbreviados = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+  // Obtener el mes y el día en UTC
+  const mes = mesesAbreviados[fecha.getUTCMonth()];
+  const dia = fecha.getUTCDate().toString().padStart(2, '0');
+
+  // Formatear la fecha
+  return `${mes} ${dia}`;
+}
+
 export default function LineChartUsageExample({ egresos }: { egresos: SumOfEgresosByDate[1] }) {
-  console.log(egresos)
+  const egresosList = useMemo(() => {
+    const expenseTypes = ['gastos_varios', 'pago_empleado', 'suministro', 'pago_impuesto'];
+    const categories = {
+      gastos_varios: [] as any,
+      pago_empleado: [] as any,
+      suministro: [] as any,
+      pago_impuesto: [] as any
+    };
+
+    egresos.forEach((egreso) => {
+      const tipo = Object.keys(categories).find((key) => egreso[key as keyof typeof categories].length > 0)
+      categories[tipo as keyof typeof categories].push({
+        date: egreso.fecha,
+        monto: egreso.monto as number,
+        type: tipo
+      })
+    })
+
+    const groupedData = {};
+    for (const [key, values] of Object.entries(categories)) {
+      values.forEach(item => {
+        const { date, type, monto } = item;
+        const formattedDate = formatearFecha(date);
+
+        if (!groupedData[date]) {
+          groupedData[date] = { date: formattedDate };
+
+          // Inicializar todos los tipos de gasto con 0
+          expenseTypes.forEach(expenseType => {
+            groupedData[date][expenseType] = 0;
+          });
+        }
+
+        groupedData[date][type] += +monto;
+      });
+    }
+
+    return Object.values(groupedData);
+  }, [egresos]);
+  console.log(egresos, egresosList)
 
   return (
       <>
         <LineChart
             className="mt-4 h-72"
-            data={chartdata}
+            data={egresosList}
             index="date"
             yAxisWidth={82}
-            categories={['PagoEmpleado', 'Suministros']}
-            colors={['indigo', 'cyan']}
+            categories={['gastos_varios', 'pago_empleado', 'suministro', 'pago_impuesto']}
+            colors={['indigo', 'cyan', 'green', 'red']}
             valueFormatter={valueFormatter}
         />
       </>

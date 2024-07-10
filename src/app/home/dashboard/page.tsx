@@ -98,11 +98,6 @@ export default async function Dashboard() {
                 <p className="font-medium">3 productos sin stock</p>
               </div>
               <div className="flex flex-col items-end gap-4">
-                <button className="w-max p-2 bg-[#FBFAFE] shadow-card-secondary rounded-md">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
-                    <path d="M20.5833 20.5834H5.41667V8.66671H20.5833M17.3333 1.08337V3.25004H8.66667V1.08337H6.5V3.25004H5.41667C4.21417 3.25004 3.25 4.21421 3.25 5.41671V20.5834C3.25 21.158 3.47827 21.7091 3.8846 22.1154C4.29093 22.5218 4.84203 22.75 5.41667 22.75H20.5833C21.158 22.75 21.7091 22.5218 22.1154 22.1154C22.5217 21.7091 22.75 21.158 22.75 20.5834V5.41671C22.75 4.84207 22.5217 4.29097 22.1154 3.88464C21.7091 3.47831 21.158 3.25004 20.5833 3.25004H19.5V1.08337M18.4167 13H13V18.4167H18.4167V13Z" fill="black"/>
-                  </svg>
-                </button>
                 <button className="flex items-center gap-x-2">
                   Ver detalles
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">

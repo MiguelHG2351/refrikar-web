@@ -37,7 +37,11 @@ export async function getSumAndAllEgresosByDate(startDate: Date, endDate: Date) 
         gastos_varios: true,
         pago_impuesto: true,
         suministro: true,
-        pago_empleado: true
+        pago_empleado: {
+          include: {
+            empleados: true
+          }
+        }
         },
       where: {
         fecha: {
@@ -48,22 +52,7 @@ export async function getSumAndAllEgresosByDate(startDate: Date, endDate: Date) 
     }),
   ])
 
-  const categories = {
-    gastos_varios: [] as any,
-    pago_empleado: [] as any,
-    suministro: [] as any,
-    pago_impuesto: [] as any
-  }
-
-  sumAndData[1].forEach((egreso) => {
-    const tipo = Object.keys(categories).find((key) => egreso[key as keyof typeof categories].length > 0)
-    categories[tipo as keyof typeof categories].push({
-      date: egreso.fecha,
-      monto: egreso.monto?.toNumber() as number
-    })
-  })
-
-  return [sumAndData[0], categories]
+  return sumAndData
 }
 
 export type SumOfEgresosByDate = ThenArg<ReturnType<typeof getSumAndAllEgresosByDate>>;

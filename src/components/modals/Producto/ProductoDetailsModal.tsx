@@ -39,7 +39,7 @@ export function ProductoDetailsModal({ producto } : ProductoDetailsProps) {
                   </ModalBody>
                   <ModalFooter>
                     <Button color="danger" variant="light" onPress={onClose}>
-                      Close
+                      Eliminar
                     </Button>
                     <Button color="primary" onPress={onClose}>
                       Editar
