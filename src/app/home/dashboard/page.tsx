@@ -2,6 +2,8 @@ import { Inventario } from '@/components/cards/dashboard/Inventario'
 import ClientTable from '@/components/table/ClientTable'
 import prisma from '@/config/prisma'
 import { Metadata } from 'next'
+import {DonutChart, Legend} from "@tremor/react";
+import ServicioDonu from "@/components/charts/ServicioDonut";
 
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -38,6 +40,7 @@ async function getClientes () {
   return data;
 }
 
+
 export default async function Dashboard() {
   const productos = await getProducts()
   const clientes = await getClientes()
@@ -54,38 +57,45 @@ export default async function Dashboard() {
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path d="M13 20H11V8L5.49998 13.5L4.07998 12.08L12 4.16L19.92 12.08L18.5 13.5L13 8V20Z" fill="#DC2626"/>
               </svg>
-              <span className="text-red-primary text-xs font-bold p-1">12.33%</span>
+              <span className="text-red-primary text-xs font-bold p-1">2.33%</span>
             </div>
-            <p className="text-gray-primary text-sm font-medium">Mes anterior</p>
+            <p className="text-gray-primary text-sm font-medium">Últmo día</p>
           </div>
         </article>
         <article className="bg-white shadow-card-primary flex-[100%] md:flex-1 p-3 rounded-lg flex flex-col gap-y-2">
-          <h2 className="text-gray-primary font-bold">Ganancia del mes</h2>
-          <span className="text-3xl font-bold">C$ 11,000</span>
+          <h2 className="text-gray-primary font-bold">Ganancia de ayer</h2>
+          <span className="text-3xl font-bold">C$ 210</span>
           <div className="flex items-center gap-x-2">
             <div className="bg-green-primary/50 flex items-center rounded-md gap-x-1 px-1">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path d="M13 20H11V8L5.49998 13.5L4.07998 12.08L12 4.16L19.92 12.08L18.5 13.5L13 8V20Z" fill="#008676"/>
               </svg>
-              <span className="text-green-primary text-xs font-bold p-1">12.33%</span>
+              <span className="text-green-primary text-xs font-bold p-1">8.21%</span>
             </div>
-            <p className="text-gray-primary text-sm font-medium">Mes anterior</p>
+            <p className="text-gray-primary text-sm font-medium">Últmo día</p>
           </div>
         </article>
         <article className="bg-white shadow-card-primary flex-[100%] md:flex-1 p-3 rounded-lg flex flex-col gap-y-2">
           <h2 className="text-gray-primary font-bold">Ingresos del mes</h2>
-          <span className="text-3xl font-bold">C$ 24,000</span>
+          <span className="text-3xl font-bold">C$ 126</span>
           <div className="flex items-center gap-x-2">
             <div className="bg-red-primary/50 flex items-center rounded-md gap-x-1 px-1">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path d="M13 20H11V8L5.49998 13.5L4.07998 12.08L12 4.16L19.92 12.08L18.5 13.5L13 8V20Z" fill="#DC2626"/>
               </svg>
-              <span className="text-red-primary text-xs font-bold p-1">12.33%</span>
+              <span className="text-red-primary text-xs font-bold p-1">1.1%</span>
             </div>
-            <p className="text-gray-primary text-sm font-medium">Mes anterior</p>
+            <p className="text-gray-primary text-sm font-medium">Último día</p>
           </div>
         </article>
       </section>
+      <div className="flex flex-col">
+        <section className='bg-white border shadow-card-secondary px-2 py-4 mt-4 rounded-md'>
+          <h2 className='text-gray font-bold'>Servicios</h2>
+          <h3 className='font-bold text-2xl my-4'>Ingresos de servicio</h3>
+          <ServicioDonu/>
+        </section>
+      </div>
       <div className="flex flex-col">
         <section className='bg-white border shadow-card-secondary px-2 py-4 mt-4 rounded-md'>
           <h2 className='text-gray font-bold'>Inventario</h2>
