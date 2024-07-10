@@ -1,11 +1,22 @@
 import {Metadata} from "next";
 import {Button} from "@nextui-org/react";
 import SuministroAccordion from "@/components/accordion/SuministroAccordion";
+import {currentUser} from "@clerk/nextjs/server";
 
 export const metadata: Metadata = {
   title: 'Suministros | Refrikar'
 }
-export default function SuministroPage({ searchParams }: { searchParams?: { [key: string]: string | undefined }; }) {
+export default async function SuministroPage({ searchParams }: { searchParams?: { [key: string]: string | undefined }; }) {
+
+  const user = await currentUser()
+
+  if (user?.privateMetadata?.role === 'user') {
+    return (
+        <div className="px-6 flex items-center justify-center h-[calc(100vh_-_59px)]">
+          <h2 className="font-bold text-2xl">No tienes permisos para acceder a esta sección</h2>
+        </div>
+    )
+  }
 
   return (
       <section className="py-4 h-[calc(100vh - 59px)]">

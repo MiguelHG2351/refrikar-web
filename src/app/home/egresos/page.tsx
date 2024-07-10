@@ -1,13 +1,10 @@
-import LineChart from "@/components/charts/Line";
 import {Metadata} from "next";
 import { List, ListItem } from '@tremor/react';
 import {getLatestEgresos, getSumAndAllEgresosByDate} from "@/services/Egresos";
 import {DateInputFormat} from "@/utils/date";
-import { DateRangePicker } from '@tremor/react';
 import EgresosList from "@/components/charts/EgresosList";
-import Link from "next/link";
-import {Button} from "@nextui-org/react";
 import DetalleEgresoModal from "@/components/modals/egresos/DetalleEgresoModal";
+import {currentUser} from "@clerk/nextjs/server";
 
 export const metadata: Metadata ={
   title: "Egresos",
@@ -21,11 +18,20 @@ export default  async function Egresos({ searchParams }: { searchParams?: { [key
   const endData = searchParams?.end_date ? new Date(searchParams.end_date) : new Date('2024-07-22')
   const sumAndAllEgresos = await getSumAndAllEgresosByDate(new Date(startData), new Date(endData))
 
+  const user = await currentUser()
+
+  if (user?.privateMetadata?.role === 'user') {
+    return (
+        <div className="px-6 flex items-center justify-center h-[calc(100vh_-_59px)]">
+          <h2 className="font-bold text-2xl">No tienes permisos para acceder a esta sección</h2>
+        </div>
+    )
+  }
+
   return (
       <section className="px-6 py-4 h-[calc(100vh - 59px)]">
         <h1 className="text-2xl font-bold">Egresos</h1>
         <EgresosList sumAndAllEgresos={sumAndAllEgresos} />
-        <Button href="/home/egresos?start_date=2024-06-01&end_date=2024-06-30" as={Link}>test</Button>
         <List>
           {
             sumAndAllEgresos[1].map((egreso) => {

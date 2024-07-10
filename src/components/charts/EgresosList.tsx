@@ -52,7 +52,7 @@ export default function EgresosList({ sumAndAllEgresos }: { sumAndAllEgresos: Su
             <div>
               <div className="flex items-center gap-x-2 mt-4">
                 <h2 className="font-bold">Ganancias</h2>
-                <span className="bg-green-400 px-2 rounded-xl">+21%</span>
+                {/*<span className="bg-green-400 px-2 rounded-xl">+21%</span>*/}
               </div>
               {  /* @ts-ignore */ }
               <h3 className="font-bold text-4xl mt-2">C$ {`${new Intl.NumberFormat('us').format(sumAndAllEgresos[0]._sum?.monto as number).toString()}`}</h3>

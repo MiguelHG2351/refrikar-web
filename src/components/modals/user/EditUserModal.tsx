@@ -15,18 +15,19 @@ import {useState} from "react";
 import {User} from "@/dtos";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {useEditUserMutation} from "@/storage/api/users";
+import {toast} from "react-toastify";
 
 
 const schema = yup.object().shape({
   firstName: yup.string().required("Ingrese el nombre, porfavor"),
   lastName: yup.string().required("Ingrese el apellido, porfavor"),
   email: yup.string().email().required("Ingrese el email, porfavor"),
-  password: yup.string().min(8).required("La contraseña debe tener al menos 8 caracteres"),
+  password: yup.string(),
   role: yup.bool()
 })
 
 export default function EditUserModal({ user }: { user: User }) {
-  const {isOpen, onOpen, onOpenChange} = useDisclosure();
+  const {isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [ onUser ] = useEditUserMutation()
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
@@ -50,8 +51,22 @@ export default function EditUserModal({ user }: { user: User }) {
       email: data.email,
       role: data.role ? 'admin' : 'user',
       password: data.password
-    })
-    reset()
+    }).unwrap()
+        .then((data) => {
+          console.log('data', data)
+          toast('Usuario editado', {
+            type: 'success'
+          })
+          reset()
+          onClose()
+        })
+        .catch(error => {
+          console.log(error)
+          toast(error.data.message, {
+            type: 'error'
+          })
+          console.log(error)
+        })
   })
 
   return (
@@ -61,6 +76,7 @@ export default function EditUserModal({ user }: { user: User }) {
             isOpen={isOpen}
             onOpenChange={onOpenChange}
             placement="top-center"
+            onClose={onClose}
         >
           <ModalContent>
             {(onClose) => (

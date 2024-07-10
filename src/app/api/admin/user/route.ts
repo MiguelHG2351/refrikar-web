@@ -77,7 +77,7 @@ export async function PATCH(req: NextRequest) {
 
   const _restWithoutEmptyFields = Object.keys(rest).reduce((acc, key) => {
     // @ts-ignore
-    if (rest[key]) {
+    if (rest[key] && key !== 'role') {
       // @ts-ignore
       acc[key] = rest[key];
     }
@@ -85,11 +85,24 @@ export async function PATCH(req: NextRequest) {
   }, {});
 
   try {
+    console.log(_restWithoutEmptyFields)
     const user = await clerkClient().users.updateUser(id, {
-      ...rest
+      ..._restWithoutEmptyFields,
+      privateMetadata: {
+        role: rest.role
+      },
+      publicMetadata: {
+        role: rest.role
+      },
+      skipPasswordChecks: true
     });
     return NextResponse.json({message: 'User updated'}, {status: 200});
   } catch(e) {
+    console.log(e)
+    // @ts-ignore
+    if (e.status === 422) {
+      return NextResponse.json({message: 'La contraseña debe tener al menos 8 carácteres'}, {status: 422});
+    }
     return NextResponse.json({message: 'Error updating user'}, {status: 400});
   }
 }
