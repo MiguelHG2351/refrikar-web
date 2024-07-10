@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { Prisma } from '@prisma/client';
 import prisma from "@/config/prisma";
-import {getCountClienteServicioAndDetalleServicio} from "@/services/Clientes";
+import {getCountClienteServicioAndDetalleServicio} from "@/services/ClientesServices";
 import {ServiciosServices} from "@/services/ServiciosServices";
 
 export const dynamic = 'force-dynamic' // defaults to auto

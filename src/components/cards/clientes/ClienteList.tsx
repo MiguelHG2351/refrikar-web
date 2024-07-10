@@ -1,13 +1,19 @@
 'use client'
-import {ClienteService} from "@/services/Clientes";
+import {ClienteService} from "@/services/ClientesServices";
 import ClienteItem from "@/components/cards/clientes/ClienteItem";
 import {useGetAllClientsQuery} from "@/storage/api/clientes";
 import {useEffect, useRef, useState} from "react";
 import {Cliente} from "@/dtos";
 import ClientItemSkeleton from "@/components/cards/clientes/ClientItemSkeleton";
+import {usePathname, useSearchParams} from "next/navigation";
 
 export default function ClienteList() {
-  const { data: _clientes, error, isLoading } = useGetAllClientsQuery("")
+  const searchParams = useSearchParams()
+  const { data: _clientes,
+    error,
+    isLoading,
+    isFetching
+  } = useGetAllClientsQuery({ search: searchParams.get('search'), tipo: searchParams.get('tipo')})
   const [clientes, setClientes] = useState<Cliente[]>([])
 
   useEffect(() => {
@@ -16,9 +22,17 @@ export default function ClienteList() {
     }
   }, [_clientes, isLoading])
 
+  if (!isLoading && clientes.length === 0) {
+    return (
+        <div className="flex justify-center items-center h-96">
+          <h1 className="text-2xl font-bold">No hay clientes</h1>
+        </div>
+    )
+  }
+
   return (
       <section className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        { clientes.length === 0 && Array(100).fill(' ').map((_, key) => (
+        { ((clientes.length === 0 && isLoading) || isFetching) && Array(100).fill(' ').map((_, key) => (
             <ClientItemSkeleton key={key} />
         ))}
         {clientes.map((cliente) => (

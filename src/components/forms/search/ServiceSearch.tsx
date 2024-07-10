@@ -10,7 +10,7 @@ import {
   Select, Selection, SelectItem
 } from "@nextui-org/react";
 import {FilterIcon } from "@/components/icons/Icons";
-import { ClienteServiceWithSomeServices } from "@/services/Clientes";
+import { ClienteServiceWithSomeServices } from "@/services/ClientesServices";
 import Link from "next/link";
 import React, {useEffect, useState} from "react";
 import {usePathname, useRouter, useSearchParams} from "next/navigation";

@@ -30,7 +30,7 @@ export default function Sidebar() {
 
   return (
       <>
-        <section className="fixed top-0 bottom-0 z-20 transform -translate-x-full md:translate-x-0 md:static bg-accent-2 w-[250px] min-h-screen">
+        <section className="fixed top-0 bottom-0 z-20 transform -translate-x-full md:translate-x-0 md:static bg-accent-2 w-[250px] min-h-screen print:hidden">
           <div className="py-3">
             <button className="flex justify-start w-full items-center rounded-md px-4">
               <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 45 46" fill="none">

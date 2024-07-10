@@ -5,9 +5,18 @@ import { RefrikarApi } from "./refrikarApi";
 export const clientesApi = RefrikarApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllClients: builder.query({
-      query: () => {
+      query: ({ search, tipo }) => {
+        const searchParams = new URLSearchParams()
+        // console.log('dataaa ', dataaa)
+        if (search) {
+          searchParams.set('search', search)
+        }
+        if (tipo) {
+          searchParams.set('tipo', tipo)
+        }
+
         return {
-          url: '/api/clients',
+          url: `/api/clients?${searchParams.toString()}`,
           method: 'GET',
         }
       },

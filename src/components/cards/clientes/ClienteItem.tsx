@@ -1,4 +1,4 @@
-import {ClienteService} from "@/services/Clientes";
+import {ClienteService} from "@/services/ClientesServices";
 import {User} from "@nextui-org/user";
 import { Cliente } from "@/dtos"
 import {Button, Link } from "@nextui-org/react";

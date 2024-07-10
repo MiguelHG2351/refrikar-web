@@ -46,6 +46,33 @@ export type ClienteService = ThenArg<ReturnType<typeof getClientes>>;
 export type ClienteServiceWithSomeServices = ThenArg<ReturnType<typeof getClientesOnlyWithServices>>;
 export type ClienteServiceById = ThenArg<ReturnType<typeof getClientesById>>;
 
+export class ClientesServices {
+  async getClientes() {
+    return getClientes()
+  }
+
+  async getClientesByType(tipoClienteId: string) {
+    return prisma.clientes.findMany({
+      where: {
+        tipoclienteid: {
+          equals: tipoClienteId
+        }
+      },
+      include: {
+        tipo_cliente: true
+      }
+    })
+  }
+
+  async getClientesOnlyWithServices() {
+    return getClientesOnlyWithServices()
+  }
+
+  async getClientesById(clienteId: string) {
+    return getClientesById(clienteId)
+  }
+}
+
 export {
   getClientes,
   getClientesOnlyWithServices,

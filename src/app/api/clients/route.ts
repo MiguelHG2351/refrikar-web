@@ -1,16 +1,59 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import prisma from "@/config/prisma";
 import { ClienteCreateRequest } from '@/dtos/Cliente';
+import {ClientesServices, getClientes} from "@/services/ClientesServices";
 
 
-export async function GET() {
-  const servicesCount = await prisma.clientes.findMany({
+const clientesServicios = new ClientesServices()
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url)
+  let clientes;
+  let tipo_cliente;
+
+  if(!searchParams.get('search') && !searchParams.get('tipo')) {
+    clientes = await getClientes()
+
+    return NextResponse.json(clientes)
+  }
+  if(searchParams.get('tipo') && !searchParams.get('search')) {
+    clientes = await clientesServicios.getClientesByType(searchParams.get('tipo') as string)
+    return NextResponse.json(clientes)
+  }
+
+  if(searchParams.get('tipo')) {
+    tipo_cliente = {
+      tipoclienteid: searchParams.get('tipo') as string
+    }
+  }
+
+  clientes = await prisma.clientes.findMany({
     include: {
       tipo_cliente: true
+    },
+    where: {
+      OR: [
+        {
+          nombre: {
+            contains: searchParams.get('search') as string
+          }
+        },
+        {
+          apellido: {
+            contains: searchParams.get('search') as string
+          }
+        },
+        {
+          ruc: {
+            contains: searchParams.get('search') as string
+          }
+        }
+      ],
+      tipo_cliente
     }
   });
-  
-  return NextResponse.json(servicesCount)
+
+  console.log('cleintes', clientes)
+  return NextResponse.json(clientes)
 }
 
 export async function POST(req: NextRequest) {

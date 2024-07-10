@@ -1,5 +1,5 @@
 import ServiceSearch from "@/components/forms/search/ServiceSearch";
-import {getClientesById, getClientesOnlyWithServices} from "@/services/Clientes";
+import {getClientesById, getClientesOnlyWithServices} from "@/services/ClientesServices";
 import {Metadata} from "next";
 import ServicioList from "@/components/cards/servicios/ServicioList";
 

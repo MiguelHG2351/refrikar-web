@@ -6,7 +6,7 @@ import {useGetServiciosQuery} from "@/storage/api/service";
 import {ServicioModel} from "@/dtos";
 import {useEffect, useState} from "react";
 import ClientItemSkeleton from "@/components/cards/clientes/ClientItemSkeleton";
-import {ClienteServiceById} from "@/services/Clientes";
+import {ClienteServiceById} from "@/services/ClientesServices";
 
 export default function ServicioList(cliente: { cliente: ClienteServiceById }) {
   const searchParams = useSearchParams()

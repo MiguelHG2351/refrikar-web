@@ -5,7 +5,7 @@ import SuministroAccordion from "@/components/accordion/SuministroAccordion";
 export const metadata: Metadata = {
   title: 'Suministros | Refrikar'
 }
-export default function SuministroPage() {
+export default function SuministroPage({ searchParams }: { searchParams?: { [key: string]: string | undefined }; }) {
 
   return (
       <section className="py-4 h-[calc(100vh - 59px)]">

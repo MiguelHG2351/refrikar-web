@@ -6,6 +6,7 @@ type Producto = {
   productoid: string;
   categoriaid: string | null;
   nombre: string | null;
+  url: string | null;
   inventario: {
     inventarioid: number;
     productoid: string | null;
@@ -18,11 +19,11 @@ export default function ProductItem({ producto }: {producto: Producto}) {
   return (
       <div key={producto.productoid} className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col justify-between">
         <img
-            src="/images/repuestos.png"
+            src={producto.url || 'https://via.placeholder.com/400x300'}
             alt={producto.nombre || 'The producto image'}
             width={400}
             height={300}
-            className="w-full h-48 object-cover"
+            className="w-full h-48 object-contain"
         />
         <div className="p-4">
           <h3 className="text-lg font-bold mb-2 select-none">{producto.nombre}</h3>

@@ -49,7 +49,7 @@ export default function SuministroAccordion() {
                                   <TableCell>{detalle.productos.nombre}</TableCell>
                                   <TableCell>Cantidad: {detalle.cantidad}</TableCell>
                                   <TableCell>Costo: {detalle.costo}</TableCell>
-                                  <TableCell>Total: {detalle.costo * (detalle.cantidad - 0 as number)}</TableCell>
+                                  <TableCell>Total: { +detalle.costo * detalle.cantidad }</TableCell>
                                 </TableRow>
                               ))
                             }
