@@ -35,7 +35,7 @@ const dataFormatter = (number: number) =>
     `$ ${Intl.NumberFormat('us').format(number).toString()}`;
 export default function EgresosList({ sumAndAllEgresos }: { sumAndAllEgresos: SumOfEgresosByDate }) {
   const { replace } = useRouter()
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     const from = e.from;
     const to = e.to;
 
@@ -54,6 +54,7 @@ export default function EgresosList({ sumAndAllEgresos }: { sumAndAllEgresos: Su
                 <h2 className="font-bold">Ganancias</h2>
                 <span className="bg-green-400 px-2 rounded-xl">+21%</span>
               </div>
+              {  /* @ts-ignore */ }
               <h3 className="font-bold text-4xl mt-2">C$ {`${new Intl.NumberFormat('us').format(sumAndAllEgresos[0]._sum?.monto as number).toString()}`}</h3>
             </div>
             <div>

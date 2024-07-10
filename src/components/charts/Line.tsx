@@ -77,7 +77,7 @@ const valueFormatter = function (number: number) {
   return 'C$ ' + new Intl.NumberFormat('us').format(number).toString();
 };
 
-function formatearFecha(fecha) {
+function formatearFecha(fecha: Date) {
   // Array con los nombres de los meses abreviados
   const mesesAbreviados = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -103,26 +103,31 @@ export default function LineChartUsageExample({ egresos }: { egresos: SumOfEgres
       const tipo = Object.keys(categories).find((key) => egreso[key as keyof typeof categories].length > 0)
       categories[tipo as keyof typeof categories].push({
         date: egreso.fecha,
-        monto: egreso.monto as number,
+        monto: egreso.monto as unknown as number,
         type: tipo
       })
     })
 
     const groupedData = {};
     for (const [key, values] of Object.entries(categories)) {
-      values.forEach(item => {
+      // set types to item variable (please dont use any type)
+      values.forEach((item: any) => {
         const { date, type, monto } = item;
         const formattedDate = formatearFecha(date);
 
+        // @ts-ignore
         if (!groupedData[date]) {
+          // @ts-ignore
           groupedData[date] = { date: formattedDate };
 
           // Inicializar todos los tipos de gasto con 0
           expenseTypes.forEach(expenseType => {
+            // @ts-ignore
             groupedData[date][expenseType] = 0;
           });
         }
 
+        // @ts-ignore
         groupedData[date][type] += +monto;
       });
     }

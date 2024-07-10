@@ -4,6 +4,7 @@ import {Protect, useOrganizationList, useUser} from "@clerk/nextjs";
 import {Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow} from "@tremor/react";
 import {useGetUsersQuery} from "@/storage/api/users";
 import {User} from "@/dtos";
+import EditUserModal from "@/components/modals/user/EditUserModal";
 
 const ROLES = {
   admin: 'Administrador',
@@ -25,24 +26,27 @@ export default function UsersTable() {
               Nombre
             </TableHeaderCell>
             <TableHeaderCell>
-              Apellido
-            </TableHeaderCell>
-            <TableHeaderCell>
               Correo
             </TableHeaderCell>
             <TableHeaderCell>Se unió</TableHeaderCell>
             <TableHeaderCell>Rol</TableHeaderCell>
+            <TableHeaderCell className="text-right">Acciones</TableHeaderCell>
           </TableRow>
         </TableHead>
 
         <TableBody>
           {userList?.map((user: User) => (
               <TableRow key={user.id}>
-                <TableCell>{user.firstName}</TableCell>
-                <TableCell>{user.lastName}</TableCell>
+                <TableCell>{`${user.firstName} ${user.lastName || ""}`}</TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{new Date(user.createdAt).toLocaleDateString()}</TableCell>
                 <TableCell>{ROLES[user.role]}</TableCell>
+                <TableCell>
+                  <div className="flex gap-x-2 justify-end">
+                    <EditUserModal user={user} />
+                    <button>Borrar</button>
+                  </div>
+                </TableCell>
               </TableRow>
           ))}
         </TableBody>

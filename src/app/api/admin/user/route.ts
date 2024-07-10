@@ -1,6 +1,7 @@
 import { clerkClient, currentUser } from "@clerk/nextjs/server";
 import {NextRequest, NextResponse} from "next/server";
 import {isUserAdmin} from "@/utils/backendUtils";
+import {UserEditRequest} from "@/dtos";
 
 const requiredFields = ['firstName', 'lastName', 'email', 'password', 'role'];
 
@@ -64,4 +65,31 @@ export async function GET(req: NextRequest) {
     createdAt: user.createdAt
   }));
   return NextResponse.json(userList);
+}
+
+export async function PATCH(req: NextRequest) {
+  const _isAdmin = await isUserAdmin();
+  if (!_isAdmin) return NextResponse.json({ message: 'No tienes permisos para acceder' }, {
+    status: 401,
+  });
+  const body: UserEditRequest = await req.json();
+  const { id, ...rest } = body;
+
+  const _restWithoutEmptyFields = Object.keys(rest).reduce((acc, key) => {
+    // @ts-ignore
+    if (rest[key]) {
+      // @ts-ignore
+      acc[key] = rest[key];
+    }
+    return acc;
+  }, {});
+
+  try {
+    const user = await clerkClient().users.updateUser(id, {
+      ...rest
+    });
+    return NextResponse.json({message: 'User updated'}, {status: 200});
+  } catch(e) {
+    return NextResponse.json({message: 'Error updating user'}, {status: 400});
+  }
 }

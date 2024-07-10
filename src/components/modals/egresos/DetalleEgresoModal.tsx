@@ -20,10 +20,11 @@ export default function DetalleEgresoModal({ egreso }: { egreso: SumOfEgresosByD
                   <ModalHeader className="flex flex-col gap-1">{ tipoEgreso }</ModalHeader>
                   <ModalBody>
                     <p>
+                      {/* @ts-ignore */}
                       Costo: C$ { +egreso.monto }
                     </p>
                     <p>
-                    {/* si es pago empleado mostrar el nombre */}
+                      {/* @ts-ignore */}
                       { egreso.pago_empleado.length > 0 && `Empleado: ${egreso.pago_empleado[0].empleados.nombre} ${egreso.pago_empleado[0].empleados.apellido}` }
                     </p>
                   </ModalBody>

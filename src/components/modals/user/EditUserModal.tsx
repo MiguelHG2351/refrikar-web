@@ -1,5 +1,3 @@
-'use client'
-
 import {
   Button,
   Checkbox,
@@ -7,18 +5,17 @@ import {
   Modal,
   ModalBody,
   ModalContent,
-  ModalFooter,
   ModalHeader,
   useDisclosure
 } from "@nextui-org/react";
-import Link from "next/link";
 import {useForm} from "react-hook-form";
 import * as yup from "yup";
-import {yupResolver} from "@hookform/resolvers/yup";
 import {EyeFilledIcon, EyeSlashFilledIcon} from "@/components/icons/Icons";
 import {useState} from "react";
-import {useCreateUserMutation} from "@/storage/api/users";
-import {toast} from "react-toastify";
+import {User} from "@/dtos";
+import {yupResolver} from "@hookform/resolvers/yup";
+import {useEditUserMutation} from "@/storage/api/users";
+
 
 const schema = yup.object().shape({
   firstName: yup.string().required("Ingrese el nombre, porfavor"),
@@ -28,42 +25,38 @@ const schema = yup.object().shape({
   role: yup.bool()
 })
 
-export default function AddUserModal() {
+export default function EditUserModal({ user }: { user: User }) {
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
+  const [ onUser ] = useEditUserMutation()
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      role: false
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      role: user.role === 'admin'
     }
   })
   const [isVisible, setIsVisible] = useState(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
-  const [ onUser ] = useCreateUserMutation()
+
   const onSubmit = handleSubmit((data) => {
+    console.log(data)
+
     onUser({
+      id: user.id,
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
-      password: data.password,
-      role: data.role ? 'admin' : 'user'
-    }).unwrap()
-      .then((data) => {
-        toast('Usuario creado!', {
-          type: 'success'
-        })
-        reset()
-        onOpenChange()
-      })
-      .catch((error) => {
-        toast(error.data.message, {
-          type: 'error'
-        })
-      })
+      role: data.role ? 'admin' : 'user',
+      password: data.password
+    })
+    reset()
   })
 
   return (
       <>
-        <Button onPress={onOpen} className="rounded-md bg-primary text-white flex-shrink-0">Agregar usuario</Button>
+        <button onClick={onOpen}>Editar</button>
         <Modal
             isOpen={isOpen}
             onOpenChange={onOpenChange}
@@ -111,7 +104,7 @@ export default function AddUserModal() {
                       </div>
                       <div>
                         <Checkbox
-                          {...register('role')}
+                            {...register('role')}
                         >
                           Es admin?
                         </Checkbox>

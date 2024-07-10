@@ -1,6 +1,6 @@
 import {RefrikarApi} from "@/storage/api/refrikarApi";
 import {userAdapter} from "@/storage/api/adapters/user";
-import {UserRequest} from "@/dtos";
+import {UserEditRequest, UserRequest} from "@/dtos";
 
 export const usersApi = RefrikarApi.injectEndpoints({
   endpoints: (build) => ({
@@ -17,7 +17,15 @@ export const usersApi = RefrikarApi.injectEndpoints({
       }),
       invalidatesTags: ['User']
     }),
+    editUser: build.mutation({
+      query: (body: UserEditRequest) => ({
+        url: '/api/admin/user',
+        method: 'PATCH',
+        body,
+      }),
+      invalidatesTags: ['User']
+    }),
   }),
 })
 
-export const { useGetUsersQuery, useCreateUserMutation } = usersApi;
+export const { useGetUsersQuery, useCreateUserMutation, useEditUserMutation } = usersApi;

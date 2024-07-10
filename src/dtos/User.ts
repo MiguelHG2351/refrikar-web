@@ -14,3 +14,6 @@ export interface UserRequest {
   password: string;
   role: "admin" | "user";
 }
+
+export type UserEditRequest = Partial<UserRequest> & { id: string };
+

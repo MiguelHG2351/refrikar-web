@@ -10,7 +10,7 @@ type Producto = {
   inventario: {
     inventarioid: number;
     productoid: string | null;
-    stock: string;
+    stock: string | null;
   }[];
 };
 
@@ -30,7 +30,8 @@ export default function ProductItem({ producto }: {producto: Producto}) {
           <p className="text-gray-500 mb-4 select-none">{producto.nombre}</p>
           <div className="flex items-center justify-between flex-wrap">
             {
-              +producto.inventario[0]?.stock > 0 ? (
+              // @ts-ignore
+              +producto.inventario[0]!?.stock > 0 ? (
                   <p className="text-xl font-bold select-none shrink-0">Stock: {producto.inventario[0]?.stock}</p>
               ) : (
                   <p className="text-xl text-danger font-bold select-none line-through">Agotado</p>
