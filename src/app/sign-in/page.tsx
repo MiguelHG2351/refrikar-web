@@ -4,9 +4,12 @@ import * as React from "react";
 import { useSignIn } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
- 
+import { toast } from "react-toastify";
+import { Button } from "@nextui-org/react";
+
 export default function SignInForm() {
   const { isLoaded, signIn, setActive } = useSignIn();
+  const [isLoading, setIsLoading] = React.useState(false);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const router = useRouter();
@@ -21,6 +24,15 @@ export default function SignInForm() {
  
     // Start the sign-in process using the email and password provided
     try {
+      // check email and password
+      if (!email || !password) {
+        toast('Correo y contraseña son requeridos', {
+          type: 'error'
+        });
+        return;
+      }
+      
+      setIsLoading(true);
       const completeSignIn = await signIn.create({
         identifier: email,
         password,
@@ -29,19 +41,30 @@ export default function SignInForm() {
       if (completeSignIn.status !== 'complete') {
         // The status can also be `needs_factor_on', 'needs_factor_two', or 'needs_identifier'
         // Please see https://clerk.com/docs/references/react/use-sign-in#result-status for  more information
-        console.log(JSON.stringify(completeSignIn, null, 2));
+        // console.log(JSON.stringify(completeSignIn, null, 2));
+        setIsLoading(false);
+        toast('Error al iniciar sesión', {
+          type: 'error'
+        });
       }
  
       if (completeSignIn.status === 'complete') {
         // If complete, user exists and provided password match -- set session active
         await setActive({ session: completeSignIn.createdSessionId });
         // Redirect the user to a post sign-in route
+        toast('Inicio de sesión exitoso', {
+          type: 'success'
+        });
         router.push('/home/dashboard');
       }
     } catch (err: any) {
       // This can return an array of errors.
       // See https://clerk.com/docs/custom-flows/error-handling to learn about error handling
-      console.error(JSON.stringify(err, null, 2));
+      setIsLoading(false);
+      toast('Error al iniciar sesión', {
+        type: 'error'
+      });
+      // console.error(JSON.stringify(err, null, 2));
     }
   };
 
@@ -94,8 +117,13 @@ export default function SignInForm() {
               </svg>
             </button>
           </div>
-          <button type="submit" className="bg-primary w-full text-white rounded-md py-2 hover:bg-primary/30">Sign In
-          </button>
+          <Button 
+            type="submit"
+            className="bg-primary w-full text-white rounded-md py-2 hover:bg-primary/30"
+            isLoading={isLoading}
+          >
+            Sign In
+          </Button>
         </div>
       </form>
     </div>

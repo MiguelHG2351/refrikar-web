@@ -93,7 +93,6 @@ export default function HomeLayout({
       </header>
           {children}
       </section>
-      <ToastContainer />
     </main>
   )
 }

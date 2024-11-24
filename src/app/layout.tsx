@@ -5,6 +5,7 @@ import NextUIProvider from '@/providers/NextUI'
 import '@/styles/globals.css'
 import 'react-toastify/dist/ReactToastify.css'
 import {ClerkProvider} from "@clerk/nextjs";
+import { ToastContainer } from 'react-toastify'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -27,6 +28,7 @@ export default function RootLayout({
                 {children}
               </NextUIProvider>
             </ReduxProvider>
+            <ToastContainer />
           </body>
         </html>
     </ClerkProvider>
