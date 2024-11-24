@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: "Clientes | Refrikar",
 }
 
-type Params = Promise<{ search: string }>
+type Params = Promise<{ search: string, tipo: string }>
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
 
 export default async function (props: {
@@ -18,7 +18,7 @@ export default async function (props: {
 
   return (
       <section className="px-6 py-4 min-h-[calc(100vh_-_59px]">
-        <SearchClientes querySearch={undefined} queryTipo={undefined} />
+        <SearchClientes querySearch={querySearch.search} queryTipo={querySearch.tipo} />
         <ClienteList />
       </section>
   )

@@ -1,6 +1,7 @@
 import { Cliente, TipoCliente } from "@/dtos"
 
 export const clienteAdapter = (responseData: any[]): Cliente[] => {
+  console.log(responseData)
   const mappedData = responseData.map((data: any) => {
     const cliente: Cliente = {
       ruc: data.ruc,
@@ -10,8 +11,8 @@ export const clienteAdapter = (responseData: any[]): Cliente[] => {
       apellido: data.apellido,
       telefono: data.telefono,
       tipo_cliente: {
-        tipoclienteid: data.tipo_cliente.tipoclienteid,
-        tipo_cliente: data.tipo_cliente.tipo_cliente
+        tipoclienteid: data.tipo_cliente?.tipoclienteid,
+        tipo_cliente: data.tipo_cliente?.tipo_cliente
       },
     }
     

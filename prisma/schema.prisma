@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model inventario {
@@ -13,7 +14,7 @@ model inventario {
   stock        String?    @db.VarChar(50)
   productos    productos? @relation(fields: [productoid], references: [productoid], onDelete: NoAction, onUpdate: NoAction, map: "inventario_ibfk_1")
 
-  @@index([productoid], map: "productoid")
+  @@index([productoid], map: "inventario_productoid_idx")
 }
 
 model recursos {
@@ -27,9 +28,9 @@ model recursos {
   detalle_servicio  detalle_servicio? @relation(fields: [detalleservicioid], references: [detalleservicioid], onDelete: NoAction, onUpdate: NoAction, map: "recursos_ibfk_2")
   empleados         empleados?        @relation(fields: [empleadoid], references: [empleadoid], onDelete: NoAction, onUpdate: NoAction, map: "recursos_ibfk_3")
 
-  @@index([detalleservicioid], map: "detalleservicioid")
-  @@index([empleadoid], map: "empleadoid")
-  @@index([productoid], map: "productoid")
+  @@index([detalleservicioid], map: "recursos_detalleservicioid_idx")
+  @@index([empleadoid], map: "recursos_empleadoid_idx")
+  @@index([productoid], map: "recursos_productoid_idx")
 }
 
 model suministro {
@@ -40,7 +41,7 @@ model suministro {
   proveedores        proveedores?         @relation(fields: [proveedorid], references: [proveedorid], onDelete: NoAction, onUpdate: NoAction, map: "suministro_ibfk_1")
   egresos            egresos?             @relation(fields: [egresoid], references: [egresoid], onDelete: NoAction, onUpdate: NoAction, map: "suministro_ibfk_2")
 
-  @@index([egresoid], map: "egresoid")
+  @@index([egresoid], map: "suministro_egresoid_idx")
   @@index([proveedorid], map: "proveedorid")
 }
 
@@ -58,12 +59,12 @@ model categoria_producto {
 
 model clientes {
   clienteid     String        @id @db.VarChar(50)
-  tipoclienteid String?       @db.VarChar(50)
+  tipoclienteid String       @db.VarChar(50)
   nombre        String?       @db.VarChar(255)
   apellido      String?       @db.VarChar(255)
   telefono      Int?
   entidad       String?       @db.VarChar(255)
-  ruc           String?       @unique(map: "ruc") @db.VarChar(50)
+  ruc           String?       @unique(map: "unique_ruc_clientes") @db.VarChar(50)
   tipo_cliente  tipo_cliente? @relation(fields: [tipoclienteid], references: [tipoclienteid], onDelete: NoAction, onUpdate: NoAction, map: "clientes_ibfk_1")
   servicios     servicios[]
 
@@ -146,7 +147,7 @@ model gastos_varios {
   descripcion String?  @db.VarChar(255)
   egresos     egresos? @relation(fields: [egresoid], references: [egresoid], onDelete: NoAction, onUpdate: NoAction, map: "gastos_varios_ibfk_1")
 
-  @@index([egresoid], map: "egresoid")
+  @@index([egresoid], map: "pago_impuesto_egresoid_idx")
 }
 
 model pago_empleado {
@@ -157,8 +158,8 @@ model pago_empleado {
   empleados  empleados? @relation(fields: [empleadoid], references: [empleadoid], onDelete: NoAction, onUpdate: NoAction, map: "pago_empleado_ibfk_1")
   egresos    egresos?   @relation(fields: [egresoid], references: [egresoid], onDelete: NoAction, onUpdate: NoAction, map: "pago_empleado_ibfk_2")
 
-  @@index([egresoid], map: "egresoid")
-  @@index([empleadoid], map: "empleadoid")
+  @@index([egresoid], map: "pagos_empleado_egresoid_idx")
+  @@index([empleadoid], map: "pagos_empleado_empleadoid_idx")
 }
 
 model pago_impuesto {
