@@ -7,7 +7,6 @@ export const clientesApi = RefrikarApi.injectEndpoints({
     getAllClients: builder.query({
       query: ({ search, tipo }) => {
         const searchParams = new URLSearchParams()
-        // console.log('dataaa ', dataaa)
         if (search) {
           searchParams.set('search', search)
         }

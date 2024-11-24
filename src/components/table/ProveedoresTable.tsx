@@ -46,9 +46,7 @@ export default function ProveedoresTable() {
   ];
 
   const [page, setPage] = React.useState(1);
-  console.log(page)
   const hasSearchFilter = Boolean(filterValue);
-  console.log(!isLoading ? proveedorList : [])
 
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === "all") return columns;
@@ -75,7 +73,6 @@ export default function ProveedoresTable() {
   }, [proveedorList, filterValue, statusFilter]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
-  console.log(pages)
 
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;

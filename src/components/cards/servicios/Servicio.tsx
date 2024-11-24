@@ -3,7 +3,6 @@ import BtnViewService from "./btnAddService";
 import {ServicioModel} from "@/dtos";
 
 export default function Servicio({ data }: {data: ServicioModel}) {
-  console.log(data)
   return (
     <div className="flex flex-col justify-between shadow-card-secondary pt-4 overflow-hidden rounded-md">
       <div className="py-2 px-2">

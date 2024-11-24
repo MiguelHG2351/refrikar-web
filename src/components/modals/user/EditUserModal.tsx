@@ -42,7 +42,6 @@ export default function EditUserModal({ user }: { user: User }) {
   const toggleVisibility = () => setIsVisible(!isVisible);
 
   const onSubmit = handleSubmit((data) => {
-    console.log(data)
 
     onUser({
       id: user.id,
@@ -53,7 +52,6 @@ export default function EditUserModal({ user }: { user: User }) {
       password: data.password
     }).unwrap()
         .then((data) => {
-          console.log('data', data)
           toast('Usuario editado', {
             type: 'success'
           })
@@ -61,11 +59,9 @@ export default function EditUserModal({ user }: { user: User }) {
           onClose()
         })
         .catch(error => {
-          console.log(error)
           toast(error.data.message, {
             type: 'error'
           })
-          console.log(error)
         })
   })
 

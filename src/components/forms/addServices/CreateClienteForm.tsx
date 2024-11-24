@@ -35,9 +35,7 @@ export default function CreateClientForm({ onClose }: CreateClientFormProps) {
     })
     const dispatch = useAppDispatch()
 
-    console.log(errors)
     const onSubmit = handleSubmit((data: FormData) => {
-        console.log(data)
         let cliente = {
             ruc: data.ruc,
             nombre: data.nombre,

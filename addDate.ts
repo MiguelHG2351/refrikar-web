@@ -16,7 +16,6 @@ async function actualizarFechaUsuarios() {
   }
 }
 
-console.log('here')
 actualizarFechaUsuarios()
     .then(async () => {
       await prisma.$disconnect();

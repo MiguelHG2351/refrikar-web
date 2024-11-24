@@ -32,8 +32,6 @@ async function getServicio(servicioid: string): Promise<any> {
 
 export default async function ViewService({ params }: { params: { slug: string } }) {
   const servicio = await getServicio(params.slug)
-  console.log(servicio)
-  console.log(servicio)
   
   return (
     <section className="px-6 py-4">

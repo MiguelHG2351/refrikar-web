@@ -30,11 +30,9 @@ export async function POST(req: NextRequest) {
         role
       }
     });
-    console.log(user)
     return NextResponse.json({ message: 'User created' }, { status: 201 })
   } catch(e) {
     // @ts-ignore
-    console.log(e?.status)
     // @ts-ignore
     if (e!?.status === 422) {
       return NextResponse.json({ message: 'Ya existe un usuario con este correo' }, { status: 422 })
@@ -85,7 +83,6 @@ export async function PATCH(req: NextRequest) {
   }, {});
 
   try {
-    console.log(_restWithoutEmptyFields)
     const user = await clerkClient().users.updateUser(id, {
       ..._restWithoutEmptyFields,
       privateMetadata: {
@@ -98,7 +95,6 @@ export async function PATCH(req: NextRequest) {
     });
     return NextResponse.json({message: 'User updated'}, {status: 200});
   } catch(e) {
-    console.log(e)
     // @ts-ignore
     if (e.status === 422) {
       return NextResponse.json({message: 'La contraseña debe tener al menos 8 carácteres'}, {status: 422});

@@ -134,7 +134,6 @@ export default function LineChartUsageExample({ egresos }: { egresos: SumOfEgres
 
     return Object.values(groupedData);
   }, [egresos]);
-  console.log(egresos, egresosList)
 
   return (
       <>

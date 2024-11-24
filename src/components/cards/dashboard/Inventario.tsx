@@ -3,7 +3,6 @@
 import Link from "next/link";
 
 export const Inventario = ({ inventario }: { inventario: any }) => {
-  // console.log(inventario)
   
   return (
     <>

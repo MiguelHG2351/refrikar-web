@@ -28,10 +28,8 @@ export default function SearchClientes({ querySearch, queryTipo }: { querySearch
     };
   }
   const performSearch = (query: string, variable: string) => {
-    console.log('Query', query)
     const params = new URLSearchParams(searchParams.toString())
     params.set(variable, query)
-    console.log(params.toString())
     replace(`${pathname}?${params.toString()}`)
   }
     const debouncedSearch = debounce(performSearch, 1000);
@@ -53,7 +51,6 @@ export default function SearchClientes({ querySearch, queryTipo }: { querySearch
   }
 
   const handleSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log('change type')
     setTipoClientList(e.target.value);
     // @ts-ignore
     debouncedSearch(e.target.value, 'tipo')

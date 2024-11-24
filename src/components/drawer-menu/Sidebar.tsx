@@ -26,7 +26,6 @@ function isCurrentPage(pathName: Path, path: string) {
 
 export default function Sidebar() {
   const navigation = usePathname()
-  console.log('render')
 
   return (
       <>

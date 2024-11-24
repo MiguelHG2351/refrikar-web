@@ -23,17 +23,14 @@ export default function AddServiceForm() {
   const [onService, { isLoading, isError, error }] = useCreateServiceMutation()
 
   const handlerAddService = () => {
-    console.log('add service')
     if (service.detalle_servicio.length === 0) {
       toast('Debe haber al menos un detalle de servicio', {
         type: 'error'
       })
       return
     }
-    console.log(service)
     onService(service).unwrap()
         .then((data) => {
-          console.log('data', data)
           toast('Servicio creado', {
             type: 'success'
           })
@@ -41,7 +38,6 @@ export default function AddServiceForm() {
           dispatch(clearDetalleServicio());
         })
         .catch((error) => {
-          console.log('error', error)
           toast('Error al crear el servicio', {
             type: 'error'
           })

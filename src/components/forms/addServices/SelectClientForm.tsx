@@ -39,10 +39,8 @@ export default function SelectClientForm({ onClose }: SelectClientFormProps) {
     const onSubmit = handleSubmit((data: FormData) => {
 
         let findClient = listOfClients?.find((client: Cliente) => client.clienteid === data.client_id)
-        console.log(data, findClient, !findClient)
         if (!findClient) return
 
-        console.log('here')
         dispatch(setCliente({
             clienteid: findClient.clienteid,
             telefono: findClient.telefono,

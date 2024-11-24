@@ -29,7 +29,6 @@ export default function CreateAndAddClient() {
     if (currentUser.nombre) {
       setIsDeleteConfirmed(true)
     }
-    console.log('currentUser', currentUser, Boolean(currentUser.nombre))
   }, [currentUser])
 
   const onHandlerConfirmation = () => {

@@ -214,7 +214,7 @@ export default function EmpleadosTable({ empleados }: { empleados: any }) {
     <Table topContentPlacement="outside" topContent={topContent}>
       <TableHeader columns={headerColumns}>
         {(column) => {
-          console.log(column)
+          // console.log(column)
           return (
             <TableColumn key={column.uid}>
               {column.name}

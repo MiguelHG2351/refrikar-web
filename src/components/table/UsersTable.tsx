@@ -17,7 +17,7 @@ export default function UsersTable() {
 
   // @ts-ignore
   if(!isLoading && isError) return <div className="flex-1 flex items-center justify-center"><p>Error: {error.data?.message}</p></div>
-  console.log(userList)
+  // console.log(userList)
   return (
       <Table>
         <TableHead>

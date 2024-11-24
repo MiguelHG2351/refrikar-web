@@ -46,7 +46,7 @@ export function EditClienteModal({ cliente }: { cliente: Cliente }) {
       apellido: data.apellido
     }).unwrap()
         .then((data) => {
-          console.log('data', data)
+          // console.log('data', data)
           toast('Cliente editado', {
             type: 'success'
           })

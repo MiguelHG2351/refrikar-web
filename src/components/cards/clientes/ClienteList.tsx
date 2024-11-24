@@ -2,15 +2,14 @@
 import {ClienteService} from "@/services/ClientesServices";
 import ClienteItem from "@/components/cards/clientes/ClienteItem";
 import {useGetAllClientsQuery} from "@/storage/api/clientes";
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import {Cliente} from "@/dtos";
 import ClientItemSkeleton from "@/components/cards/clientes/ClientItemSkeleton";
-import {usePathname, useSearchParams} from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 export default function ClienteList() {
   const searchParams = useSearchParams()
   const { data: _clientes,
-    error,
     isLoading,
     isFetching
   } = useGetAllClientsQuery({ search: searchParams.get('search'), tipo: searchParams.get('tipo')})

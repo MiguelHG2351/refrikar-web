@@ -2,12 +2,12 @@ import { PrismaClient } from '@prisma/client'
 
 const prismaClientSingleton = () => {
   return new PrismaClient({
-    log: [
-      {
-        emit: 'event',
-        level: 'query',
-      }
-    ]
+    // log: [
+    //   {
+    //     emit: 'event',
+    //     level: 'query',
+    //   }
+    // ]
   })
 }
 
@@ -16,9 +16,9 @@ declare const globalThis: {
 } & typeof global;
 
 const prisma = globalThis.prismaGlobal ?? prismaClientSingleton()
-prisma.$on('query', (e) => {
-  console.log('Query: ' + e.query)
-})
+// prisma.$on('query', (e) => {
+//   console.log('Query: ' + e.query)
+// })
 
 export default prisma
 

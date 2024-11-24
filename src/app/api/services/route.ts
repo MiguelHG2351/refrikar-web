@@ -23,7 +23,6 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  console.log('here')
   const body  = await req.json()
   let cliente;
   type countList = {
@@ -52,7 +51,6 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  console.log(body.detalle_servicio)
   let detalleServicio = body.detalle_servicio.map((detalle: Prisma.detalle_servicioCreateManyInput, index: number) => {
     let detalleServicioId = `${countList[2] + index + 1}`.padStart(8, 'DSV00004')
     return {

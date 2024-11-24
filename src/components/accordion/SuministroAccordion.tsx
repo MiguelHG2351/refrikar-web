@@ -14,7 +14,6 @@ import {
 
 export default function SuministroAccordion() {
   const { data, isLoading}  = useGetSuministrosQuery("")
-  console.log(data)
 
   return (
       <section className="px-6">

@@ -52,7 +52,6 @@ export async function GET(req: NextRequest) {
     }
   });
 
-  console.log('cleintes', clientes)
   return NextResponse.json(clientes)
 }
 
@@ -93,7 +92,6 @@ export async function PUT(req: NextRequest) {
   const body = await req.json()
   const availableFields = ['nombre', 'apellido', 'entidad', 'clienteid']
 
-  console.log()
   if (Object.keys(body).some(key => !availableFields.includes(key))) {
     return NextResponse.json({
       error: 'Invalid fields'

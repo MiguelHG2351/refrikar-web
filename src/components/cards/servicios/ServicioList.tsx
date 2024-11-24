@@ -19,8 +19,6 @@ export default function ServicioList(cliente: { cliente: ClienteServiceById }) {
     }
   }, [isLoading, data])
 
-  console.log(isLoading)
-
   if (!isLoading && data!?.length === 0) {
     return (
         <div className="flex justify-center items-center h-96">
