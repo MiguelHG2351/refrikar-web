@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
   const { firstName, lastName, email, password, role } = body;
 
   try {
-    const user = await clerkClient().users.createUser({
+    const user = await (await clerkClient()).users.createUser({
       firstName,
       lastName,
       emailAddress: [email],
@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
         role
       }
     });
-    return NextResponse.json({ message: 'User created' }, { status: 201 })
+    return NextResponse.json({ message: 'Usuario creado' }, { status: 201 })
   } catch(e) {
     // @ts-ignore
     // @ts-ignore
@@ -48,7 +48,7 @@ export async function GET(req: NextRequest) {
     status: 401,
   });
 
-  const response = await clerkClient().users.getUserList({
+  const response = await (await clerkClient()).users.getUserList({
     limit: 10,
     orderBy: '+created_at',
   });
@@ -83,7 +83,7 @@ export async function PATCH(req: NextRequest) {
   }, {});
 
   try {
-    const user = await clerkClient().users.updateUser(id, {
+    const user = await (await clerkClient()).users.updateUser(id, {
       ..._restWithoutEmptyFields,
       privateMetadata: {
         role: rest.role
@@ -93,12 +93,12 @@ export async function PATCH(req: NextRequest) {
       },
       skipPasswordChecks: true
     });
-    return NextResponse.json({message: 'User updated'}, {status: 200});
+    return NextResponse.json({message: 'Usuario actualizado'}, {status: 200});
   } catch(e) {
     // @ts-ignore
     if (e.status === 422) {
       return NextResponse.json({message: 'La contraseña debe tener al menos 8 carácteres'}, {status: 422});
     }
-    return NextResponse.json({message: 'Error updating user'}, {status: 400});
+    return NextResponse.json({message: 'Error al editar el usuario'}, {status: 400});
   }
 }

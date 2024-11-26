@@ -68,12 +68,12 @@ export default function AddServiceForm() {
             <TableBody>
               {service.detalle_servicio.length == 0 ?
                 <TableRow key="1">
-                  <TableCell>No data</TableCell>
-                  <TableCell>No data</TableCell>
-                  <TableCell>No data</TableCell>
-                  <TableCell>No data</TableCell>
-                  <TableCell>No data</TableCell>
-                  <TableCell>No data</TableCell>
+                  <TableCell>Vacío</TableCell>
+                  <TableCell>Vacío</TableCell>
+                  <TableCell>Vacío</TableCell>
+                  <TableCell>Vacío</TableCell>
+                  <TableCell>Vacío</TableCell>
+                  <TableCell>Vacío</TableCell>
                 </TableRow>
                :
                 service.detalle_servicio.map((detalle) => (

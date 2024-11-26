@@ -108,7 +108,7 @@ export default function EditUserModal({ user }: { user: User }) {
                             autoFocus
                             label="Email"
                             autoComplete="off"
-                            placeholder="Enter your email"
+                            placeholder="Ingresa tu correo"
                             {...register('email')}
                             variant="bordered"
                         />
@@ -123,9 +123,9 @@ export default function EditUserModal({ user }: { user: User }) {
                       </div>
                       <div>
                         <Input
-                            label="Password"
-                            placeholder="Enter your password"
-                            type={ isVisible ? 'text' : 'password' }
+                            label="Contraseña"
+                            placeholder="Ingresa tu contraseña"
+                            type={ isVisible ? 'text' : 'Contraseña' }
                             autoComplete="off"
                             variant="bordered"
                             {...register('password')}

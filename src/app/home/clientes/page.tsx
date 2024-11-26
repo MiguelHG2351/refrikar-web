@@ -3,12 +3,12 @@ import ClienteList from "@/components/cards/clientes/ClienteList";
 import {Metadata} from "next";
 import SearchClientes from "@/components/forms/clientes/SearchClientes";
 
+import type { SearchParams } from "@/utils/types";
+export type Params = Promise<{ search: string, tipo: string }>
+
 export const metadata: Metadata = {
   title: "Clientes | Refrikar",
 }
-
-type Params = Promise<{ search: string, tipo: string }>
-type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
 
 export default async function (props: {
   params: Params,

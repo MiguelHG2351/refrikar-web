@@ -101,9 +101,9 @@ export default function AddUserModal() {
 
                         <Input
                             autoFocus
-                            label="Email"
+                            label="Correo"
                             autoComplete="off"
-                            placeholder="Enter your email"
+                            placeholder="Ingresa tu correo"
                             {...register('email')}
                             variant="bordered"
                         />
@@ -118,8 +118,8 @@ export default function AddUserModal() {
                       </div>
                       <div>
                         <Input
-                            label="Password"
-                            placeholder="Enter your password"
+                            label="Contraseña"
+                            placeholder="Contraseña nueva"
                             type={ isVisible ? 'text' : 'password' }
                             autoComplete="off"
                             variant="bordered"

@@ -53,7 +53,7 @@ export default function CreateAndAddClient() {
     <>
       <div className="flex justify-between items-center">
         <h1>Cliente:</h1>
-        <Button onPress={() => onOpen()}>Crea cliente</Button>
+        <Button onPress={() => onOpen()}>Crear cliente</Button>
       </div>
       <Modal isOpen={isOpen} onClose={onClose} onOpenChange={onOpenChange} isDismissable={false} backdrop="blur">
         <ModalContent>
@@ -64,8 +64,8 @@ export default function CreateAndAddClient() {
                   <p className="text-sm font-normal">Nota: Selecciona un cliente o crea uno rellenando los campos del formulario</p>
                 </ModalHeader>
                 <ModalBody>
-                  <Tabs arial-label="Options">
-                    <Tab key="select" title="Select clientes">
+                  <Tabs arial-label="Opciones">
+                    <Tab key="select" title="Seleccionar clientes">
                       <div>
                         <SelectClientForm onClose={onClose} />
                       </div>
@@ -89,10 +89,10 @@ export default function CreateAndAddClient() {
         </TableHeader>
         <TableBody>
           <TableRow key="1">
-            <TableCell>{currentUser.nombre || 'Sin data'}</TableCell>
-            <TableCell>{currentUser.apellido || 'Sin data'}</TableCell>
-            <TableCell>{currentUser.tipo_cliente?.tipo_cliente || 'Sin data'}</TableCell>
-            <TableCell>{currentUser.entidad || 'Sin data'}</TableCell>
+            <TableCell>{currentUser.nombre || 'Vacío'}</TableCell>
+            <TableCell>{currentUser.apellido || 'Vacío'}</TableCell>
+            <TableCell>{currentUser.tipo_cliente?.tipo_cliente || 'Vacío'}</TableCell>
+            <TableCell>{currentUser.entidad || 'Vacío'}</TableCell>
             <TableCell>
               <div className="relative flex items-center gap-2">
                 <Tooltip content="Editar">

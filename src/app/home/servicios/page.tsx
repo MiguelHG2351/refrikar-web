@@ -4,15 +4,22 @@ import {Metadata} from "next";
 import ServicioList from "@/components/cards/servicios/ServicioList";
 import { currentUser } from '@clerk/nextjs/server';
 
+import type { SearchParams } from "@/utils/types";
+
 export const metadata: Metadata = {
   title: "Servicios"
 }
 
+export type Params = Promise<{ cliente_id: string }>
 
-export default async function Servicios({ searchParams }: { searchParams?: { [key: string]: string | undefined }; }) {
+export default async function Servicios(props: {
+  params: Params,
+  searchParams: SearchParams
+}) {
 
+  const querySearch = await props.params;
   const clientes = await getClientesOnlyWithServices()
-  const currentClient = await getClientesById(searchParams?.cliente_id)
+  const currentClient = await getClientesById(querySearch.cliente_id)
   const user = await currentUser()
 
   if (user?.privateMetadata?.role === 'user') {
