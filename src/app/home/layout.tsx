@@ -44,7 +44,7 @@ export default function HomeLayout({
           {
             user?.publicMetadata?.role === 'admin' && (
                 <Button as={Link} href="/home/admin" className="bg-primary text-white rounded-md text-center">
-                  Admin
+                  Administracion de Usuarios
                 </Button>
             )
           }
