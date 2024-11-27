@@ -2,6 +2,7 @@
 
 import Sidebar from "@/components/drawer-menu/Sidebar"
 import Image from "next/image"
+import EditUserModal from "@/components/modals/user/EditUserModal";
 import { ToastContainer } from "react-toastify";
 import { useAuth } from "@clerk/nextjs"
 import { useUser } from "@clerk/nextjs"
@@ -71,19 +72,19 @@ export default function HomeLayout({
             </DropdownTrigger>
             <DropdownMenu>
               <DropdownSection
-                  title="Acciones"
+                 // title="Acciones"
                   showDivider
                   aria-label="Dropdown for account options"
               >
-                <DropdownItem description="Settings">
-                  Configurar cuenta
+                <DropdownItem description="">
+                  Editar usuario
                 </DropdownItem>
                 </DropdownSection>
               <DropdownSection
-                  title="Sesión"
+                  //title="Sesión"
                   aria-label="Dropdown for account options"
               >
-                <DropdownItem description="Logout" onPress={() => signOut()}>
+                <DropdownItem description="" onPress={() => signOut()}>
                   Cerrar sesión
                 </DropdownItem>
               </DropdownSection>
