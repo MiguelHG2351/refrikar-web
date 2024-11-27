@@ -15,10 +15,11 @@ export default async function (props: {
   searchParams: SearchParams
 }) {
   const querySearch = await props.params;
+  const searchParams = await props.searchParams;
 
   return (
       <section className="px-6 py-4 min-h-[calc(100vh_-_59px]">
-        <SearchClientes querySearch={querySearch.search} queryTipo={querySearch.tipo} />
+        <SearchClientes querySearch={searchParams.search as string} queryTipo={searchParams.tipo as string} />
         <ClienteList />
       </section>
   )

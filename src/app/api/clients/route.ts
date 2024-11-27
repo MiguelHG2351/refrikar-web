@@ -34,17 +34,20 @@ export async function GET(req: NextRequest) {
       OR: [
         {
           nombre: {
-            contains: searchParams.get('search') as string
+            contains: searchParams.get('search') as string,
+            mode: 'insensitive'
           }
         },
         {
           apellido: {
-            contains: searchParams.get('search') as string
+            contains: searchParams.get('search') as string,
+            mode: 'insensitive'
           }
         },
         {
           ruc: {
-            contains: searchParams.get('search') as string
+            contains: searchParams.get('search') as string,
+            mode: 'insensitive'
           }
         }
       ],

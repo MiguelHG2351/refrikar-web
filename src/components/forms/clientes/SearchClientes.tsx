@@ -10,9 +10,10 @@ export default function SearchClientes({ querySearch, queryTipo }: { querySearch
   const [search, setSearch] = useState<string | undefined>(querySearch)
   const { replace } = useRouter();
   const pathname = usePathname();
-  const [tipoClientList, setTipoClientList] = useState<string>("");
+  const [tipoClientList, setTipoClientList] = useState<string>(queryTipo || "");
   const { data: tipoCliente } = useGetAllTipoClientsQuery(queryTipo || "")
   const searchParams = useSearchParams()
+  console.log(querySearch);
 
   const formRef = useRef<HTMLFormElement | null>(null);
   const debounceTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -63,7 +64,11 @@ export default function SearchClientes({ querySearch, queryTipo }: { querySearch
           <Select label="Tipo de cliente" classNames={{ mainWrapper: "max-w-72" }} size="sm" selectedKeys={[tipoClientList]} onChange={handleSelectionChange}>
             {
               tipoCliente!?.map((tipo) => (
-                  <SelectItem key={tipo.tipoclienteid} value={tipo.tipoclienteid}>{tipo.tipo_cliente}</SelectItem>
+                  <SelectItem 
+                    key={tipo.tipoclienteid}
+                    value={tipo.tipoclienteid}>
+                      {tipo.tipo_cliente}
+                  </SelectItem>
               ))
             }
           </Select>
