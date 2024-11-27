@@ -1,10 +1,11 @@
 import { TipoServicio } from "@/dtos"
 
 export const servicioAdapter = (responseData: any[]): any[] => {
+    console.log(responseData)
     const mappedData = responseData.map((data: any) => {
         const servicio = {
             servicioid: data.servicioid,
-            fecha: data.fecha,
+            fecha: data.createdAt,
             clientes: {
                 clienteid: data.clientes.clienteid,
                 nombre: data.clientes.nombre,

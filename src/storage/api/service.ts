@@ -29,6 +29,17 @@ export const servicioApi = RefrikarApi.injectEndpoints({
         return servicioAdapter(response)
       }
     }),
+    getServiciosByCliente: builder.query({
+      query: (client_id: string) => {
+        return {
+          url: `/api/services?cliente_id=${client_id}`,
+          method: 'GET',
+        }
+      },
+      transformResponse(response: any) {
+        return servicioAdapter(response)
+      }
+    }),
     getTipoServicios: builder.query({
         query: () => {
             return {
@@ -43,4 +54,4 @@ export const servicioApi = RefrikarApi.injectEndpoints({
   })
 })
 
-export const { useCreateServiceMutation, useGetTipoServiciosQuery, useGetServiciosQuery } = servicioApi
+export const { useCreateServiceMutation, useGetTipoServiciosQuery, useGetServiciosQuery, useLazyGetServiciosByClienteQuery } = servicioApi

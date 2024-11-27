@@ -28,9 +28,6 @@ export default function ClienteItem({ cliente }: { cliente: Cliente }) {
           Servicios
           </Button>
           <EditClienteModal cliente={cliente} />
-          {/*<Button variant="bordered" size="sm" color="danger">*/}
-          {/*  Borrar*/}
-          {/*</Button>*/}
         </div>
       </CardBody>
     </Card>

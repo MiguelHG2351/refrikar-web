@@ -18,6 +18,7 @@ export async function GET(req: NextRequest) {
   let clienteid = searchParams.get('cliente_id')?.split(',') || []
 
   let servicios_ = await servicios.getAllServicesByIds({ clientIds: clienteid })
+  console.log(servicios_)
 
   return NextResponse.json(servicios_)
 }

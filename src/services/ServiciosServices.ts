@@ -104,6 +104,7 @@ export class ServiciosServices {
     return servicios.map(servicio => ({
       servicioid: servicio.servicioid,
       clienteid: servicio.clienteid,
+      createdAt: servicio.createdAt,
       clientes: {
         clienteid: servicio.clientes?.clienteid,
         tipoclienteid: servicio.clientes?.tipoclienteid as String,

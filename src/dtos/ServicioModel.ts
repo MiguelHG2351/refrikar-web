@@ -1,31 +1,31 @@
 export interface ServicioModel {
-  servicioid: String;
-  clienteid: String | null;
+  servicioid: string;
+  clienteid: string | null;
   clientes: {
-    "clienteid": String | undefined,
-    "tipoclienteid": String,
-    "nombre": String,
-    "apellido": String,
+    "clienteid": string | undefined,
+    "tipoclienteid": string,
+    "nombre": string,
+    "apellido": string,
     "telefono": number,
-    "entidad": String,
-    "ruc": String,
+    "entidad": string,
+    "ruc": string,
     "tipo_cliente": {
-      "tipoclienteid": String,
-      "tipo_cliente": String
+      "tipoclienteid": string,
+      "tipo_cliente": string
     }
   }
   detalle_servicio: {
-    "detalleservicioid": String,
-    "tiposervicioid": String,
+    "detalleservicioid": string,
+    "tiposervicioid": string,
     "tipo_servicio": {
-      "tiposervicioid": String,
-      "tipo": String
+      "tiposervicioid": string,
+      "tipo": string
     },
-    "equipoid": String,
-    "servicioid": String,
-    "descripcion": String,
-    "costo": String,
-    "fecha": String,
-    "direccion": String
+    "equipoid": string,
+    "servicioid": string,
+    "descripcion": string,
+    "costo": string,
+    "fecha": string,
+    "direccion": string
   }[]
 }

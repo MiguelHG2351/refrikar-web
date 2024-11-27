@@ -199,6 +199,8 @@ model servicios {
   clienteid        String?            @db.VarChar(50)
   detalle_servicio detalle_servicio[]
   clientes         clientes?          @relation(fields: [clienteid], references: [clienteid], onDelete: NoAction, onUpdate: NoAction, map: "servicios_ibfk_1")
+  createdAt        DateTime           @default(now()) @db.Timestamp(6)
+  updatedAt        DateTime           @updatedAt @db.Timestamp(6)
 
   @@index([clienteid], map: "clienteid")
 }
