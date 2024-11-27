@@ -41,8 +41,8 @@ export default function Sidebar() {
           </div>
           <section>
             <Menu title="Menu principal">
-              <MenuItem state={pageMap.presentation.includes(navigation) ? "active" : 'inactive'} icon={HomeIcon} iconSize={{width: 24, height: 24}} text="Presentación" path="/home/presentation"/>
-              <MenuItem state={pageMap.dashboard.includes(navigation) ? "active" : 'inactive'} path="/home/dashboard" text="Dashboard" icon={DashBoardIcon} iconSize={{width: 20, height: 20}}/>
+              {/* <MenuItem state={pageMap.presentation.includes(navigation) ? "active" : 'inactive'} icon={HomeIcon} iconSize={{width: 24, height: 24}} text="Presentación" path="/home/presentation"/> */}
+              {/* <MenuItem state={pageMap.dashboard.includes(navigation) ? "active" : 'inactive'} path="/home/dashboard" text="Dashboard" icon={DashBoardIcon} iconSize={{width: 20, height: 20}}/> */}
               <MenuItem state={(isCurrentPage('servicios', navigation) || navigation.includes('/home/servicios/view')) ? "active" : 'inactive'} icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Servicios" path="/home/servicios" />
               <MenuItem state={pageMap.clientes.includes(navigation) ? "active" : 'inactive'} path="/home/clientes" icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Clientes"/>
             </Menu>
