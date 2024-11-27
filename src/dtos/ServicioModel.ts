@@ -1,6 +1,7 @@
 export interface ServicioModel {
   servicioid: string;
   clienteid: string | null;
+  createdAt: Date;
   clientes: {
     "clienteid": string | undefined,
     "tipoclienteid": string,

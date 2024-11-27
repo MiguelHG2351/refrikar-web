@@ -6,7 +6,7 @@ import {currentUser} from "@clerk/nextjs/server";
 export const metadata: Metadata = {
   title: 'Suministros | Refrikar'
 }
-export default async function SuministroPage({ searchParams }: { searchParams?: { [key: string]: string | undefined }; }) {
+export default async function SuministroPage() {
 
   const user = await currentUser()
 

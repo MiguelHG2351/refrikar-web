@@ -5,6 +5,7 @@ import { Prisma } from "@prisma/client"
 import { DateInputFormat } from "@/utils/date"
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, getKeyValue } from "@nextui-org/react"
 import DetallesServicio from "@/components/table/DetallesServicio"
+import { SearchParams } from "@/utils/types";
 
 const refrikarFont = localFont({
   src: '../../../../../fonts/JejuHallasan-Regular.ttf'
@@ -30,8 +31,17 @@ async function getServicio(servicioid: string): Promise<any> {
   return data
 }
 
-export default async function ViewService({ params }: { params: { slug: string } }) {
-  const servicio = await getServicio(params.slug)
+type Params = Promise<{
+  slug: string
+}>
+
+export default async function ViewService(props: {
+  params: Params,
+  searchParams: SearchParams
+}) {
+
+  const querySearch = await props.params;
+  const servicio = await getServicio(querySearch.slug)
   
   return (
     <section className="px-6 py-4">

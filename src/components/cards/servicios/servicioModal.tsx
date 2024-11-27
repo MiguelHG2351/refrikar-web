@@ -1,6 +1,6 @@
 'use client'
 import { useLazyGetServiciosByClienteQuery } from "@/storage/api/service";
-import { timeAgo } from "@/utils/date";
+// import { timeAgo } from "@/utils/date";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, CardHeader, Card, CardBody } from "@nextui-org/react";
 import { useEffect } from "react";
 
@@ -67,7 +67,7 @@ export const ServicioModal = ({ isOpen, onClose, serviceId }: { isOpen: boolean,
                                     </svg>
                                   </div>
                                   <p className="font-bold text-lg">{`${servicio.clientes.nombre} ${servicio.clientes.apellido}`}</p>
-                                  <p>{timeAgo(servicio.fecha)}</p>
+                                  {/* <p>{timeAgo(servicio.fecha)}</p> */}
                                 </div>
                                 {/* <Link href={`/home/servicios/view/${data.servicioid}`}>
                                   <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 32 32" fill="none">

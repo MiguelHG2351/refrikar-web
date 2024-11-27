@@ -107,15 +107,15 @@ export class ServiciosServices {
       createdAt: servicio.createdAt,
       clientes: {
         clienteid: servicio.clientes?.clienteid,
-        tipoclienteid: servicio.clientes?.tipoclienteid as String,
-        nombre: servicio.clientes?.nombre as String,
-        apellido: servicio.clientes?.apellido as String,
+        tipoclienteid: servicio.clientes?.tipoclienteid as string,
+        nombre: servicio.clientes?.nombre as string,
+        apellido: servicio.clientes?.apellido as string,
         telefono: servicio.clientes?.telefono as number,
-        entidad: servicio.clientes?.entidad as String,
-        ruc: servicio.clientes?.ruc as String,
+        entidad: servicio.clientes?.entidad as string,
+        ruc: servicio.clientes?.ruc as string,
         tipo_cliente: {
-          tipoclienteid: servicio.clientes?.tipo_cliente?.tipoclienteid as String,
-          tipo_cliente: servicio.clientes?.tipo_cliente?.tipo_cliente as String
+          tipoclienteid: servicio.clientes?.tipo_cliente?.tipoclienteid as string,
+          tipo_cliente: servicio.clientes?.tipo_cliente?.tipo_cliente as string
         }
       },
       detalle_servicio: servicio.detalle_servicio.map((detalle: any) => {

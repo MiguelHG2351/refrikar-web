@@ -5,17 +5,26 @@ import {DateInputFormat} from "@/utils/date";
 import EgresosList from "@/components/charts/EgresosList";
 import DetalleEgresoModal from "@/components/modals/egresos/DetalleEgresoModal";
 import {currentUser} from "@clerk/nextjs/server";
+import { SearchParams } from "@/utils/types";
 
 export const metadata: Metadata ={
   title: "Egresos",
   description: "En esta sección podrá ver los egresos realizados y un promedio de cada uno",
 }
 
+type Params = Promise<{
+  start_date: string;
+  end_date: string;
+}>
 
-export default  async function Egresos({ searchParams }: { searchParams?: { [key: string]: string | undefined }; }) {
+export default  async function (props: {
+  params: Params,
+  searchParams: SearchParams
+}) {
+  const querySearch = await props.params;
   const egresosList = await getLatestEgresos()
-  const startData = searchParams?.start_date ? new Date(searchParams.start_date) : new Date('2024-07-01')
-  const endData = searchParams?.end_date ? new Date(searchParams.end_date) : new Date('2024-07-22')
+  const startData = querySearch?.start_date ? new Date(querySearch.start_date) : new Date('2024-07-01')
+  const endData = querySearch?.end_date ? new Date(querySearch.end_date) : new Date('2024-07-22')
   const sumAndAllEgresos = await getSumAndAllEgresosByDate(new Date(startData), new Date(endData))
 
   const user = await currentUser()

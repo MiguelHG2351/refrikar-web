@@ -36,17 +36,17 @@ const getUnitAndValueDate = (secondsElapsed: number) => {
   }
 }
 
-const getTimeAgo = (timestamp: number, locale: string) => {
-  const rtf = new Intl.RelativeTimeFormat(locale)
-  const secondsElapsed = getSecondsDiff(timestamp);
-  const { value, unit } = getUnitAndValueDate(secondsElapsed)
+// const getTimeAgo = (timestamp: number, locale: string) => {
+//   const rtf = new Intl.RelativeTimeFormat(locale)
+//   const secondsElapsed = getSecondsDiff(timestamp);
+//   const { value, unit } = getUnitAndValueDate(secondsElapsed)
 
-  return rtf.format(value, unit as Intl.RelativeTimeFormatUnit)
+//   return rtf.format(value, unit as Intl.RelativeTimeFormatUnit)
   
-}
+// }
 
-export const timeAgo = (date: Date | string | null | undefined) => {
-  const locale = 'es'
-  const timeago = getTimeAgo
+// export const timeAgo = (date: Date | string | null | undefined) => {
+//   const locale = 'es'
+//   const timeago = getTimeAgo
 
-}
+// }
