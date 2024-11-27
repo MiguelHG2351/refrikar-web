@@ -21,7 +21,7 @@ const schema = yup.object().shape({
     client_id: yup.string().required()
 })
 export default function SelectClientForm({ onClose }: SelectClientFormProps) {
-    const { data: listOfClients } = useGetAllClientsQuery('')
+    const { data: listOfClients } = useGetAllClientsQuery({})
     const dispatch = useAppDispatch()
 
     const { register, setValue, handleSubmit, formState: { errors } } = useForm<FormData>({
