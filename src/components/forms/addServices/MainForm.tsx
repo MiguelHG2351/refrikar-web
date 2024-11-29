@@ -23,8 +23,21 @@ export default function AddServiceForm() {
   const [onService, { isLoading, isError, error }] = useCreateServiceMutation()
 
   const handlerAddService = () => {
+    if (service.cliente.tipo_cliente.tipo_clienteid === '' && service.detalle_servicio.length === 0) {
+      toast('Debe haber al menos un detalle de servicio y un tipo de cliente', {
+        type: 'error'
+      })
+      return
+    }
+    
     if (service.detalle_servicio.length === 0) {
       toast('Debe haber al menos un detalle de servicio', {
+        type: 'error'
+      })
+      return
+    }
+    if (service.cliente.tipo_cliente.tipo_clienteid === '') {
+      toast('Debe seleccionar un tipo de cliente', {
         type: 'error'
       })
       return

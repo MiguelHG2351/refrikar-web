@@ -17,7 +17,7 @@ interface AddServiceState {
   detalle_servicio: {
     costo: number;
     fecha: string;
-    descripcion: string;
+    descripcion?: string;
     direccion: string;
     tiposervicioid: string;
     equipoid: string;

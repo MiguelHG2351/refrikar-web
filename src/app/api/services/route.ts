@@ -66,6 +66,7 @@ export async function POST(req: NextRequest) {
     }
   })
   
+  console.log(`${ countList[1] + 1}`.padStart(7, 'SV00000'))
   const service = await prisma.servicios.create({
     data: {
       servicioid: `${ countList[1] + 1}`.padStart(7, 'SV00000'),

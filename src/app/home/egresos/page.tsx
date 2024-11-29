@@ -22,7 +22,7 @@ export default  async function (props: {
   searchParams: SearchParams
 }) {
   const querySearch = await props.params;
-  const egresosList = await getLatestEgresos()
+  // const egresosList = await getLatestEgresos()
   const startData = querySearch?.start_date ? new Date(querySearch.start_date) : new Date('2024-07-01')
   const endData = querySearch?.end_date ? new Date(querySearch.end_date) : new Date('2024-07-22')
   const sumAndAllEgresos = await getSumAndAllEgresosByDate(new Date(startData), new Date(endData))
