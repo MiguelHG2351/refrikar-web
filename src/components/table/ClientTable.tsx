@@ -31,7 +31,7 @@ export default function ClientTable({ clients }: { clients: any }) {
   const [statusFilter, setStatusFilter] = React.useState<Selection>("all");
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
-    column: "age",
+    column: "nombre",
     direction: "ascending",
   });
   
@@ -284,7 +284,11 @@ export default function ClientTable({ clients }: { clients: any }) {
       topContent={topContent}
       topContentPlacement="outside"
       onSelectionChange={setSelectedKeys}
-      onSortChange={setSortDescriptor}
+      onSortChange={(e) => {
+        if (e.column && e.direction) {
+          setSortDescriptor({ column: e.column, direction: e.direction });
+        }
+      }}
     >
       <TableHeader columns={headerColumns}>
         {(column) => (
