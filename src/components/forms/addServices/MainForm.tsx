@@ -60,7 +60,7 @@ export default function AddServiceForm() {
 
   return (
     <>
-      <div className="flex flex-wrap gap-4">
+      <div className="flex max-w-[920px] m-auto flex-col items-start gap-y-6">
         <div className="mt-12 flex flex-col w-full gap-y-4">
           <CreateAndAddClient />
         </div>
@@ -107,8 +107,13 @@ export default function AddServiceForm() {
 
         </div>
         <footer className="flex gap-x-2 justify-end">
-          <Button as={Link} href="/home/servicios" type="button" variant="shadow" color="primary">Volver a servicios</Button>
-          <Button type="button" variant="shadow" color="primary" onClick={handlerAddService}>Agregar servicio</Button>
+          <Button as={Link} href="/home/servicios" type="button" variant="shadow" color="primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M20 11H7.83L13.42 5.41L12 4L4 12L12 20L13.41 18.59L7.83 13H20V11Z" fill="#fff"/>
+            </svg>
+            Volver a servicios
+          </Button>
+          <Button type="button" variant="shadow" color="primary" onClick={handlerAddService}>Crear servicio</Button>
         </footer>
       </div>
     </>

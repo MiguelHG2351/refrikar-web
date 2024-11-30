@@ -26,7 +26,7 @@ import { toast } from "react-toastify";
 const schema = yup.object().shape({
   costo: yup.number().typeError('Debes ingresar un monto').required('Este campo es requerido').min(0, 'El monto debe ser mayor a 0'),
   tiposervicioid: yup.string().required('Este campo es requerido'),
-  direccion: yup.string().required('Necesitas ingresar una dirección'),
+  direccion: yup.string().min(10).required('Necesitas ingresar una dirección'),
   fecha: yup.string().required('Es necesario ingresar una fecha'),
   descripcion: yup.string().optional(),
   equipo: yup.string().required('Este campo es requerido')
@@ -68,18 +68,26 @@ export default function DetallesForm() {
     }
   })
 
+  const onOpenModal = (isOpen: boolean) => {
+    if (isOpen) {
+      reset()
+    }
+    onOpenChange()
+  }
+
   useEffect(() => {
     if (errors.tiposervicioid || errors.equipo) {
       console.log(errors)
       toast.error('Por favor, selecciona un tipo de servicio y un equipo')
     }
   }, [errors])
+  console.log(errors)
 
 
   return (
     <>
       <Button onPress={() => onOpen()}> Agregar detalles</Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false} backdrop="blur">
+      <Modal isOpen={isOpen} onOpenChange={onOpenModal} isDismissable={false} backdrop="blur">
         <ModalContent>
           {(onClose) => (
             <>

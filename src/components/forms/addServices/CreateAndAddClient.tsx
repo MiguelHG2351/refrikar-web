@@ -1,5 +1,6 @@
 import {
   Button,
+  Input,
   Modal,
   ModalBody,
   ModalContent,
@@ -16,6 +17,12 @@ import {useAppDispatch, useAppSelector} from "@/hooks/redux";
 import {clearCliente} from "@/storage/serviceSlice";
 import {useEffect, useState} from "react";
 import { toast } from "react-toastify";
+import Image from "next/image";
+import localFont from "next/font/local";
+
+const refrikarFont = localFont({
+  src: '../../../fonts/JejuHallasan-Regular.ttf'
+})
 
 export default function CreateAndAddClient() {
   const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false)
@@ -51,6 +58,19 @@ export default function CreateAndAddClient() {
 
   return (
     <>
+      <div className="relative">
+        <div className="absolute inset-0 pl-6 pt-4 flex justify-between">
+          <div className="">
+            <h2 className="text-6xl text-white bg-refrikar-gradient bg-clip-text" style={{...refrikarFont.style, WebkitTextFillColor: 'transparent'}}>Refrikar</h2>
+            <p className="text-white">Taller de refrigeración y aire acondicionado</p>
+            <p className="text-white">Propietaria: Karla Yesenia Rivera Hernandez</p>
+          </div>
+          <div className="">
+            <Image className="max-w-full" src="/images/pingu.png" alt="pinguino de refrikar" width={119} height={166} />
+          </div>
+        </div>
+        <Image className="max-w-full" src="/images/service-bg.png" alt="fondo" width={1023} height={208} />
+      </div>
       <div className="flex justify-between items-center">
         <h1>Cliente:</h1>
         <Button onPress={() => onOpen()}>Crear cliente</Button>
@@ -79,7 +99,21 @@ export default function CreateAndAddClient() {
           )}
         </ModalContent>
       </Modal>
-      <Table aria-label="Example static collection table">
+      <div className="grid lg:grid-cols-4 md:grid-cols-3 gap-x-4 gap-y-4 w-full">
+        <Input type="text" label="Nombre" labelPlacement="outside" variant="flat" value={currentUser.nombre || 'Vacío'} disabled />
+        <Input type="text" label="Apellido" labelPlacement="outside" variant="flat" value={currentUser.apellido || 'Vacío'} disabled />
+        <Input type="text" label="Entidad" labelPlacement="outside" variant="flat" value={currentUser.tipo_cliente.tipo_cliente || 'Vacío'} disabled />
+        <Input type="text" label="RUC" labelPlacement="outside" variant="flat" value={currentUser.ruc || 'Vacío'} disabled />
+        <Input type="text" label="No de Factura" labelPlacement="outside" variant="flat" value="RF124234324 fdassssssssssssssssssssssssssssssssssssss" title="hola" disabled />
+        <Input type="text" label="Fecha de factura" labelPlacement="outside" variant="flat" value="12/11/2024 10:30AM" disabled />
+        <Input type="text" label="Fecha de registro" labelPlacement="outside" variant="flat" value="12/11/2024 10:30AM" disabled />
+        <div className="flex items-end justify-end h-full">
+          <Button>
+            Ver direcciones
+          </Button>
+        </div>
+      </div>
+      <Table aria-label="Example static collection table" className="hidden">
         <TableHeader>
           <TableColumn>Nombre</TableColumn>
           <TableColumn>Apellido</TableColumn>
@@ -113,18 +147,18 @@ export default function CreateAndAddClient() {
       <Modal isOpen={isOpenConfirmation} onClose={onCloseConfirmation} onOpenChange={onOpenChangeConfirmation} isDismissable={false} backdrop="blur">
         <ModalContent>
           {(onClose) => (
-              <>
-                <ModalHeader>
-                  <h2>Eliminar cliente</h2>
-                </ModalHeader>
-                <ModalBody>
-                  <p>¿Estás seguro de eliminar este cliente?</p>
-                  <div className="flex gap-4 mt-4">
-                    <Button onPress={onHandlerDeleteCliente} color="danger">Si</Button>
-                    <Button onPress={onCloseConfirmation} color="secondary">No</Button>
-                  </div>
-                </ModalBody>
-              </>
+            <>
+              <ModalHeader>
+                <h2>Eliminar cliente</h2>
+              </ModalHeader>
+              <ModalBody>
+                <p>¿Estás seguro de eliminar este cliente?</p>
+                <div className="flex gap-4 mt-4">
+                  <Button onPress={onHandlerDeleteCliente} color="danger">Si</Button>
+                  <Button onPress={onCloseConfirmation} color="secondary">No</Button>
+                </div>
+              </ModalBody>
+            </>
           )}
         </ModalContent>
       </Modal>
