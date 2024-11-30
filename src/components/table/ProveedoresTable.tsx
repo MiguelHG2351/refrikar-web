@@ -284,7 +284,11 @@ export default function ProveedoresTable() {
       topContent={topContent}
       topContentPlacement="outside"
       onSelectionChange={setSelectedKeys}
-      onSortChange={setSortDescriptor}
+      onSortChange={(e) => {
+        if (e.column != null && e.direction != null) {
+          setSortDescriptor({ column: e.column, direction: e.direction })
+        }
+      }}
     >
       <TableHeader columns={headerColumns}>
         {(column) => (

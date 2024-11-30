@@ -79,11 +79,11 @@ export default function CreateAndAddClient() {
     // if (currentUser.nombre && !isLoadedCurrentClient) {
     if (!currentUser.isNew || currentUser.addedFromModal) {
       console.log(currentUser.tipo_cliente)
+      debugger
       setValue('nombre', currentUser.nombre)
       setValue('apellido', currentUser.apellido!)
       setValue('ruc', currentUser.ruc)
       setValue('telefono', currentUser.telefono)
-      setValue('tipoCliente', currentUser.tipo_cliente.tipo_cliente)
       setValue('entidad', currentUser.entidad)
       setValue('tipoCliente', currentUser.tipo_cliente.tipo_clienteid)
       setIsJuridico(currentUser.tipo_cliente.tipo_cliente === 'TC02')
@@ -242,7 +242,7 @@ export default function CreateAndAddClient() {
                 label="Tipo de cliente"
                 placeholder={"Selecciona datos"}
                 className="max-w-xs"
-                value={value}
+                selectedKeys={currentUser.tipo_cliente.tipo_clienteid}
             >
                 {(tipo) => <SelectItem key={tipo!.tipoclienteid}>{tipo.tipo_cliente}</SelectItem>}
             </Select>
