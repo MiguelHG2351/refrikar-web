@@ -72,7 +72,7 @@ model clientes {
 }
 
 model detalle_servicio {
-  detalleservicioid String         @id @db.VarChar(50)
+  detalleservicioid String         @id @db.VarChar(50) @default(cuid())
   tiposervicioid    String?        @db.VarChar(50)
   equipoid          String?        @db.VarChar(50)
   servicioid        String?        @db.VarChar(50)
@@ -92,7 +92,7 @@ model detalle_servicio {
 }
 
 model detalle_suministro {
-  detallesuministroid String      @id @db.VarChar(50)
+  detallesuministroid String      @id @db.VarChar(50) @default(cuid())
   suministroid        String?     @db.VarChar(50)
   productoid          String?     @db.VarChar(50)
   costo               Decimal     @db.Decimal(10, 2)

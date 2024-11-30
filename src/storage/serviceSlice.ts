@@ -91,8 +91,10 @@ const addServiceSlice = createSlice({
     setEntidad: create.reducer((state, action: PayloadAction<string>) => {
       state.cliente.entidad = action.payload
     }),
-    setTipoCliente: create.reducer((state, action: PayloadAction<string>) => {
-      state.cliente.tipo_cliente.tipo_cliente = action.payload
+    // two field, for tipo client and tipo cliente id
+    setTipoCliente: create.reducer((state, action: PayloadAction<{ tipo_cliente: string, tipo_clienteid: string }>) => {
+      state.cliente.tipo_cliente.tipo_cliente = action.payload.tipo_cliente;
+      state.cliente.tipo_cliente.tipo_clienteid = action.payload.tipo_clienteid;
     }),
     setNumeroFactura: create.reducer((state, action: PayloadAction<string>) => {
       state.numeroFactura = action.payload

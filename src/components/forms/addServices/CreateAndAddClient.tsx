@@ -9,13 +9,14 @@ import {
   SelectItem,
   Tab,
   Tabs,
-  useDisclosure
+  useDisclosure,
+   Selection
 } from "@nextui-org/react";
 import SelectClientForm from "@/components/forms/addServices/SelectClientForm";
 import CreateClientForm from "@/components/forms/addServices/CreateClienteForm";
 import {useAppDispatch, useAppSelector} from "@/hooks/redux";
-import {clearCliente, setAddedFromModal, setApellido, setFechaFactura, setFechaRegistro, setNombre, setNumeroFactura, setRuc, setTelefono, setTipoCliente} from "@/storage/serviceSlice";
-import {useEffect, useState} from "react";
+import {clearCliente, setAddedFromModal, setApellido, setEntidad, setFechaFactura, setFechaRegistro, setNombre, setNumeroFactura, setRuc, setTelefono, setTipoCliente} from "@/storage/serviceSlice";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import localFont from "next/font/local";
 import { useForm, Controller } from "react-hook-form";
@@ -56,7 +57,8 @@ export default function CreateAndAddClient() {
   const currentUser = useAppSelector(state => state.addService.cliente)
   const dispatch = useAppDispatch()
   const { data, isLoading } = useGetAllTipoClientsQuery("")
-  const [isJuridico, setIsJuridico] = useState(false)
+  const [isJuridico, setIsJuridico] = React.useState(false)
+  const [ selectedKeys, setSelectedKeys ] = React.useState<Selection>(new Set([]))
   const { register, setValue, formState: { errors }, control } = useForm<FormData>({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -79,16 +81,19 @@ export default function CreateAndAddClient() {
     // if (currentUser.nombre && !isLoadedCurrentClient) {
     if (!currentUser.isNew || currentUser.addedFromModal) {
       console.log(currentUser.tipo_cliente)
-      debugger
       setValue('nombre', currentUser.nombre)
       setValue('apellido', currentUser.apellido!)
       setValue('ruc', currentUser.ruc)
       setValue('telefono', currentUser.telefono)
       setValue('entidad', currentUser.entidad)
       setValue('tipoCliente', currentUser.tipo_cliente.tipo_clienteid)
+      setSelectedKeys(new Set([currentUser.tipo_cliente.tipo_clienteid]))
       setIsJuridico(currentUser.tipo_cliente.tipo_cliente === 'TC02')
       dispatch(setAddedFromModal(false))
-      
+    }
+
+    if (currentUser.entidad !== null && currentUser.tipo_cliente.tipo_clienteid === 'TC01') {
+      setIsJuridico(true)
     }
   }, [currentUser])
 
@@ -107,10 +112,16 @@ export default function CreateAndAddClient() {
         </div>
         <Image className="max-w-full" src="/images/service-bg.png" alt="fondo" width={1023} height={208} />
       </div>
-      { currentUser.isNew && (
+      { !currentUser.isNew && (
         <div className="bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3" role="alert">
-          <p className="font-bold">Cliente nuevo</p>
-          <p className="text-sm">Este cliente no existe en la base de datos, se registrara al crear el servicio</p>
+          <p className="font-bold">Cliente existente</p>
+          <p className="text-sm">El cliente ya existe en la base de datos, solo podras editar los datos de la factura</p>
+        </div>
+      )}
+      { (currentUser.entidad !== '' && currentUser.tipo_cliente.tipo_clienteid === 'TC01') && (
+        <div className="bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3" role="alert">
+          <p className="font-bold">Tipo cliente inválido</p>
+          <p className="text-sm">Si el cliente es Natural no se guardará la entidad en la base de datos</p>
         </div>
       )}
       <div className="flex justify-between items-center">
@@ -154,9 +165,9 @@ export default function CreateAndAddClient() {
                 labelPlacement="outside"
                 placeholder="Nombre del cliente"
                 variant="flat" 
-                onChange={(e) => {
-                  dispatch(setNombre(e.target.value))
-                  setValue('nombre', e.target.value)
+                onValueChange={(e) => {
+                  dispatch(setNombre(e))
+                  setValue('nombre', e)
                 }}
                 disabled={!currentUser.isNew}
                 value={value}
@@ -226,28 +237,33 @@ export default function CreateAndAddClient() {
           )}
         />
 
-        <Controller
-          name="tipoCliente"
-          control={control}
-          render={({field: {onChange, value}}) => (
-            <Select
-                items={!isLoading ? data : []}
-                labelPlacement="outside"
-                variant="flat"
-                onChange={e => {
-                  setValue('tipoCliente', e.target.value)
-                  dispatch(setTipoCliente(e.target.value))
-                  setIsJuridico(e.target.value === 'TC02')
-                }}
-                label="Tipo de cliente"
-                placeholder={"Selecciona datos"}
-                className="max-w-xs"
-                selectedKeys={currentUser.tipo_cliente.tipo_clienteid}
-            >
-                {(tipo) => <SelectItem key={tipo!.tipoclienteid}>{tipo.tipo_cliente}</SelectItem>}
-            </Select>
-          )}
-        />
+        <Select
+          items={!isLoading ? data : []}
+          labelPlacement="outside"
+          variant="flat"
+          onSelectionChange={(e) => {
+            console.log(data)
+            console.log('selection change', e)
+            // if (e.currentKey === null) return
+            console.log('onSelectionChange')
+            setValue('tipoCliente', e.currentKey as string)
+            dispatch(setTipoCliente(
+              {
+                tipo_cliente: data?.find(t => t.tipoclienteid === e.currentKey)?.tipo_cliente as string,
+                tipo_clienteid: e.currentKey as string
+              }
+            ))
+            setIsJuridico(e.currentKey === 'TC02')
+            setSelectedKeys(new Set([e.currentKey as string]))
+          }}
+          label="Tipo de cliente"
+          placeholder={"Selecciona datos"}
+          className="max-w-xs"
+          selectedKeys={selectedKeys}
+        >
+          {(tipo) => <SelectItem key={tipo!.tipoclienteid}>{tipo.tipo_cliente}</SelectItem>}
+        </Select>
+
         <Controller
           name="entidad"
           control={control}
@@ -260,7 +276,7 @@ export default function CreateAndAddClient() {
               variant="flat" 
               onChange={e => {
                 setValue('entidad', e.target.value)
-                dispatch(setRuc(e.target.value))
+                dispatch(setEntidad(e.target.value))
               }}
               disabled={!isJuridico || !currentUser.isNew}
               value={value}
