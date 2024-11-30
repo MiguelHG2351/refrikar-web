@@ -6,55 +6,69 @@ import {
   ModalContent,
   ModalHeader,
   Tab,
-  Tabs, Tooltip,
+  Tabs,
   useDisclosure
 } from "@nextui-org/react";
 import SelectClientForm from "@/components/forms/addServices/SelectClientForm";
 import CreateClientForm from "@/components/forms/addServices/CreateClienteForm";
-import {Table, TableBody, TableCell, TableColumn, TableHeader, TableRow} from "@nextui-org/table";
-import {DeleteIcon, EditIcon} from "@/components/icons/Icons";
 import {useAppDispatch, useAppSelector} from "@/hooks/redux";
-import {clearCliente} from "@/storage/serviceSlice";
+import {clearCliente, setNombre} from "@/storage/serviceSlice";
 import {useEffect, useState} from "react";
-import { toast } from "react-toastify";
 import Image from "next/image";
 import localFont from "next/font/local";
+import { useForm, Controller } from "react-hook-form";
 
 const refrikarFont = localFont({
   src: '../../../fonts/JejuHallasan-Regular.ttf'
 })
 
+export type FormData = {
+  nombre: string
+  apellido: string
+  ruc: string
+  telefono: string
+  tipoCliente: string
+  entidad: string
+  numeroFactura: string
+  fechaFactura: string
+  fechaRegistro: string
+}
+
+
 export default function CreateAndAddClient() {
-  const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false)
   const {isOpen, onClose, onOpen, onOpenChange} = useDisclosure();
-  const {isOpen:isOpenConfirmation, onClose: onCloseConfirmation, onOpen: onOpenConfirmation, onOpenChange: onOpenChangeConfirmation} = useDisclosure();
   const currentUser = useAppSelector(state => state.addService.cliente)
   const dispatch = useAppDispatch()
+  const [isLoadedCurrentClient, setIsLoadedCurrentClient] = useState(false)
+  const { register, getValues, setValue, formState, control } = useForm<FormData>({
+    defaultValues: {
+      nombre: '',
+      apellido: '',
+      ruc: '',
+      telefono: '',
+      tipoCliente: '',
+      entidad: '',
+      numeroFactura: '',
+      fechaFactura: '',
+      fechaRegistro: ''
+    },
+    // shouldUnregister: false,
+    // reValidateMode: 'onBlur'
+  })
 
   useEffect(() => {
-    // validate if currentUser has data
-    if (currentUser.nombre) {
-      setIsDeleteConfirmed(true)
+    // validte if we have data in the currentUser
+    if (currentUser.nombre && !isLoadedCurrentClient) {
+      console.log(currentUser.nombre)
+      setValue('nombre', currentUser.nombre)
+      setValue('apellido', currentUser.apellido!)
+      setValue('ruc', currentUser.ruc)
+      setValue('telefono', currentUser.telefono)
+      setValue('tipoCliente', currentUser.tipo_cliente.tipo_cliente)
+      setValue('entidad', currentUser.entidad)
+      isLoadedCurrentClient && setIsLoadedCurrentClient(true)
     }
   }, [currentUser])
-
-  const onHandlerConfirmation = () => {
-    if (!currentUser.nombre) {
-      toast("No has seleccionado un cliente", {
-        type: "error"
-      })
-      return ;
-    }
-    onOpenChangeConfirmation()
-  }
-
-  const onHandlerDeleteCliente = () => {
-    if (!isDeleteConfirmed) {
-      return
-    }
-    dispatch(clearCliente())
-    onCloseConfirmation()
-  }
 
   return (
     <>
@@ -71,6 +85,12 @@ export default function CreateAndAddClient() {
         </div>
         <Image className="max-w-full" src="/images/service-bg.png" alt="fondo" width={1023} height={208} />
       </div>
+      { currentUser.isNew && (
+        <div className="bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3" role="alert">
+          <p className="font-bold">Cliente nuevo</p>
+          <p className="text-sm">Este cliente no existe en la base de datos, se registrara al crear el servicio</p>
+        </div>
+      )}
       <div className="flex justify-between items-center">
         <h1>Cliente:</h1>
         <Button onPress={() => onOpen()}>Crear cliente</Button>
@@ -100,68 +120,78 @@ export default function CreateAndAddClient() {
         </ModalContent>
       </Modal>
       <div className="grid lg:grid-cols-4 md:grid-cols-3 gap-x-4 gap-y-4 w-full">
-        <Input type="text" label="Nombre" labelPlacement="outside" variant="flat" value={currentUser.nombre || 'Vacío'} disabled />
-        <Input type="text" label="Apellido" labelPlacement="outside" variant="flat" value={currentUser.apellido || 'Vacío'} disabled />
-        <Input type="text" label="Entidad" labelPlacement="outside" variant="flat" value={currentUser.tipo_cliente.tipo_cliente || 'Vacío'} disabled />
-        <Input type="text" label="RUC" labelPlacement="outside" variant="flat" value={currentUser.ruc || 'Vacío'} disabled />
-        <Input type="text" label="No de Factura" labelPlacement="outside" variant="flat" value="RF124234324 fdassssssssssssssssssssssssssssssssssssss" title="hola" disabled />
-        <Input type="text" label="Fecha de factura" labelPlacement="outside" variant="flat" value="12/11/2024 10:30AM" disabled />
-        <Input type="text" label="Fecha de registro" labelPlacement="outside" variant="flat" value="12/11/2024 10:30AM" disabled />
+        <Controller
+          name="nombre"
+          control={control}
+          rules={{required: true}}
+          render={({field: {onChange, value}}) => (
+            <Input 
+              type="text"
+              label="Nombre"
+              labelPlacement="outside"
+              placeholder="Nombre del cliente"
+              variant="flat" 
+              onChange={onChange}
+              // {...register('nombre')}
+              // value={currentUser.nombre || 'Vacío'}
+              disabled={!currentUser.isNew}
+              value={value}
+            />
+          )}
+        />
+        {/* <Input 
+          type="text"
+          label="Nombre"
+          labelPlacement="outside"
+          placeholder="Nombre del cliente"
+          variant="flat" 
+          {...register('nombre')}
+          // value={currentUser.nombre || 'Vacío'}
+          disabled={!currentUser.isNew} /> */}
+        <Input 
+          type="text"
+          label="Apellido"
+          labelPlacement="outside"
+          variant="flat" 
+          {...register('apellido')}
+          disabled={!currentUser.isNew} />
+        <Input 
+          type="text"
+          label="Entidad"
+          labelPlacement="outside"
+          variant="flat" 
+          value={currentUser.tipo_cliente.tipo_cliente || 'Vacío'} disabled={!currentUser.isNew} />
+        <Input 
+          type="text"
+          label="RUC"
+          labelPlacement="outside"
+          variant="flat" title={currentUser.ruc || 'Vacío'} 
+          value={currentUser.ruc || 'Vacío'} disabled={!currentUser.isNew} />
+        <Input 
+          type="text"
+          label="N° de Factura"
+          labelPlacement="outside"
+          {...register('numeroFactura')}
+          variant="flat" title="" />
+        <Input 
+          type="text"
+          label="Fecha de factura"
+          labelPlacement="outside"
+          {...register('fechaFactura')}
+          variant="flat" />
+        <Input 
+          type="text"
+          label="Fecha de registro"
+          labelPlacement="outside"
+          {...register('fechaRegistro')}
+          variant="flat" />
+        
         <div className="flex items-end justify-end h-full">
           <Button>
             Ver direcciones
           </Button>
         </div>
       </div>
-      <Table aria-label="Example static collection table" className="hidden">
-        <TableHeader>
-          <TableColumn>Nombre</TableColumn>
-          <TableColumn>Apellido</TableColumn>
-          <TableColumn>Tipo de cliente</TableColumn>
-          <TableColumn>Entidad</TableColumn>
-          <TableColumn>Acciones</TableColumn>
-        </TableHeader>
-        <TableBody>
-          <TableRow key="1">
-            <TableCell>{currentUser.nombre || 'Vacío'}</TableCell>
-            <TableCell>{currentUser.apellido || 'Vacío'}</TableCell>
-            <TableCell>{currentUser.tipo_cliente?.tipo_cliente || 'Vacío'}</TableCell>
-            <TableCell>{currentUser.entidad || 'Vacío'}</TableCell>
-            <TableCell>
-              <div className="relative flex items-center gap-2">
-                <Tooltip content="Editar">
-                        <span className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={onOpen}>
-                          <EditIcon width={22} height={22} className="stroke-slate-600" />
-                        </span>
-                </Tooltip>
-                <Tooltip content="Eliminar">
-                  <span className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={onHandlerConfirmation}>
-                    <DeleteIcon width={22} height={22} className="stroke-red-500" />
-                  </span>
-                </Tooltip>
-              </div>
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-      <Modal isOpen={isOpenConfirmation} onClose={onCloseConfirmation} onOpenChange={onOpenChangeConfirmation} isDismissable={false} backdrop="blur">
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader>
-                <h2>Eliminar cliente</h2>
-              </ModalHeader>
-              <ModalBody>
-                <p>¿Estás seguro de eliminar este cliente?</p>
-                <div className="flex gap-4 mt-4">
-                  <Button onPress={onHandlerDeleteCliente} color="danger">Si</Button>
-                  <Button onPress={onCloseConfirmation} color="secondary">No</Button>
-                </div>
-              </ModalBody>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
     </>
   )
 }

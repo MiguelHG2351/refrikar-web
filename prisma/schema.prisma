@@ -21,7 +21,7 @@ model recursos {
   recursoid         String            @id @db.VarChar(50)
   productoid        String?           @db.VarChar(50)
   detalleservicioid String?           @db.VarChar(50)
-  costo             Decimal?          @db.Decimal(10, 2)
+  costo             Decimal          @db.Decimal(10, 2)
   cantidad_producto Int?
   empleadoid        String?           @db.VarChar(50)
   productos         productos?        @relation(fields: [productoid], references: [productoid], onDelete: NoAction, onUpdate: NoAction, map: "recursos_ibfk_1")
@@ -58,11 +58,11 @@ model categoria_producto {
 }
 
 model clientes {
-  clienteid     String        @id @db.VarChar(50)
+  clienteid     String        @id @db.VarChar(50) @default(cuid())
   tipoclienteid String       @db.VarChar(50)
-  nombre        String?       @db.VarChar(255)
+  nombre        String       @db.VarChar(255)
   apellido      String?       @db.VarChar(255)
-  telefono      Int?
+  telefono      String        @db.VarChar(50)
   entidad       String?       @db.VarChar(255)
   ruc           String?       @unique(map: "unique_ruc_clientes") @db.VarChar(50)
   tipo_cliente  tipo_cliente? @relation(fields: [tipoclienteid], references: [tipoclienteid], onDelete: NoAction, onUpdate: NoAction, map: "clientes_ibfk_1")
@@ -77,9 +77,9 @@ model detalle_servicio {
   equipoid          String?        @db.VarChar(50)
   servicioid        String?        @db.VarChar(50)
   descripcion       String?        @db.Text
-  costo             Decimal?       @db.Decimal(10, 2)
+  costo             Decimal        @db.Decimal(10, 2)
   fecha             DateTime?      @db.Date
-  direccion         String?        @db.VarChar(255)
+  direccion         String         @db.VarChar(255)
   tipo_servicio     tipo_servicio? @relation(fields: [tiposervicioid], references: [tiposervicioid], onDelete: NoAction, onUpdate: NoAction, map: "detalle_servicio_ibfk_1")
   equipo            equipo?        @relation(fields: [equipoid], references: [equipoid], onDelete: NoAction, onUpdate: NoAction, map: "detalle_servicio_ibfk_2")
   servicios         servicios?     @relation(fields: [servicioid], references: [servicioid], onDelete: NoAction, onUpdate: NoAction, map: "detalle_servicio_ibfk_3")
@@ -95,8 +95,8 @@ model detalle_suministro {
   detallesuministroid String      @id @db.VarChar(50)
   suministroid        String?     @db.VarChar(50)
   productoid          String?     @db.VarChar(50)
-  costo               Decimal?    @db.Decimal(10, 2)
-  cantidad            Int?
+  costo               Decimal     @db.Decimal(10, 2)
+  cantidad            Int
   suministro          suministro? @relation(fields: [suministroid], references: [suministroid], onDelete: NoAction, onUpdate: NoAction, map: "detalle_suministro_ibfk_1")
   productos           productos?  @relation(fields: [productoid], references: [productoid], onDelete: NoAction, onUpdate: NoAction, map: "detalle_suministro_ibfk_2")
 
@@ -106,7 +106,7 @@ model detalle_suministro {
 
 model egresos {
   egresoid      String          @id @db.VarChar(50)
-  monto         Decimal?        @db.Decimal(10, 2)
+  monto         Decimal        @db.Decimal(10, 2)
   fecha         DateTime?       @db.Date
   gastos_varios gastos_varios[]
   pago_empleado pago_empleado[]
@@ -117,10 +117,10 @@ model egresos {
 model empleados {
   empleadoid     String          @id @db.VarChar(50)
   cargoid        String?         @db.VarChar(50)
-  nombre         String?         @db.VarChar(255)
+  nombre         String          @db.VarChar(255)
   apellido       String?         @db.VarChar(255)
-  telefono       Int?
-  cedula         String?         @unique(map: "cedula") @db.VarChar(50)
+  telefono       String
+  cedula         String          @unique(map: "cedula") @db.VarChar(50)
   cargo_empleado cargo_empleado? @relation(fields: [cargoid], references: [cargoid], onDelete: NoAction, onUpdate: NoAction, map: "empleados_ibfk_1")
   pago_empleado  pago_empleado[]
   personal       personal[]
@@ -132,8 +132,8 @@ model empleados {
 model equipo {
   equipoid         String             @id @db.VarChar(50)
   tipoequipoid     String?            @db.VarChar(50)
-  capacidad        Int?
-  marca            String?            @db.VarChar(50)
+  capacidad        Int
+  marca            String             @db.VarChar(50)
   numero_serie     String?            @db.VarChar(50)
   detalle_servicio detalle_servicio[]
   tipo_equipo      tipo_equipo?       @relation(fields: [tipoequipoid], references: [tipoequipoid], onDelete: NoAction, onUpdate: NoAction, map: "equipo_ibfk_1")
@@ -144,7 +144,7 @@ model equipo {
 model gastos_varios {
   gastoid     String   @id @db.VarChar(50)
   egresoid    String?  @db.VarChar(50)
-  descripcion String?  @db.VarChar(255)
+  descripcion String   @db.VarChar(255)
   egresos     egresos? @relation(fields: [egresoid], references: [egresoid], onDelete: NoAction, onUpdate: NoAction, map: "gastos_varios_ibfk_1")
 
   @@index([egresoid], map: "pago_impuesto_egresoid_idx")
@@ -154,7 +154,7 @@ model pago_empleado {
   salarioid  String     @id @db.VarChar(50)
   empleadoid String?    @db.VarChar(50)
   egresoid   String?    @db.VarChar(50)
-  concepto   String?    @db.VarChar(255)
+  concepto   String    @db.VarChar(255)
   empleados  empleados? @relation(fields: [empleadoid], references: [empleadoid], onDelete: NoAction, onUpdate: NoAction, map: "pago_empleado_ibfk_1")
   egresos    egresos?   @relation(fields: [egresoid], references: [egresoid], onDelete: NoAction, onUpdate: NoAction, map: "pago_empleado_ibfk_2")
 
@@ -165,7 +165,7 @@ model pago_empleado {
 model pago_impuesto {
   impuestoid     String   @id @db.VarChar(50)
   egresoid       String?  @db.VarChar(50)
-  nombre_entidad String?  @db.VarChar(255)
+  nombre_entidad String  @db.VarChar(255)
   egresos        egresos? @relation(fields: [egresoid], references: [egresoid], onDelete: NoAction, onUpdate: NoAction, map: "pago_impuesto_ibfk_1")
 
   @@index([egresoid], map: "egresoid")
@@ -186,10 +186,10 @@ model productos {
 
 model proveedores {
   proveedorid String       @id @db.VarChar(50)
-  nombre      String?      @db.VarChar(255)
+  nombre      String      @db.VarChar(255)
   apellido    String?      @db.VarChar(255)
-  telefono    Int?
-  direccion   String?      @db.VarChar(255)
+  telefono    String
+  direccion   String       @db.VarChar(255)
   ruc         String?      @unique(map: "ruc") @db.VarChar(50)
   suministro  suministro[]
 }
@@ -198,6 +198,8 @@ model servicios {
   servicioid       String             @id @db.VarChar(50)
   clienteid        String?            @db.VarChar(50)
   detalle_servicio detalle_servicio[]
+  factura_date     DateTime?          @db.Date
+  factura_number   String?            @db.VarChar(50)
   clientes         clientes?          @relation(fields: [clienteid], references: [clienteid], onDelete: NoAction, onUpdate: NoAction, map: "servicios_ibfk_1")
   createdAt        DateTime           @default(now()) @db.Timestamp(6)
   updatedAt        DateTime           @updatedAt @db.Timestamp(6)
@@ -213,8 +215,8 @@ model tipo_cliente {
 
 model tipo_equipo {
   tipoequipoid String   @id @db.VarChar(50)
-  tipo         String?  @db.VarChar(50)
-  descripcion  String?  @db.VarChar(255)
+  tipo         String   @db.VarChar(50)
+  descripcion  String   @db.VarChar(255)
   equipo       equipo[]
 }
 

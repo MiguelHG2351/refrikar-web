@@ -14,7 +14,7 @@ export type FormData = {
     ruc: string,
     nombre: string,
     apellido?: string,
-    telefono: number,
+    telefono: string,
     tipo_cliente: string
     entidad: string
 }
@@ -23,7 +23,7 @@ const schema = yup.object().shape({
     ruc: yup.string().required('Ingrese el RUC, porfavor'),
     nombre: yup.string().required('Ingrese el nombre, porfavor'),
     apellido: yup.string(),
-    telefono: yup.number().required('Ingrese el telefono, porfavor'),
+    telefono: yup.string().max(8).required('Ingrese el telefono, porfavor'),
     tipo_cliente: yup.string().required('Seleccione el tipo de cliente'),
     entidad: yup.string().required('Ingrese la entidad, porfavor')
 })
@@ -73,18 +73,21 @@ export default function CreateClientForm({ onClose }: CreateClientFormProps) {
                        placeholder="#0099FFDADSSARF" type="text" {...register('ruc')} />
                 {errors.ruc && <span className="text-red-500">{errors.ruc.message}</span>}
             </div>
-            <div className="flex flex-col w-full gap-y-2">
-                <label htmlFor="service_id" className="font-medium">Nombre</label>
-                <input className="border border-[#667085] py-2 px-2 bg-white rounded-md"
-                       placeholder="John Juan" type="text" {...register('nombre')} />
-                {errors.nombre && <span className="text-red-500">{errors.nombre.message}</span>}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                <div className="flex flex-col w-full gap-y-2">
+                    <label htmlFor="service_id" className="font-medium">Nombre</label>
+                    <input className="border border-[#667085] py-2 px-2 bg-white rounded-md"
+                        placeholder="John Juan" type="text" {...register('nombre')} />
+                    {errors.nombre && <span className="text-red-500">{errors.nombre.message}</span>}
+                </div>
+                <div className="flex flex-col w-full gap-y-2">
+                    <label htmlFor="service_id" className="font-medium">Apellido</label>
+                    <input className="border border-[#667085] py-2 px-2 bg-white rounded-md"
+                        placeholder="Doe Perez" type="text" {...register('apellido')} />
+                    {errors.apellido && <span className="text-red-500">{errors.apellido.message}</span>}
+                </div>
             </div>
-            <div className="flex flex-col w-full gap-y-2">
-                <label htmlFor="service_id" className="font-medium">Apellido</label>
-                <input className="border border-[#667085] py-2 px-2 bg-white rounded-md"
-                       placeholder="Doe Perez" type="text" {...register('apellido')} />
-                {errors.apellido && <span className="text-red-500">{errors.apellido.message}</span>}
-            </div>
+            
             <div className="flex flex-col w-full gap-y-2">
                 <label htmlFor="service_id" className="font-medium">Telefono</label>
                 <input autoComplete="off" className="border border-[#667085] py-2 px-2 bg-white rounded-md"
