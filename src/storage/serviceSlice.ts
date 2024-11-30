@@ -10,8 +10,9 @@ interface AddServiceState {
     nombre: string;
     apellido?: string;
     telefono: string;
-    entidad: string;
+    entidad?: string;
     isNew: boolean;
+    addedFromModal: boolean;
     tipo_cliente: {
       tipo_clienteid: string;
       tipo_cliente: string;
@@ -42,7 +43,8 @@ const initialState: AddServiceState = {
       tipo_clienteid: '',
       tipo_cliente: ''
     },
-    isNew: true
+    isNew: true,
+    addedFromModal: false
   },
   detalle_servicio: []
 }
@@ -65,6 +67,9 @@ const addServiceSlice = createSlice({
     }),
 
     // for individual fields
+    setAddedFromModal: create.reducer((state, action: PayloadAction<boolean>) => {
+      state.cliente.addedFromModal = action.payload
+    }),
     setFechaFactura: create.reducer((state, action: PayloadAction<string>) => {
       state.fechaFactura = action.payload
     }),
@@ -110,5 +115,6 @@ export const { setDetalleServicio,
   setRuc,
   setTelefono,
   setTipoCliente,
+  setAddedFromModal,
 } = addServiceSlice.actions
 export default addServiceSlice.reducer

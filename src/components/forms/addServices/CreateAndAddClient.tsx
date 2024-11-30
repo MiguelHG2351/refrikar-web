@@ -5,6 +5,8 @@ import {
   ModalBody,
   ModalContent,
   ModalHeader,
+  Select,
+  SelectItem,
   Tab,
   Tabs,
   useDisclosure
@@ -12,11 +14,14 @@ import {
 import SelectClientForm from "@/components/forms/addServices/SelectClientForm";
 import CreateClientForm from "@/components/forms/addServices/CreateClienteForm";
 import {useAppDispatch, useAppSelector} from "@/hooks/redux";
-import {clearCliente, setNombre} from "@/storage/serviceSlice";
+import {clearCliente, setAddedFromModal, setApellido, setFechaFactura, setFechaRegistro, setNombre, setNumeroFactura, setRuc, setTelefono, setTipoCliente} from "@/storage/serviceSlice";
 import {useEffect, useState} from "react";
 import Image from "next/image";
 import localFont from "next/font/local";
 import { useForm, Controller } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useGetAllTipoClientsQuery } from "@/storage/api/clientes";
 
 const refrikarFont = localFont({
   src: '../../../fonts/JejuHallasan-Regular.ttf'
@@ -24,23 +29,36 @@ const refrikarFont = localFont({
 
 export type FormData = {
   nombre: string
-  apellido: string
+  apellido?: string
   ruc: string
   telefono: string
   tipoCliente: string
-  entidad: string
+  entidad?: string
   numeroFactura: string
   fechaFactura: string
   fechaRegistro: string
 }
 
+const schema = yup.object().shape({
+  nombre: yup.string().required('Ingrese el nombre, porfavor'),
+  apellido: yup.string().optional(),
+  ruc: yup.string().required('Ingrese el RUC, porfavor'),
+  telefono: yup.string().matches(/^[8752]\d{7}$/, 'El número debe tener 8 dígitos y comenzar con 8, 7, 5 o 2').required('Ingrese el telefono, porfavor'),
+  tipoCliente: yup.string().required('Seleccione el tipo de cliente'),
+  entidad: yup.string().optional(),
+  numeroFactura: yup.string().required('Ingrese el número de factura, porfavor'),
+  fechaFactura: yup.string().required('Ingrese la fecha de factura, porfavor'),
+  fechaRegistro: yup.string().required('Ingrese la fecha de registro, porfavor')
+})
 
 export default function CreateAndAddClient() {
   const {isOpen, onClose, onOpen, onOpenChange} = useDisclosure();
   const currentUser = useAppSelector(state => state.addService.cliente)
   const dispatch = useAppDispatch()
-  const [isLoadedCurrentClient, setIsLoadedCurrentClient] = useState(false)
-  const { register, getValues, setValue, formState, control } = useForm<FormData>({
+  const { data, isLoading } = useGetAllTipoClientsQuery("")
+  const [isJuridico, setIsJuridico] = useState(false)
+  const { register, setValue, formState: { errors }, control } = useForm<FormData>({
+    resolver: yupResolver(schema),
     defaultValues: {
       nombre: '',
       apellido: '',
@@ -58,15 +76,19 @@ export default function CreateAndAddClient() {
 
   useEffect(() => {
     // validte if we have data in the currentUser
-    if (currentUser.nombre && !isLoadedCurrentClient) {
-      console.log(currentUser.nombre)
+    // if (currentUser.nombre && !isLoadedCurrentClient) {
+    if (!currentUser.isNew || currentUser.addedFromModal) {
+      console.log(currentUser.tipo_cliente)
       setValue('nombre', currentUser.nombre)
       setValue('apellido', currentUser.apellido!)
       setValue('ruc', currentUser.ruc)
       setValue('telefono', currentUser.telefono)
       setValue('tipoCliente', currentUser.tipo_cliente.tipo_cliente)
       setValue('entidad', currentUser.entidad)
-      isLoadedCurrentClient && setIsLoadedCurrentClient(true)
+      setValue('tipoCliente', currentUser.tipo_cliente.tipo_clienteid)
+      setIsJuridico(currentUser.tipo_cliente.tipo_cliente === 'TC02')
+      dispatch(setAddedFromModal(false))
+      
     }
   }, [currentUser])
 
@@ -92,7 +114,7 @@ export default function CreateAndAddClient() {
         </div>
       )}
       <div className="flex justify-between items-center">
-        <h1>Cliente:</h1>
+        <h1 className="font-medium">Cliente:</h1>
         <Button onPress={() => onOpen()}>Crear cliente</Button>
       </div>
       <Modal isOpen={isOpen} onClose={onClose} onOpenChange={onOpenChange} isDismissable={false} backdrop="blur">
@@ -120,77 +142,170 @@ export default function CreateAndAddClient() {
         </ModalContent>
       </Modal>
       <div className="grid lg:grid-cols-4 md:grid-cols-3 gap-x-4 gap-y-4 w-full">
+        <div>
+          <Controller
+            name="nombre"
+            control={control}
+            rules={{required: true}}
+            render={({field: {onChange, value}}) => (
+              <Input 
+                type="text"
+                label="Nombre"
+                labelPlacement="outside"
+                placeholder="Nombre del cliente"
+                variant="flat" 
+                onChange={(e) => {
+                  dispatch(setNombre(e.target.value))
+                  setValue('nombre', e.target.value)
+                }}
+                disabled={!currentUser.isNew}
+                value={value}
+              />
+            )}
+          />
+          {errors.nombre && <span className="text-red-500">{errors.nombre.message}</span>}
+        </div>
+
         <Controller
-          name="nombre"
+          name="apellido"
           control={control}
-          rules={{required: true}}
           render={({field: {onChange, value}}) => (
             <Input 
               type="text"
-              label="Nombre"
+              label="Apellido"
               labelPlacement="outside"
-              placeholder="Nombre del cliente"
+              placeholder="Apellido del cliente"
               variant="flat" 
-              onChange={onChange}
-              // {...register('nombre')}
-              // value={currentUser.nombre || 'Vacío'}
+              onChange={(e) => {
+                setValue('apellido', e.target.value)
+                dispatch(setApellido(e.target.value))
+              }}
               disabled={!currentUser.isNew}
               value={value}
             />
           )}
         />
-        {/* <Input 
-          type="text"
-          label="Nombre"
-          labelPlacement="outside"
-          placeholder="Nombre del cliente"
-          variant="flat" 
-          {...register('nombre')}
-          // value={currentUser.nombre || 'Vacío'}
-          disabled={!currentUser.isNew} /> */}
-        <Input 
-          type="text"
-          label="Apellido"
-          labelPlacement="outside"
-          variant="flat" 
-          {...register('apellido')}
-          disabled={!currentUser.isNew} />
-        <Input 
-          type="text"
-          label="Entidad"
-          labelPlacement="outside"
-          variant="flat" 
-          value={currentUser.tipo_cliente.tipo_cliente || 'Vacío'} disabled={!currentUser.isNew} />
-        <Input 
-          type="text"
-          label="RUC"
-          labelPlacement="outside"
-          variant="flat" title={currentUser.ruc || 'Vacío'} 
-          value={currentUser.ruc || 'Vacío'} disabled={!currentUser.isNew} />
+        
+        <Controller
+          name="telefono"
+          control={control}
+          render={({field: {onChange, value}}) => (
+            <Input 
+              type="text"
+              label="Teléfono"
+              labelPlacement="outside"
+              placeholder="Teléfono del cliente"
+              variant="flat" 
+              onChange={(e) => {
+                setValue('telefono', e.target.value)
+                dispatch(setTelefono(e.target.value))
+              }}
+              disabled={!currentUser.isNew}
+              value={value}
+            />
+          )}
+        />
+
+        <Controller
+          name="ruc"
+          control={control}
+          render={({field: {onChange, value}}) => (
+            <Input 
+              type="text"
+              label="RUC"
+              labelPlacement="outside"
+              placeholder="RUC del cliente"
+              variant="flat" 
+              onChange={e => {
+                setValue('ruc', e.target.value)
+                dispatch(setRuc(e.target.value))
+              }}
+              disabled={!currentUser.isNew}
+              value={value}
+            />
+          )}
+        />
+
+        <Controller
+          name="tipoCliente"
+          control={control}
+          render={({field: {onChange, value}}) => (
+            <Select
+                items={!isLoading ? data : []}
+                labelPlacement="outside"
+                variant="flat"
+                onChange={e => {
+                  setValue('tipoCliente', e.target.value)
+                  dispatch(setTipoCliente(e.target.value))
+                  setIsJuridico(e.target.value === 'TC02')
+                }}
+                label="Tipo de cliente"
+                placeholder={"Selecciona datos"}
+                className="max-w-xs"
+                value={value}
+            >
+                {(tipo) => <SelectItem key={tipo!.tipoclienteid}>{tipo.tipo_cliente}</SelectItem>}
+            </Select>
+          )}
+        />
+        <Controller
+          name="entidad"
+          control={control}
+          render={({field: {onChange, value}}) => (
+            <Input 
+              type="text"
+              label="Entidad"
+              labelPlacement="outside"
+              placeholder="Entidad del cliente"
+              variant="flat" 
+              onChange={e => {
+                setValue('entidad', e.target.value)
+                dispatch(setRuc(e.target.value))
+              }}
+              disabled={!isJuridico || !currentUser.isNew}
+              value={value}
+            />
+          )}
+        />
+        
         <Input 
           type="text"
           label="N° de Factura"
           labelPlacement="outside"
-          {...register('numeroFactura')}
+          placeholder="Número de factura"
+          autoComplete="off"
+          {...register('numeroFactura', {
+            onChange: (e) => {
+              dispatch(setNumeroFactura(e.target.value))
+              setValue('numeroFactura', e.target.value)
+            }
+          })}
           variant="flat" title="" />
         <Input 
           type="text"
           label="Fecha de factura"
+          placeholder="Fecha de factura"
           labelPlacement="outside"
-          {...register('fechaFactura')}
+          autoComplete="off"
+          {...register('fechaFactura', {
+            onChange: (e) => {
+              dispatch(setFechaFactura(e.target.value))
+              setValue('fechaFactura', e.target.value)
+            }
+          })}
           variant="flat" />
         <Input 
           type="text"
           label="Fecha de registro"
+          placeholder="Fecha de registro"
           labelPlacement="outside"
-          {...register('fechaRegistro')}
+          {...register('fechaRegistro', {
+            onChange: (e) => {
+              dispatch(setFechaRegistro(e.target.value))
+              setValue('fechaRegistro', e.target.value)
+            }
+          })}
           variant="flat" />
-        
-        <div className="flex items-end justify-end h-full">
-          <Button>
-            Ver direcciones
-          </Button>
-        </div>
       </div>
     </>
   )

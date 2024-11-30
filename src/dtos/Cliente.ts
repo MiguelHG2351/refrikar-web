@@ -13,9 +13,9 @@ export interface Cliente {
 
 export interface ClienteCreateRequest {
   ruc?: string;
-  nombre?: string;
+  nombre: string;
   apellido?: string;
-  telefono?: number;
+  telefono: string;
   entidad?: string;
   tipoclienteid?: string;
 }
