@@ -38,12 +38,11 @@ export default function ProveedoresTable() {
   });
   
   const columns = [
-    {name: "Nombre", uid: "nombre", sortable: true},
-    {name: "apellido", uid: "apellido", sortable: true},
+    {name: "Nombre del proveedor", uid: "nombre", sortable: true},
     {name: "Telefono", uid: "telefono"},
-    {name: "RUC", uid: "ruc"},
-    {name: "ACTIONS", uid: "actions"},
-  ];
+    {name: "Cedula RUC", uid: "ruc"},
+    {name: "Acciones", uid: "actions"},
+  ]; 
 
   const [page, setPage] = React.useState(1);
   const hasSearchFilter = Boolean(filterValue);

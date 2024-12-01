@@ -14,7 +14,7 @@ const pageMap = {
   'proveedores': ['/home/proveedores'],
   'empleados': ['/home/empleados'],
   'egresos': ['/home/egresos'],
-  'creditos': ['/home/creditos']
+  'creditos': ['/home/presentation']
 }
 
 type Path = keyof typeof pageMap
@@ -54,7 +54,7 @@ export default function Sidebar() {
             </Menu>
             <Menu title="Otros">
               <MenuItem state={pageMap.egresos.includes(navigation) ? "active" : 'inactive'} icon={BillIcon} iconSize={{width: 20, height: 20}} path="/home/egresos" text="Egresos"/>
-              <MenuItem state={pageMap.creditos.includes(navigation) ? "active" : 'inactive'} icon={ClientIcon} iconSize={{width: 20, height: 20}} path="/home/egresos" text="Créditos"/>
+              <MenuItem state={pageMap.creditos.includes(navigation) ? "active" : 'inactive'} icon={ClientIcon} iconSize={{width: 20, height: 20}} path="/home/presentation" text="Acerca de"/>
             </Menu>
           </section>
         </section>
