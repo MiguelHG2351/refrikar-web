@@ -33,6 +33,7 @@ export default function CreateClientForm({ onClose }: CreateClientFormProps) {
     const { data, isLoading } = useGetAllTipoClientsQuery("")
     const [isJuridico, setIsJuridico] = useState(false)
     const { register, handleSubmit, getValues, formState: { errors } } = useForm<FormData>({
+        mode: 'onChange',
         resolver: yupResolver(schema)
     })
     const dispatch = useAppDispatch()

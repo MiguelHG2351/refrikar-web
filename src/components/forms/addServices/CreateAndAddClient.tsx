@@ -43,15 +43,15 @@ export type FormData = {
 }
 
 const schema = yup.object().shape({
-  nombre: yup.string().required('Ingrese el nombre, porfavor'),
+  nombre: yup.string().required('Ingrese el nombre'),
   apellido: yup.string().optional(),
-  ruc: yup.string().required('Ingrese el RUC, porfavor'),
-  telefono: yup.string().matches(/^[8752]\d{7}$/, 'El número debe tener 8 dígitos y comenzar con 8, 7, 5 o 2').required('Ingrese el telefono, porfavor'),
+  ruc: yup.string().required('Ingrese el RUC'),
+  telefono: yup.string().matches(/^[8752]\d{7}$/, 'El número debe tener 8 dígitos y comenzar con 8, 7, 5 o 2').required('Ingrese el telefono'),
   tipoCliente: yup.string().required('Seleccione el tipo de cliente'),
   entidad: yup.string().optional(),
-  numeroFactura: yup.string().required('Ingrese el número de factura, porfavor'),
-  fechaFactura: yup.string().required('Ingrese la fecha de factura, porfavor'),
-  fechaRegistro: yup.string().required('Ingrese la fecha de registro, porfavor')
+  numeroFactura: yup.string().required('Ingrese el número de factura'),
+  fechaFactura: yup.string().required('Ingrese la fecha de factura'),
+  fechaRegistro: yup.string().required('Ingrese la fecha de registro')
 })
 
 export default function CreateAndAddClient() {
@@ -61,7 +61,8 @@ export default function CreateAndAddClient() {
   const { data, isLoading } = useGetAllTipoClientsQuery("")
   const [isJuridico, setIsJuridico] = React.useState(false)
   const [ selectedKeys, setSelectedKeys ] = React.useState<Selection>(new Set([]))
-  const { register, setValue, formState: { errors }, control } = useForm<FormData>({
+  const { register, setValue, formState: { errors }, control, clearErrors } = useForm<FormData>({
+    mode: 'onChange',
     resolver: yupResolver(schema),
     defaultValues: {
       nombre: '',
@@ -90,6 +91,7 @@ export default function CreateAndAddClient() {
       setValue('tipoCliente', currentUser.tipo_cliente.tipo_clienteid)
       setSelectedKeys(new Set([currentUser.tipo_cliente.tipo_clienteid]))
       setIsJuridico(currentUser.tipo_cliente.tipo_cliente === 'TC02')
+      clearErrors()
       dispatch(setAddedFromModal(false))
     }
 
@@ -153,13 +155,13 @@ export default function CreateAndAddClient() {
           )}
         </ModalContent>
       </Modal>
-      <div className="grid lg:grid-cols-4 md:grid-cols-3 gap-x-4 gap-y-4 w-full">
+      <form  className="grid lg:grid-cols-4 md:grid-cols-3 gap-x-4 gap-y-4 w-full">
         <div>
           <Controller
             name="nombre"
             control={control}
             rules={{required: true}}
-            render={({field: {onChange, value}}) => (
+            render={({field: {onChange, value,}}) => (
               <Input 
                 type="text"
                 label="Nombre"
@@ -168,7 +170,7 @@ export default function CreateAndAddClient() {
                 variant="flat" 
                 onValueChange={(e) => {
                   dispatch(setNombre(e))
-                  setValue('nombre', e)
+                  onChange(e)
                 }}
                 isDisabled={!currentUser.isNew}
                 value={value}
@@ -189,7 +191,7 @@ export default function CreateAndAddClient() {
               placeholder="Apellido del cliente"
               variant="flat" 
               onChange={(e) => {
-                setValue('apellido', e.target.value)
+                onChange(e)
                 dispatch(setApellido(e.target.value))
               }}
               isDisabled={!currentUser.isNew}
@@ -198,69 +200,85 @@ export default function CreateAndAddClient() {
           )}
         />
         
-        <Controller
-          name="telefono"
-          control={control}
-          render={({field: {onChange, value}}) => (
-            <Input 
-              type="text"
-              label="Teléfono"
-              labelPlacement="outside"
-              placeholder="Teléfono del cliente"
-              variant="flat" 
-              onChange={(e) => {
-                setValue('telefono', e.target.value)
-                dispatch(setTelefono(e.target.value))
-              }}
-              isDisabled={!currentUser.isNew}
-              value={value}
-            />
-          )}
-        />
+        <div>
+          <Controller
+            name="telefono"
+            control={control}
+            render={({field: {onChange, value}}) => (
+              <Input 
+                type="text"
+                label="Teléfono"
+                labelPlacement="outside"
+                placeholder="Teléfono del cliente"
+                variant="flat" 
+                onChange={(e) => {
+                  onChange(e)
+                  dispatch(setTelefono(e.target.value))
+                }}
+                isDisabled={!currentUser.isNew}
+                value={value}
+              />
+            )}
+          />
+          {errors.telefono && <span className="text-red-500 text-[12px]">{errors.telefono.message}</span>}
+        </div>
 
-        <Controller
-          name="ruc"
-          control={control}
-          render={({field: {onChange, value}}) => (
-            <Input 
-              type="text"
-              label="RUC"
-              labelPlacement="outside"
-              placeholder="RUC del cliente"
-              variant="flat" 
-              onChange={e => {
-                setValue('ruc', e.target.value)
-                dispatch(setRuc(e.target.value))
-              }}
-              isDisabled={!currentUser.isNew}
-              value={value}
-            />
-          )}
-        />
+        <div>
+          <Controller
+            name="ruc"
+            control={control}
+            render={({field: {onChange, value}}) => (
+              <Input 
+                type="text"
+                label="RUC"
+                labelPlacement="outside"
+                placeholder="RUC del cliente"
+                variant="flat" 
+                onValueChange={e => {
+                  onChange(e)
+                  dispatch(setRuc(e))
+                }}
+                isDisabled={!currentUser.isNew}
+                value={value}
+              />
+            )}
+          />
+          {errors.ruc && <span className="text-red-500">{errors.ruc.message}</span>}
+        </div>
 
-        <Select
-          items={!isLoading ? data : []}
-          labelPlacement="outside"
-          variant="flat"
-          isDisabled={!currentUser.isNew}
-          onSelectionChange={(e) => {
-            setValue('tipoCliente', e.currentKey as string)
-            dispatch(setTipoCliente(
-              {
-                tipo_cliente: data?.find(t => t.tipoclienteid === e.currentKey)?.tipo_cliente as string,
-                tipo_clienteid: e.currentKey as string
-              }
-            ))
-            setIsJuridico(e.currentKey === 'TC02')
-            setSelectedKeys(new Set([e.currentKey as string]))
-          }}
-          label="Tipo de cliente"
-          placeholder={"Selecciona datos"}
-          className="max-w-xs"
-          selectedKeys={selectedKeys}
-        >
-          {(tipo) => <SelectItem key={tipo!.tipoclienteid}>{tipo.tipo_cliente}</SelectItem>}
-        </Select>
+        <div>
+          <Controller
+            name="tipoCliente"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Select
+                items={!isLoading ? data : []}
+                labelPlacement="outside"
+                variant="flat"
+                isDisabled={!currentUser.isNew || isLoading}
+                onSelectionChange={(e) => {
+                  // setValue('tipoCliente', e.currentKey as string)
+                  onChange(e.currentKey as string)
+                  dispatch(setTipoCliente(
+                    {
+                      tipo_cliente: data?.find(t => t.tipoclienteid === e.currentKey)?.tipo_cliente as string,
+                      tipo_clienteid: e.currentKey as string
+                    }
+                  ))
+                  setIsJuridico(e.currentKey === 'TC02')
+                  setSelectedKeys(new Set([e.currentKey as string]))
+                }}
+                label="Tipo de cliente"
+                placeholder={isLoading ? "Loading..." : "Selecciona datos"}
+                className="max-w-xs"
+                selectedKeys={selectedKeys}
+              >
+                {(tipo) => <SelectItem key={tipo!.tipoclienteid}>{tipo.tipo_cliente}</SelectItem>}
+              </Select>
+            )}
+          />
+          {errors.tipoCliente && <span className="text-red-500">{errors.tipoCliente.message}</span>}
+        </div>
 
         <Controller
           name="entidad"
@@ -273,7 +291,7 @@ export default function CreateAndAddClient() {
               placeholder="Entidad del cliente"
               variant="flat" 
               onChange={e => {
-                setValue('entidad', e.target.value)
+                onChange(e)
                 dispatch(setEntidad(e.target.value))
               }}
               isDisabled={(!isJuridico && currentUser.isNew) || !currentUser.isNew}
@@ -282,46 +300,77 @@ export default function CreateAndAddClient() {
           )}
         />
         
-        <Input 
-          type="text"
-          label="N° de Factura"
-          labelPlacement="outside"
-          placeholder="Número de factura"
-          autoComplete="off"
-          {...register('numeroFactura', {
-            onChange: (e) => {
-              dispatch(setNumeroFactura(e.target.value))
-              setValue('numeroFactura', e.target.value)
-            }
-          })}
-          variant="flat" title="" />
+        <div>
+          <Controller
+            name="numeroFactura"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Input 
+                type="text"
+                label="N° de Factura"
+                labelPlacement="outside"
+                placeholder="Número de factura"
+                autoComplete="off"
+                onValueChange={e => {
+                  dispatch(setNumeroFactura(e))
+                  // setValue('numeroFactura', e.target.value)
+                  onChange(e)
+                }}
+                value={value}
+                variant="flat"
+                />
+            )}
+          />
+          {errors.numeroFactura && <span className="text-red-500">{errors.numeroFactura.message}</span>}
+        </div>
 
-        <DatePicker
-          label="Fecha de factura"
-          labelPlacement="outside"
-          variant="flat"
-          hideTimeZone
-          defaultValue={now(getLocalTimeZone())}
-          showMonthAndYearPickers
-          onChange={(date) => {
-            dispatch(setFechaFactura(date.toDate().toString()))
-            setValue('fechaFactura', date.toDate().toString())
-          }}
-        />
+        <div>
+          <Controller
+            name="fechaFactura"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <DatePicker
+                label="Fecha de factura"
+                labelPlacement="outside"
+                variant="flat"
+                hideTimeZone
+                defaultValue={now(getLocalTimeZone())}
+                showMonthAndYearPickers
+                onChange={(date) => {
+                  if (date === null) return
+                  dispatch(setFechaFactura(date.toDate().toString()))
+                  // setValue('fechaFactura', date.toDate().toString())
+                  onChange(date.toDate().toString())
+                }}
+              />
+            )}
+          />
+        </div>
 
-        <DatePicker
-          label="Fecha de registro"
-          labelPlacement="outside"
-          variant="flat"
-          hideTimeZone
-          defaultValue={now(getLocalTimeZone())}
-          showMonthAndYearPickers
-          onChange={(date) => {
-            dispatch(setFechaRegistro(date.toDate().toString()))
-            setValue('fechaRegistro', date.toDate().toString())
-          }}
-        />
-      </div>
+        <div>
+          <Controller
+            name="fechaRegistro"
+            control={control}
+            render={({ field: { value, onChange } }) => (
+              <DatePicker
+                label="Fecha de registro"
+                labelPlacement="outside"
+                variant="flat"
+                hideTimeZone
+                defaultValue={now(getLocalTimeZone())}
+                showMonthAndYearPickers
+                onChange={(date) => {
+                  if (date === null) return
+                  dispatch(setFechaRegistro(date.toDate().toString()))
+                  // setValue('fechaRegistro', date.toDate().toString())
+                  onChange(date.toDate().toString())
+                }}
+              />
+            )}
+          />
+          {errors.fechaRegistro && <span className="text-red-500">{errors.fechaRegistro.message}</span>}
+        </div>
+      </form>
     </>
   )
 }

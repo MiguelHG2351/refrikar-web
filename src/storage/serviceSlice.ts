@@ -24,7 +24,13 @@ interface AddServiceState {
     descripcion?: string;
     direccion: string;
     tiposervicioid: string;
-    equipoid: string;
+    equipoid?: string;
+    equipo?: {
+      tipo_equipo: string;
+      capacidad: number;
+      marca: string;
+      numero_serie: string;
+    }
   }[]
 }
 
