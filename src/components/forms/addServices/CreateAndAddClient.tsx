@@ -169,7 +169,7 @@ export default function CreateAndAddClient() {
                   dispatch(setNombre(e))
                   setValue('nombre', e)
                 }}
-                disabled={!currentUser.isNew}
+                isDisabled={!currentUser.isNew}
                 value={value}
               />
             )}
@@ -191,7 +191,7 @@ export default function CreateAndAddClient() {
                 setValue('apellido', e.target.value)
                 dispatch(setApellido(e.target.value))
               }}
-              disabled={!currentUser.isNew}
+              isDisabled={!currentUser.isNew}
               value={value}
             />
           )}
@@ -211,7 +211,7 @@ export default function CreateAndAddClient() {
                 setValue('telefono', e.target.value)
                 dispatch(setTelefono(e.target.value))
               }}
-              disabled={!currentUser.isNew}
+              isDisabled={!currentUser.isNew}
               value={value}
             />
           )}
@@ -231,7 +231,7 @@ export default function CreateAndAddClient() {
                 setValue('ruc', e.target.value)
                 dispatch(setRuc(e.target.value))
               }}
-              disabled={!currentUser.isNew}
+              isDisabled={!currentUser.isNew}
               value={value}
             />
           )}
@@ -241,6 +241,7 @@ export default function CreateAndAddClient() {
           items={!isLoading ? data : []}
           labelPlacement="outside"
           variant="flat"
+          isDisabled={!currentUser.isNew}
           onSelectionChange={(e) => {
             console.log(data)
             console.log('selection change', e)
@@ -278,7 +279,7 @@ export default function CreateAndAddClient() {
                 setValue('entidad', e.target.value)
                 dispatch(setEntidad(e.target.value))
               }}
-              disabled={!isJuridico || !currentUser.isNew}
+              isDisabled={(!isJuridico && currentUser.isNew) || !currentUser.isNew}
               value={value}
             />
           )}
