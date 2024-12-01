@@ -98,27 +98,27 @@ export default function ProveedoresTable() {
     switch (columnKey) {
       case "nombre":
         return (
-          <div className="flex">
+          <div className="flex ">
             <p>{ cellValue }</p>
           </div>
         );
       case "telefono":
         return (
-          <div className="flex">
+          <div className="flex justify-between">
             <p className="text-bold text-small capitalize">{cellValue}</p>
           </div>
         );
       case "ruc":
         return (
-          <div className="flex">
+          <div className="flex justify-between">
             <p className="text-bold text-small capitalize">{cellValue}</p>
           </div>
         );
       case "actions":
         return (
-          <div className="relative flex justify-end items-center gap-2">
+          <div className="relative flex justify-between items-center gap-2">
            <button>
-           <svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="15" height="15" viewBox="0 0 1280.000000 1280.000000" preserveAspectRatio="xMidYMid meet">
+           <svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="30" height="15" viewBox="0 0 1280.000000 1280.000000" preserveAspectRatio="xMidYMid meet">
 <metadata>
 Created by potrace 1.15, written by Peter Selinger 2001-2017
 </metadata>
@@ -278,7 +278,7 @@ Created by potrace 1.15, written by Peter Selinger 2001-2017
         {(column) => (
           <TableColumn
             key={column.uid}
-            align={"center"}
+            align={"start"}
             allowsSorting={column.sortable}
           >
             {column.name}
