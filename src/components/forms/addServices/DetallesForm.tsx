@@ -20,7 +20,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppDispatch, useAppSelector } from '@/hooks/redux'
 import { now, getLocalTimeZone } from '@internationalized/date'
 import { setDetalleServicio } from '@/storage/serviceSlice'
-import { useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 const schema = yup.object().shape({
@@ -41,12 +41,22 @@ export type FormData = {
   equipo: string
 }
 
+export type FormDataEquipo = {
+  tipo_equipo: string;
+  capacidad: number;
+  marca: string;
+  numero_serie: string;
+}
+
+
 export default function DetallesForm() {
   const { data: equipos, isLoading: isLoadingEquipos } = useGetEquiposQuery('')
   const { data: tipoServicios, isLoading: isLoadingTipoServicios } = useGetTipoServiciosQuery('')
   const dispatch = useAppDispatch()
   const {isOpen, onClose, onOpen, onOpenChange} = useDisclosure();
+  const { isOpen: isOpenEquipo, onOpenChange: onOpenChangeEquipo, onOpen: onOpenEquipo } = useDisclosure();
   const currentUser = useAppSelector(state => state.addService.cliente)
+  const [equipo, setEquipo] = useState<Equipo | null>(null)
   const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm<FormData>({
     defaultValues: {
       costo: 0
@@ -120,7 +130,11 @@ export default function DetallesForm() {
                     {errors.fecha && <span className="text-red-500">{errors.fecha.message}</span>}
                   </div>
                   
-                  <CreateEquipoForm />
+                  <div className="flex justify-between items-center w-full">
+                    <p>Agregar cliente </p>
+                    <Button onClick={onOpenEquipo}>Crear</Button>
+                  </div>
+                  
                   {!currentUser.isNew && (
                     <div className="bg-accent-2 px-2 py-4 grid grid-cols-1 md:grid-cols-2 w-full gap-2 rounded-lg">
                       <Select
@@ -167,27 +181,30 @@ export default function DetallesForm() {
           )}
         </ModalContent>
       </Modal>
+      <CreateEquipoForm setEquipo={setEquipo} isOpenEquipo={isOpenEquipo} onOpenChangeEquipo={onOpenChangeEquipo} />
     </>
   )
 }
 
-export type FormDataEquipo = {
-  tipo_equipo: string;
-  capacidad: number;
-  marca: string;
-  numero_serie: string;
-}
-
 const equipoSchema = yup.object().shape({
   tipo_equipo: yup.string().required('Este campo es requerido'),
-  capacidad: yup.number().required('Este campo es requerido').min(0, 'La capacidad debe ser mayor a 0'),
+  capacidad: yup.number().min(6000, 'La capacidad debe ser minimo 6000 BTUs').typeError('Ingrese un número válido').required('Este campo es requerido'),
   marca: yup.string().required('Este campo es requerido'),
   numero_serie: yup.string().required('Este campo es requerido')
 })
 
-const CreateEquipoForm = () => {
-  const { isOpen: isOpenEquipo, onOpenChange: onOpenChangeEquipo, onOpen } = useDisclosure();
+const CreateEquipoForm = ({
+    setEquipo,
+    isOpenEquipo,
+    onOpenChangeEquipo
+  }: {
+    setEquipo: Dispatch<SetStateAction<Equipo | null>>,
+    isOpenEquipo: boolean,
+    onOpenChangeEquipo: () => void
+  }) => {
+  const { data: tipoServicios, isLoading: isLoadingTipoServicios } = useGetTipoServiciosQuery('')
   const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm<FormDataEquipo>({
+    mode: 'onChange',
     defaultValues: {
       capacidad: 0,
       tipo_equipo: '',
@@ -197,12 +214,24 @@ const CreateEquipoForm = () => {
     resolver: yupResolver(equipoSchema)
   })
 
+  const onSubmit = handleSubmit((data: FormDataEquipo) => {
+    onOpenChangeEquipo()
+    if (Object.keys(errors).length === 0) {
+      console.log(data)
+      setEquipo({
+        capacidad: data.capacidad,
+        marca: data.marca,
+        numero_serie: data.numero_serie,
+        tipoequipoid: data.tipo_equipo,
+        equipoid: ''
+      })
+      reset()
+    }
+  })
+
   return (
     <>
-      <div className="flex justify-between items-center w-full">
-        <p>Agregar cliente </p>
-        <Button onClick={onOpen}>Crear</Button>
-      </div>
+      
       <Modal isOpen={isOpenEquipo} onOpenChange={onOpenChangeEquipo} isDismissable={false} backdrop="blur">
         <ModalContent>
           {
@@ -210,24 +239,38 @@ const CreateEquipoForm = () => {
               <>
                 <ModalHeader>
                   <h2>Crear equipo</h2>
-                  <form>
+                </ModalHeader>
+                <ModalBody>
+                  <form className="flex flex-col gap-y-4" onSubmit={onSubmit}>
                     <Input 
-                      type="text"
+                      type="number"
                       label="Capacidad"
                       labelPlacement="outside"
                       placeholder="Capacidad del equipo"
                       variant="flat"
                       {...register('capacidad')}
+                      errorMessage={errors.capacidad?.message}
+                      isInvalid={!!errors.capacidad}
                     />
 
-                    <Input
-                      type="text"
-                      label="Tipo de equipo"
+                    <Select
                       labelPlacement="outside"
-                      placeholder="Tipo de equipo"
                       variant="flat"
+                      isInvalid={!!errors.tipo_equipo}
+                      errorMessage={errors.tipo_equipo?.message}
+                      classNames={{
+                        label: 'font-medium text-base',
+                        mainWrapper: 'pt-2 w-full',
+                        selectorIcon: 'w-6 h-6',
+                      }}
                       {...register('tipo_equipo')}
-                    />
+                      label="Tipo de servicio"
+                      placeholder={!isLoadingTipoServicios ? tipoServicios![0].tipo : "Cargando datos..."}
+                    >
+                      {tipoServicios!?.map((equipo: TipoServicio) => (
+                          <SelectItem key={equipo.tiposervicioid}>{equipo.tipo}</SelectItem>
+                      ))}
+                    </Select>
 
                     <Input
                       type="text"
@@ -236,6 +279,8 @@ const CreateEquipoForm = () => {
                       placeholder="Marca del equipo"
                       variant="flat"
                       {...register('marca')}
+                      errorMessage={errors.marca?.message}
+                      isInvalid={!!errors.marca}
                     />
 
                     <Input
@@ -245,10 +290,12 @@ const CreateEquipoForm = () => {
                       placeholder="Número de serie"
                       variant="flat"
                       {...register('numero_serie')}
+                      errorMessage={errors.numero_serie?.message}
+                      isInvalid={!!errors.numero_serie}
                     />
-
+                    <Button type="submit" color="primary" className="mt-4 w-full">Crear equipo</Button>
                   </form>
-                </ModalHeader>
+                </ModalBody>
               </>
             )
           }

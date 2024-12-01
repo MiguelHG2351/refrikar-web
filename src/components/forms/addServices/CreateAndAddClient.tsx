@@ -61,7 +61,7 @@ export default function CreateAndAddClient() {
   const { data, isLoading } = useGetAllTipoClientsQuery("")
   const [isJuridico, setIsJuridico] = React.useState(false)
   const [ selectedKeys, setSelectedKeys ] = React.useState<Selection>(new Set([]))
-  const { register, setValue, formState: { errors }, control, clearErrors } = useForm<FormData>({
+  const { setValue, formState: { errors }, control, clearErrors } = useForm<FormData>({
     mode: 'onChange',
     resolver: yupResolver(schema),
     defaultValues: {
