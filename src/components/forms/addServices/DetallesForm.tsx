@@ -77,11 +77,9 @@ export default function DetallesForm() {
 
   useEffect(() => {
     if (errors.tiposervicioid || errors.equipo) {
-      console.log(errors)
       toast.error('Por favor, selecciona un tipo de servicio y un equipo')
     }
   }, [errors])
-  console.log(errors)
 
 
   return (

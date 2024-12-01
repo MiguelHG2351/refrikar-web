@@ -10,7 +10,8 @@ import {
   Tab,
   Tabs,
   useDisclosure,
-   Selection
+   Selection,
+   DatePicker
 } from "@nextui-org/react";
 import SelectClientForm from "@/components/forms/addServices/SelectClientForm";
 import CreateClientForm from "@/components/forms/addServices/CreateClienteForm";
@@ -23,6 +24,7 @@ import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useGetAllTipoClientsQuery } from "@/storage/api/clientes";
+import { now, getLocalTimeZone } from '@internationalized/date'
 
 const refrikarFont = localFont({
   src: '../../../fonts/JejuHallasan-Regular.ttf'
@@ -80,7 +82,6 @@ export default function CreateAndAddClient() {
     // validte if we have data in the currentUser
     // if (currentUser.nombre && !isLoadedCurrentClient) {
     if (!currentUser.isNew || currentUser.addedFromModal) {
-      console.log(currentUser.tipo_cliente)
       setValue('nombre', currentUser.nombre)
       setValue('apellido', currentUser.apellido!)
       setValue('ruc', currentUser.ruc)
@@ -243,10 +244,6 @@ export default function CreateAndAddClient() {
           variant="flat"
           isDisabled={!currentUser.isNew}
           onSelectionChange={(e) => {
-            console.log(data)
-            console.log('selection change', e)
-            // if (e.currentKey === null) return
-            console.log('onSelectionChange')
             setValue('tipoCliente', e.currentKey as string)
             dispatch(setTipoCliente(
               {
@@ -298,31 +295,32 @@ export default function CreateAndAddClient() {
             }
           })}
           variant="flat" title="" />
-        <Input 
-          type="text"
+
+        <DatePicker
           label="Fecha de factura"
-          placeholder="Fecha de factura"
           labelPlacement="outside"
-          autoComplete="off"
-          {...register('fechaFactura', {
-            onChange: (e) => {
-              dispatch(setFechaFactura(e.target.value))
-              setValue('fechaFactura', e.target.value)
-            }
-          })}
-          variant="flat" />
-        <Input 
-          type="text"
+          variant="flat"
+          hideTimeZone
+          defaultValue={now(getLocalTimeZone())}
+          showMonthAndYearPickers
+          onChange={(date) => {
+            dispatch(setFechaFactura(date.toDate().toString()))
+            setValue('fechaFactura', date.toDate().toString())
+          }}
+        />
+
+        <DatePicker
           label="Fecha de registro"
-          placeholder="Fecha de registro"
           labelPlacement="outside"
-          {...register('fechaRegistro', {
-            onChange: (e) => {
-              dispatch(setFechaRegistro(e.target.value))
-              setValue('fechaRegistro', e.target.value)
-            }
-          })}
-          variant="flat" />
+          variant="flat"
+          hideTimeZone
+          defaultValue={now(getLocalTimeZone())}
+          showMonthAndYearPickers
+          onChange={(date) => {
+            dispatch(setFechaRegistro(date.toDate().toString()))
+            setValue('fechaRegistro', date.toDate().toString())
+          }}
+        />
       </div>
     </>
   )
