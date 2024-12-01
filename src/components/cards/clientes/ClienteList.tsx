@@ -30,7 +30,7 @@ export default function ClienteList() {
   }
 
   return (
-      <section className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <section className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         { ((clientes.length === 0 && isLoading) || isFetching) && Array(100).fill(' ').map((_, key) => (
             <ClientItemSkeleton key={key} />
         ))}
