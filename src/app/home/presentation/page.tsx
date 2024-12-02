@@ -2,18 +2,41 @@
 import {Card, CardBody, CardFooter, CardHeader} from "@nextui-org/card";
 import {Divider} from "@nextui-org/react";
 import { Link } from "@nextui-org/react";
+import Image from "next/image"
 
 export default function PresentationPage() {
   return (
       <section className="px-4 py-6">
+        <div className="flex max-w-[1920px] m-auto flex-col items-start">
+        <section className="relative w-full" style={{ height: 'auto' }} >
+          <Image
+            src="/images/bannerreducido.jpg" // Ruta de tu imagen
+            alt="Banner principal"
+            layout="responsive" // Usar layout responsive para ajustar proporciones
+            width={1920} // Ancho en píxeles
+            height={600} // Altura en píxeles (ajústalo según las proporciones de tu imagen)
+            objectFit="cover" // Asegura que llene el contenedor
+            quality={100} // Calidad óptima
+          />
+        </section>
+        </div>
+
         <div className="py-2">
-          <h1 className="text-3xl font-bold">Refrikar:</h1>
-          <h2 className="text-xl">Plataforma Web de Registro de Servicios, Inventario y Finanzas para Taller de Aire Acondicionado Refrikar</h2>
+          <h2 className="text-3xl font-bold">Plataforma Web de Registro de Servicios, Inventario y Finanzas</h2>
+          <h2 className="text-2xl font-bold">Taller de Aire Acondicionado Refrikar</h2>
         </div>
         <Divider/>
         <h3 className="text-lg font-bold mt-6">Qué es refrikar?</h3>
-        <p>Refrikar es una empresa que ofrese servicios de aireas acondicionados y refrigeración, con el fin de mejorar
-          la calidad de vida de las personas.</p>
+        <p>Refrikar es un taller especializado en la reparación, mantenimiento e instalación de equipos de aire acondicionado domiciliarios e 
+          industriales. Fundada en Managua en 2022, la empresa se ha dedicado a brindar soluciones confiables y personalizadas en el ámbito de la 
+          refrigeración, destacándose por su compromiso con la calidad y la satisfacción del cliente.</p>
+        <p>Aunque actualmente opera con un equipo pequeño de tres empleados, Refrikar se posiciona como un ejemplo de resiliencia y ambición en el 
+          sector. Su enfoque combina métodos tradicionales con una visión innovadora, marcando un paso significativo hacia la modernización y 
+          expansión de sus servicios a través de la implementación de nuevas herramientas tecnológicas.</p>
+        <p>En su evolución, Refrikar no solo se dedica a resolver problemas técnicos, sino también a garantizar un impacto positivo en la 
+          productividad y la eficiencia de sus operaciones, reafirmando su misión de ser un aliado confiable para hogares y empresas en la 
+          gestión de sistemas de refrigeración y aire acondicionado.</p>
+        
 
         <section>
           <h2 className="text-2xl font-bold mt-6">Servicios</h2>
