@@ -2,12 +2,13 @@ export interface ServicioModel {
   servicioid: string;
   clienteid: string | null;
   createdAt: Date;
+  factura_date: Date | null;
   clientes: {
     "clienteid": string | undefined,
     "tipoclienteid": string,
     "nombre": string,
     "apellido": string,
-    "telefono": number,
+    "telefono": string | undefined,
     "entidad": string,
     "ruc": string,
     "tipo_cliente": {

@@ -6,6 +6,7 @@ export const servicioAdapter = (responseData: any[]): any[] => {
         const servicio = {
             servicioid: data.servicioid,
             fecha: data.createdAt,
+            factura_date: data.factura_date,
             clientes: {
                 clienteid: data.clientes.clienteid,
                 nombre: data.clientes.nombre,

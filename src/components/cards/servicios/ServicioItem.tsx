@@ -32,7 +32,7 @@ export default function ServicioItem({ data, openModal }: {data: ServicioModel, 
         </div>
         <p className="select-none"><b>RUC</b>: {data.clientes.ruc}</p>
         <p className="select-none"><b>Servicios</b>: {data.detalle_servicio.length}</p>
-        <p className="select-none"><b>Fecha factura</b>: 2024/10/22</p>
+        <p className="select-none"><b>Fecha factura</b>: {DateInputFormat(data.factura_date)}</p>
       </CardHeader>
       <CardBody>
         <div className="flex" >

@@ -105,12 +105,13 @@ export class ServiciosServices {
       servicioid: servicio.servicioid,
       clienteid: servicio.clienteid,
       createdAt: servicio.createdAt,
+      factura_date: servicio?.factura_date,
       clientes: {
         clienteid: servicio.clientes?.clienteid,
         tipoclienteid: servicio.clientes?.tipoclienteid as string,
         nombre: servicio.clientes?.nombre as string,
         apellido: servicio.clientes?.apellido as string,
-        telefono: servicio.clientes?.telefono as number,
+        telefono: servicio.clientes?.telefono,
         entidad: servicio.clientes?.entidad as string,
         ruc: servicio.clientes?.ruc as string,
         tipo_cliente: {
