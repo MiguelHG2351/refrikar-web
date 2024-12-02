@@ -3,7 +3,7 @@ export interface Cliente {
   ruc: string;
   nombre: string;
   apellido: string;
-  telefono: number;
+  telefono: string;
   tipo_cliente: {
     tipoclienteid: string;
     tipo_cliente: string;

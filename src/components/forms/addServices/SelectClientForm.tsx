@@ -49,6 +49,7 @@ export default function SelectClientForm({ onClose }: SelectClientFormProps) {
             isNew: false,
             nombre: findClient.nombre,
             ruc: findClient.ruc,
+            addedFromModal: true,
             tipo_cliente: {
                 tipo_clienteid: findClient.tipo_cliente.tipoclienteid,
                 tipo_cliente: findClient.tipo_cliente.tipo_cliente
