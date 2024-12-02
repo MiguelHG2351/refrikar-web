@@ -106,9 +106,6 @@ export default function CreateAndAddClient() {
             <p className="text-white">Taller de refrigeración y aire acondicionado</p>
             <p className="text-white">Propietaria: Karla Yesenia Rivera Hernandez</p>
           </div>
-          <div className="">
-            <Image className="max-w-full" src="/images/pingu.png" alt="pinguino de refrikar" width={119} height={166} />
-          </div>
         </div>
         <section className="relative w-full" style={{ height: 'auto' }}>
       <Image
