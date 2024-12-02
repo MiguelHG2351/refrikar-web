@@ -8,7 +8,7 @@ export default function PresentationPage() {
       <section className="px-4 py-6">
         <div className="py-2">
           <h1 className="text-3xl font-bold">Refrikar:</h1>
-          <h2 className="text-xl">Sistema de control financiero y gestion de inventario de bodega</h2>
+          <h2 className="text-xl">Plataforma Web de Registro de Servicios, Inventario y Finanzas para Taller de Aire Acondicionado Refrikar</h2>
         </div>
         <Divider/>
         <h3 className="text-lg font-bold mt-6">Qué es refrikar?</h3>
