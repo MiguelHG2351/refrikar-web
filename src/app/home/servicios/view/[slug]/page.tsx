@@ -25,7 +25,8 @@ async function getServicio(servicioid: string): Promise<any> {
     },
     include: {
       clientes: true,
-      detalle_servicio: true
+      detalle_servicio: true,
+      
     }
   })
   return data
@@ -42,6 +43,7 @@ export default async function ViewService(props: {
 
   const querySearch = await props.params;
   const servicio = await getServicio(querySearch.slug)
+  
   
   return (
     <section className="px-6 py-4">

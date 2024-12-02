@@ -4,12 +4,17 @@ import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, getKey
 import { Key } from "react"
 
 export default function DetallesServicio({ detalles }: {detalles: any[]}) {
-
+let indice=1;
   function CellValue({ columnKey, item }: {columnKey: Key, item: any}) {
-    console.log('columnkey>>>',item);
+    console.log('columnkey>>>',item.tipo_servicio);
     switch (columnKey) {    
       case 'cantidad':
-        return 1
+        indice++;
+        return indice-1;
+      case 'servicio':
+          return item.tiposervicioid
+      case 'equipo':
+          return item.equipoid
       case 'descripcion':
         return item.descripcion
       case 'precio_unit':
@@ -24,7 +29,9 @@ export default function DetallesServicio({ detalles }: {detalles: any[]}) {
   return (
     <Table>
       <TableHeader>
-        <TableColumn key="cantidad">Cantidad</TableColumn>
+        <TableColumn key="cantidad">#</TableColumn>
+        <TableColumn key="servicio">Tipo de servicio</TableColumn>
+        <TableColumn key="equipo">Equipo</TableColumn>
         <TableColumn key="descripcion">Descripcion</TableColumn>
         <TableColumn key="precio_unit">Precio unitario</TableColumn>
         <TableColumn key="precio">Total</TableColumn>
