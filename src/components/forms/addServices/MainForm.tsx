@@ -53,9 +53,9 @@ export default function AddServiceForm() {
           toast('Servicio creado', {
             type: 'success'
           })
-          dispatch(clearCliente());
-          dispatch(clearDetalleServicio());
-          router.push(`/home/servicios/views/${data.servicioid}`)
+          // dispatch(clearCliente());
+          // dispatch(clearDetalleServicio());
+          // router.push(`/home/servicios/views/${data.servicioid}`)
         })
         .catch((error) => {
           toast('Error al crear el servicio', {
