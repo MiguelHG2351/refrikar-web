@@ -16,7 +16,7 @@ import {
 import SelectClientForm from "@/components/forms/addServices/SelectClientForm";
 import CreateClientForm from "@/components/forms/addServices/CreateClienteForm";
 import {useAppDispatch, useAppSelector} from "@/hooks/redux";
-import {clearCliente, setAddedFromModal, setApellido, setEntidad, setFechaFactura, setFechaRegistro, setNombre, setNumeroFactura, setRuc, setTelefono, setTipoCliente} from "@/storage/serviceSlice";
+import { setAddedFromModal, setApellido, setEntidad, setFechaFactura, setNombre, setNumeroFactura, setRuc, setTelefono, setTipoCliente} from "@/storage/serviceSlice";
 import React, { useEffect } from "react";
 import Image from "next/image";
 import localFont from "next/font/local";
@@ -39,7 +39,6 @@ export type FormData = {
   entidad?: string
   numeroFactura: string
   fechaFactura: string
-  fechaRegistro: string
 }
 
 const schema = yup.object().shape({
@@ -51,7 +50,6 @@ const schema = yup.object().shape({
   entidad: yup.string().optional(),
   numeroFactura: yup.string().required('Ingrese el número de factura'),
   fechaFactura: yup.string().required('Ingrese la fecha de factura'),
-  fechaRegistro: yup.string().required('Ingrese la fecha de registro')
 })
 
 export default function CreateAndAddClient() {
@@ -73,7 +71,6 @@ export default function CreateAndAddClient() {
       entidad: '',
       numeroFactura: '',
       fechaFactura: '',
-      fechaRegistro: ''
     },
     // shouldUnregister: false,
     // reValidateMode: 'onBlur'
@@ -345,30 +342,6 @@ export default function CreateAndAddClient() {
               />
             )}
           />
-        </div>
-
-        <div>
-          <Controller
-            name="fechaRegistro"
-            control={control}
-            render={({ field: { value, onChange } }) => (
-              <DatePicker
-                label="Fecha de registro"
-                labelPlacement="outside"
-                variant="flat"
-                hideTimeZone
-                defaultValue={now(getLocalTimeZone())}
-                showMonthAndYearPickers
-                onChange={(date) => {
-                  if (date === null) return
-                  dispatch(setFechaRegistro(date.toDate().toString()))
-                  // setValue('fechaRegistro', date.toDate().toString())
-                  onChange(date.toDate().toString())
-                }}
-              />
-            )}
-          />
-          {errors.fechaRegistro && <span className="text-red-500">{errors.fechaRegistro.message}</span>}
         </div>
       </form>
     </>

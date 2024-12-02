@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface AddServiceState {
   fechaFactura: string;
-  fechaRegistro: string;
   numeroFactura: string;
   cliente: {
     clienteid?: string;
@@ -26,17 +25,17 @@ export interface AddServiceState {
     tiposervicioid?: string;
     equipoid?: string;
     equipo?: {
-      tipo_equipo: string;
-      capacidad: number;
-      marca: string;
-      numero_serie: string;
+      tipo_equipo?: string;
+      capacidad?: number;
+      marca?: string;
+      numero_serie?: string;
+      tipo_servicio?: string;
     }
   }[]
 }
 
 const initialState: AddServiceState = {
   fechaFactura: '',
-  fechaRegistro: '',
   numeroFactura: '',
   cliente: {
     clienteid: '',
@@ -79,9 +78,6 @@ const addServiceSlice = createSlice({
     setFechaFactura: create.reducer((state, action: PayloadAction<string>) => {
       state.fechaFactura = action.payload
     }),
-    setFechaRegistro: create.reducer((state, action: PayloadAction<string>) => {
-      state.fechaRegistro = action.payload
-    }),
     setRuc: create.reducer((state, action: PayloadAction<string>) => {
       state.cliente.ruc = action.payload
     }),
@@ -102,6 +98,9 @@ const addServiceSlice = createSlice({
       state.cliente.tipo_cliente.tipo_cliente = action.payload.tipo_cliente;
       state.cliente.tipo_cliente.tipo_clienteid = action.payload.tipo_clienteid;
     }),
+    setTipoServicio: create.reducer((state, action: PayloadAction<string>) => {
+      state.detalle_servicio[state.detalle_servicio.length - 1].tiposervicioid = action.payload
+    }),
     setNumeroFactura: create.reducer((state, action: PayloadAction<string>) => {
       state.numeroFactura = action.payload
     }),
@@ -118,7 +117,6 @@ export const {
   setApellido,
   setEntidad,
   setFechaFactura,
-  setFechaRegistro,
   setNombre,
   setNumeroFactura,
   setRuc,

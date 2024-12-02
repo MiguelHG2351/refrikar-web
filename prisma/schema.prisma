@@ -130,7 +130,7 @@ model empleados {
 }
 
 model equipo {
-  equipoid         String             @id @db.VarChar(50)
+  equipoid         String             @id @db.VarChar(50) @default(cuid())
   tipoequipoid     String?            @db.VarChar(50)
   capacidad        Int
   marca            String             @db.VarChar(50)
@@ -195,7 +195,7 @@ model proveedores {
 }
 
 model servicios {
-  servicioid       String             @id @db.VarChar(50)
+  servicioid       String             @id @db.VarChar(50) @default(cuid())
   clienteid        String?            @db.VarChar(50)
   detalle_servicio detalle_servicio[]
   factura_date     DateTime?          @db.Date

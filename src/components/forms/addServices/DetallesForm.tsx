@@ -1,5 +1,5 @@
-import {Equipo, TipoServicio} from "@/dtos";
-import { useGetEquiposQuery } from "@/storage/api/equipo";
+import {Equipo, TipoEquipo, TipoServicio} from "@/dtos";
+import { useGetEquiposQuery, useGetTiposEquiposQuery } from "@/storage/api/equipo";
 import { useGetTipoServiciosQuery } from "@/storage/api/service"
 import { useForm } from 'react-hook-form'
 import {
@@ -29,7 +29,7 @@ const schema = yup.object().shape({
   direccion: yup.string().min(10).required('Necesitas ingresar una dirección'),
   fecha: yup.string().required('Es necesario ingresar una fecha'),
   descripcion: yup.string().optional(),
-  equipo: yup.string().optional()
+  equipo: yup.string().optional(),
 })
 
 export type FormData = {
@@ -42,11 +42,14 @@ export type FormData = {
 }
 
 export type FormDataEquipo = {
+  tipo_servicio: string
   tipo_equipo: string;
   capacidad: number;
   marca: string;
   numero_serie: string;
 }
+
+type EquipoWithTipoServicio = Partial<Equipo> & { tipo_servicio: string }
 
 
 export default function DetallesForm() {
@@ -56,8 +59,8 @@ export default function DetallesForm() {
   const {isOpen, onClose, onOpen, onOpenChange} = useDisclosure();
   const { isOpen: isOpenEquipo, onOpenChange: onOpenChangeEquipo, onOpen: onOpenEquipo } = useDisclosure();
   const currentUser = useAppSelector(state => state.addService.cliente)
-  const [equipo, setEquipo] = useState<Equipo | null>(null)
-  const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm<FormData>({
+  const [equipo, setEquipo] = useState<EquipoWithTipoServicio | null>(null)
+  const { register, handleSubmit, setValue, reset, formState: { errors }, clearErrors } = useForm<FormData>({
     defaultValues: {
       costo: 0
     },
@@ -72,6 +75,7 @@ export default function DetallesForm() {
     onClose()
 
     if (Object.keys(errors).length === 0) {
+      console.log(data)
       dispatch(setDetalleServicio({
         costo: data.costo,
         direccion: data.direccion,
@@ -84,9 +88,11 @@ export default function DetallesForm() {
           marca: equipo!.marca,
           numero_serie: equipo!.numero_serie,
           tipo_equipo: equipo!.tipoequipoid,
+          tipo_servicio: equipo!.tipo_servicio
         } : undefined
       }))
       reset()
+      clearErrors()
       setEquipo(null)
     }
   })
@@ -202,7 +208,8 @@ const equipoSchema = yup.object().shape({
   tipo_equipo: yup.string().required('Este campo es requerido'),
   capacidad: yup.number().min(6000, 'La capacidad debe ser minimo 6000 BTUs').typeError('Ingrese un número válido').required('Este campo es requerido'),
   marca: yup.string().required('Este campo es requerido'),
-  numero_serie: yup.string().required('Este campo es requerido')
+  numero_serie: yup.string().required('Este campo es requerido'),
+  tipo_servicio: yup.string().required('Este campo es requerido')
 })
 
 const CreateEquipoForm = ({
@@ -210,11 +217,13 @@ const CreateEquipoForm = ({
     isOpenEquipo,
     onOpenChangeEquipo
   }: {
-    setEquipo: Dispatch<SetStateAction<Equipo | null>>,
+    setEquipo: Dispatch<SetStateAction<EquipoWithTipoServicio | null>>,
     isOpenEquipo: boolean,
     onOpenChangeEquipo: () => void
   }) => {
   const { data: tipoServicios, isLoading: isLoadingTipoServicios } = useGetTipoServiciosQuery('')
+  const { data: tiposEquipos, isLoading: isLoadingTipoEquipos } = useGetTiposEquiposQuery('')
+  const dispatch = useAppDispatch()
   const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm<FormDataEquipo>({
     mode: 'onChange',
     defaultValues: {
@@ -235,7 +244,7 @@ const CreateEquipoForm = ({
         marca: data.marca,
         numero_serie: data.numero_serie,
         tipoequipoid: data.tipo_equipo,
-        equipoid: ''
+        tipo_servicio: data.tipo_servicio,
       })
       reset()
     }
@@ -275,12 +284,31 @@ const CreateEquipoForm = ({
                         mainWrapper: 'pt-2 w-full',
                         selectorIcon: 'w-6 h-6',
                       }}
-                      {...register('tipo_equipo')}
+                      {...register('tipo_servicio')}
                       label="Tipo de servicio"
                       placeholder={!isLoadingTipoServicios ? tipoServicios![0].tipo : "Cargando datos..."}
                     >
                       {tipoServicios!?.map((equipo: TipoServicio) => (
                           <SelectItem key={equipo.tiposervicioid}>{equipo.tipo}</SelectItem>
+                      ))}
+                    </Select>
+
+                    <Select
+                      labelPlacement="outside"
+                      variant="flat"
+                      isInvalid={!!errors.tipo_equipo}
+                      errorMessage={errors.tipo_equipo?.message}
+                      classNames={{
+                        label: 'font-medium text-base',
+                        mainWrapper: 'pt-2 w-full',
+                        selectorIcon: 'w-6 h-6',
+                      }}
+                      {...register('tipo_equipo')}
+                      label="Tipo de equipo"
+                      placeholder={!isLoadingTipoEquipos ? tiposEquipos![0].tipo : "Cargando datos..."}
+                    >
+                      {tiposEquipos!?.map((equipo: TipoEquipo) => (
+                          <SelectItem key={equipo.tipoequipoid}>{equipo.tipo}</SelectItem>
                       ))}
                     </Select>
 

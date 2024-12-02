@@ -24,6 +24,7 @@ export default function AddServiceForm() {
   const [onService, { isLoading, isError, error }] = useCreateServiceMutation()
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
   const [ equipo, setEquipo ] = useState<AddServiceState["detalle_servicio"][0]['equipo']>()
+  
 
   const handlerAddService = () => {
     if (service.cliente.tipo_cliente.tipo_clienteid === '' && service.detalle_servicio.length === 0) {
@@ -52,6 +53,7 @@ export default function AddServiceForm() {
           })
           dispatch(clearCliente());
           dispatch(clearDetalleServicio());
+
         })
         .catch((error) => {
           toast('Error al crear el servicio', {

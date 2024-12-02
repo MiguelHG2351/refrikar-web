@@ -1,10 +1,11 @@
+'use server';
 import { NextResponse, type NextRequest } from 'next/server'
 import { Prisma } from '@prisma/client';
 import prisma from "@/config/prisma";
 import {getCountClienteServicioAndDetalleServicio} from "@/services/ClientesServices";
 import {ServiciosServices} from "@/services/ServiciosServices";
 
-export const dynamic = 'force-dynamic' // defaults to auto
+// export const dynamic = 'force-dynamic' // defaults to auto
 
 type Where = {
   clienteid?: {
@@ -26,66 +27,108 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   const body  = await req.json()
   let cliente;
-  type countList = {
-    f1: number
-  }
-  // const countList: countList[] = await prisma.$queryRaw`CALL refrikar.sp_CountTabla()`
-  const countList = await getCountClienteServicioAndDetalleServicio()
+
 
 
   if (body.cliente.isNew) {
-    cliente = {
-      create: {
+    let _cliente = await prisma.clientes.create({
+      data: {
         ruc: body.cliente.ruc,
         nombre: body.cliente.nombre,
         apellido: body.cliente.apellido,
         telefono: body.cliente.telefono,
         entidad: body.cliente.entidad,
       }
-    }
+    });
+    cliente = _cliente.clienteid
   } else {
-    cliente = {
-      connect: {
-        clienteid: body.cliente.clienteid
-      }
-    }
+    cliente = body.cliente.clienteid
   }
 
-  let detalleServicio = body.detalle_servicio.map((detalle: Prisma.detalle_servicioCreateManyInput, index: number) => {
-    return {
-      costo: detalle.costo,
-      // transform string to date with ISO-8601 DateTime
-      fecha: new Date(detalle.fecha as string),
-      descripcion: detalle.descripcion,
-      direccion: detalle.direccion,
-      tiposervicioid: detalle.tiposervicioid,
-      equipoid: detalle.equipoid
+  let detalleServicio = body.detalle_servicio.filter((
+    detalle: Prisma.detalle_servicioCreateManyInput & {
+      equipo: {
+        tipo_equipo: string;
+        capacidad: number;
+        marca: string;
+        numero_serie: string;
+      }
+    },
+    index: number
+  ) => {
+    if (detalle.tiposervicioid!?.length > 1) {
+      return true
+      // return {
+      //   costo: detalle.costo,
+      //   fecha: new Date(detalle.fecha as string),
+      //   descripcion: detalle.descripcion,
+      //   direccion: detalle.direccion,
+      //   tiposervicioid: detalle.tiposervicioid,
+      //   equipoid: detalle.equipoid,
+      // }
     }
+    // const equipo = await prisma.equipo.create({
+    //   data: {
+    //     tipoequipoid: detalle.equipo.tipo_equipo,
+    //     capacidad: detalle.equipo.capacidad,
+    //     marca: detalle.equipo.marca,
+    //     numero_serie: detalle.equipo.numero_serie
+    //   }
+    // })
+
+    // return {
+    //   costo: detalle.costo,
+    //   fecha: new Date(detalle.fecha as string),
+    //   descripcion: detalle.descripcion,
+    //   direccion: detalle.direccion,
+    //   tiposervicioid: detalle.tiposervicioid,
+    //   equipoid: equipo.equipoid,
+    // }
   })
   
-  console.log(`${ countList[1] + 1}`.padStart(7, 'SV00000'))
+  console.log(detalleServicio)
   const service = await prisma.servicios.create({
     data: {
-      servicioid: `${ countList[1] + 1}`.padStart(7, 'SV00000'),
-      clientes: cliente,
+      clienteid: cliente,
       factura_number: body.numeroFactura,
       factura_date: new Date(body.fechaFactura),
       detalle_servicio: {
         createMany: {
           data: detalleServicio
-          // data: [
-          //   {
-          //     "costo": "body.costo",
-          //     "fecha": "body.fecha",
-          //     "detalleservicioid": `${countList[2]?.f1 + 1}`.padStart(8, 'DSV00004'),
-          //     "descripcion": body.descripcion,
-          //     "direccion": body.direccion,
-          //     "tiposervicioid": body.tiposervicioid,
-          //     "equipoid": body.equipoid
-          //   }
-          // ]
         }
       },
+    }
+  })
+  body.detalle_servicio.forEach(async (detalle: any) => {
+    if (detalle.equipo.tipo_equipo) {
+      const _detalle = await prisma.detalle_servicio.create({
+        data: {
+          
+          servicios: {
+            connect: {
+              servicioid: service.servicioid
+            }
+          },
+          costo: detalle.costo,
+          fecha: new Date(detalle.fecha),
+          descripcion: detalle.descripcion,
+          direccion: detalle.direccion,
+          tipo_servicio: {
+            connect: {
+              tiposervicioid: detalle.equipo.tipo_servicio
+            }
+          },
+          equipo: {
+            create: {
+              tipoequipoid: detalle.equipo.tipo_equipo,
+              capacidad: detalle.equipo.capacidad,
+              marca: detalle.equipo.marca,
+              numero_serie: detalle.equipo.numero_serie
+            }
+          }
+        }
+      })
+      console.log(_detalle)
     }
   })
   
