@@ -4,7 +4,7 @@ import { currentUser } from "@clerk/nextjs/server";
 const isPublicRoute = createRouteMatcher([
   "/sign-in",
   "/sign-up",
-  "/home/dashboard",
+  "/home/clientes",
 ]);
 const isAdminRoute = createRouteMatcher(["/home/admin(.*)"]);
 
@@ -15,7 +15,7 @@ export default clerkMiddleware(
     }
   },
   {
-    // debug: process.env.NODE_ENV === "development", 
+    // debug: process.env.NODE_ENV === "development",
   }
 );
 
