@@ -41,21 +41,22 @@ export default function Sidebar() {
           </div>
           <section>
             <Menu title="Menu principal">
+            <MenuItem state={pageMap.creditos.includes(navigation) ? "active" : 'inactive'} icon={ClientIcon} iconSize={{width: 20, height: 20}} path="/home/presentation" text="Acerca de"/>
               {/* <MenuItem state={pageMap.presentation.includes(navigation) ? "active" : 'inactive'} icon={HomeIcon} iconSize={{width: 24, height: 24}} text="Presentación" path="/home/presentation"/> */}
               {/* <MenuItem state={pageMap.dashboard.includes(navigation) ? "active" : 'inactive'} path="/home/dashboard" text="Dashboard" icon={DashBoardIcon} iconSize={{width: 20, height: 20}}/> */}
               <MenuItem state={(isCurrentPage('servicios', navigation) || navigation.includes('/home/servicios/view')) ? "active" : 'inactive'} icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Servicios" path="/home/servicios" />
               <MenuItem state={pageMap.clientes.includes(navigation) ? "active" : 'inactive'} path="/home/clientes" icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Clientes"/>
             </Menu>
             <Menu title="Inventario">
-              <MenuItem state={pageMap.suministros.includes(navigation) ? "active" : 'inactive'} path="/home/suministros" icon={DashBoardIcon} iconSize={{width: 20, height: 20}} text="Suministros"/>
+            {/*<MenuItem state={pageMap.suministros.includes(navigation) ? "active" : 'inactive'} path="/home/suministros" icon={DashBoardIcon} iconSize={{width: 20, height: 20}} text="Suministros"/>*/}
               <MenuItem state={pageMap.productos.includes(navigation) ? "active" : 'inactive'} path="/home/productos" icon={DashBoardIcon} iconSize={{width: 20, height: 20}} text="Productos"/>
               <MenuItem state={pageMap.proveedores.includes(navigation) ? "active" : 'inactive'} path="/home/proveedores" icon={ClientIcon} iconSize={{width: 20, height: 20}} text="Proveedores"/>
               <MenuItem state={pageMap.empleados.includes(navigation) ? "active" : 'inactive'} icon={ClientIcon} iconSize={{width: 20, height: 20}} path="/home/empleados" text="Empleados"/>
             </Menu>
-            <Menu title="Otros">
-              <MenuItem state={pageMap.egresos.includes(navigation) ? "active" : 'inactive'} icon={BillIcon} iconSize={{width: 20, height: 20}} path="/home/egresos" text="Egresos"/>
-              <MenuItem state={pageMap.creditos.includes(navigation) ? "active" : 'inactive'} icon={ClientIcon} iconSize={{width: 20, height: 20}} path="/home/presentation" text="Acerca de"/>
-            </Menu>
+            {/*<Menu title="Otros">
+               <MenuItem state={pageMap.egresos.includes(navigation) ? "active" : 'inactive'} icon={BillIcon} iconSize={{width: 20, height: 20}} path="/home/egresos" text="Egresos"/>
+               <MenuItem state={pageMap.creditos.includes(navigation) ? "active" : 'inactive'} icon={ClientIcon} iconSize={{width: 20, height: 20}} path="/home/presentation" text="Acerca de"/>
+            </Menu>*/}
           </section>
         </section>
         <div className="fixed hidden inset-0 z-10 bg-black/50 md:hidden"></div>
