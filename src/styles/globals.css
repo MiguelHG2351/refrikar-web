@@ -22,9 +22,16 @@ html {
 
 :root {
   --color-primary: #0094DA;
-  --color-secondary: #008676;
-  --color-accent-1: #FBFAFE;
-  --color-accent-2: #F5F5F5;
+  --color-secondary: #0094DA	;
+  --color-accent-1: #ffffff;
+  --color-accent-2: #9fc6d8;
   --color-gray: #747474;
   --color-red: #DC2626;
 }
+/*
+--color-primary: #0094DA;
+--color-secondary: #2323c6	;
+--color-accent-1: #ffffff;
+--color-accent-2: #7ccfdd;
+--color-gray: #747474;
+--color-red: #DC2626;*/
