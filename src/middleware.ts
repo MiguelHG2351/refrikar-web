@@ -4,7 +4,7 @@ import { currentUser } from "@clerk/nextjs/server";
 const isPublicRoute = createRouteMatcher([
   "/sign-in",
   "/sign-up",
-  "/home/clientes",
+  "/home/presentation",
 ]);
 const isAdminRoute = createRouteMatcher(["/home/admin(.*)"]);
 
