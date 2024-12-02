@@ -113,7 +113,7 @@ export default function CreateAndAddClient() {
             <Image className="max-w-full" src="/images/pingu.png" alt="pinguino de refrikar" width={119} height={166} />
           </div>
         </div>
-        <Image className="max-w-full" src="/images/service-bg.png" alt="fondo" width={1023} height={208} />
+        <Image className="max-w-full" src="/images/service-bg.png" priority alt="fondo" width={1023} height={208} />
       </div>
       { !currentUser.isNew && (
         <div className="bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3" role="alert">

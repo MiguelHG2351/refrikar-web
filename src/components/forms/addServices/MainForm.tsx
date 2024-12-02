@@ -1,5 +1,5 @@
 'use client'
-import {Button} from "@nextui-org/react";
+import {Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure} from "@nextui-org/react";
 import CreateAndAddClient from "./CreateAndAddClient";
 import {useAppDispatch, useAppSelector} from '@/hooks/redux'
 import DetallesForm from "./DetallesForm";
@@ -13,14 +13,17 @@ import {
 } from "@nextui-org/table";
 import {useCreateServiceMutation, useGetTipoServiciosQuery} from "@/storage/api/service";
 import { toast } from "react-toastify";
-import {clearCliente, clearDetalleServicio} from "@/storage/serviceSlice";
+import {AddServiceState, clearCliente, clearDetalleServicio} from "@/storage/serviceSlice";
 import {Link} from "@nextui-org/link";
+import { useState } from "react";
 
 export default function AddServiceForm() {
   const service = useAppSelector(state => state.addService)
   const dispatch = useAppDispatch()
   const { data: tipoServicios, isLoading: isLoadingTipoServicios } = useGetTipoServiciosQuery('')
   const [onService, { isLoading, isError, error }] = useCreateServiceMutation()
+  const {isOpen, onOpen, onOpenChange} = useDisclosure();
+  const [ equipo, setEquipo ] = useState<AddServiceState["detalle_servicio"][0]['equipo']>()
 
   const handlerAddService = () => {
     if (service.cliente.tipo_cliente.tipo_clienteid === '' && service.detalle_servicio.length === 0) {
@@ -89,22 +92,85 @@ export default function AddServiceForm() {
                   <TableCell>Vacío</TableCell>
                 </TableRow>
                :
-                service.detalle_servicio.map((detalle) => (
-                  <TableRow key={detalle.tiposervicioid}>
-                    <TableCell>{tipoServicios?.find(tipo => tipo.tiposervicioid === detalle.tiposervicioid)?.tipo}</TableCell>
-                    <TableCell>{detalle.costo}</TableCell>
-                    <TableCell>{detalle.descripcion}</TableCell>
-                    <TableCell>{detalle.direccion}</TableCell>
-                    <TableCell>{detalle.equipoid}</TableCell>
-                    <TableCell>
-                      <Button type="button" variant="shadow">Ver recursos</Button>
-                    </TableCell>
-                  </TableRow>
-                ))
+                service.detalle_servicio.map((detalle, key) => {
+                  let tipoDeServicio = tipoServicios?.find(tipo => {
+                    if (detalle.tiposervicioid === tipo.tiposervicioid) {
+                      return tipo
+                    }
+                    if (detalle.equipo?.tipo_equipo === tipo.tiposervicioid) {
+                      return tipo
+                    }
+                  })
+
+                  return (
+                    <TableRow key={`detalle-${detalle.tiposervicioid}`}>
+                      <TableCell>{tipoDeServicio?.tipo || ''}</TableCell>
+                      <TableCell>{detalle.costo}</TableCell>
+                      <TableCell>{detalle.descripcion}</TableCell>
+                      <TableCell>{detalle.direccion}</TableCell>
+                      <TableCell>
+                        {
+                          detalle.equipoid ? (
+                            <p>
+                              {detalle.equipoid}
+                            </p>
+                          ) : (
+                            <Button onPress={() => {
+                              onOpen()
+                              if (detalle.equipo)
+                                return setEquipo(detalle.equipo)
+    
+                              // setEquipo({
+                              //   capacidad: detalle.equipoid?.capacidad as number,
+                              //   marca: detalle.equipo?.marca as string,
+                              //   tipo_equipo: detalle.equipo?.tipo_equipo as string,
+                              //   numero_serie: detalle.equipo?.numero_serie as string
+                              // })
+                            }}>Ver equipo</Button>
+                          )
+                        }
+                      </TableCell>
+                      <TableCell>
+                        <Button type="button" variant="shadow">Ver recursos</Button>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })
                }
             </TableBody>
           </Table>
-
+          <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+            <ModalContent>
+              {(onClose) => {
+                let tipoDeServicio = tipoServicios?.find(tipo => {
+                  if (equipo?.tipo_equipo === tipo.tiposervicioid) {
+                    return tipo
+                  }
+                })
+                
+                return (
+                  <>
+                    <ModalHeader className="flex flex-col gap-1">Datos del equipo</ModalHeader>
+                    <ModalBody>
+                      <div>
+                        <p>Tipo de servicio: { tipoDeServicio?.tipo }</p>
+                        <p>Nombre del equipo: {equipo?.capacidad}</p>
+                        <p>Marca: {equipo?.marca}</p>
+                      </div>
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button color="danger" variant="light" onPress={onClose}>
+                        Close
+                      </Button>
+                      <Button color="primary" onPress={onClose}>
+                        Action
+                      </Button>
+                    </ModalFooter>
+                  </>
+                )
+              }}
+            </ModalContent>
+          </Modal>
         </div>
         <footer className="flex gap-x-2 justify-end">
           <Button as={Link} href="/home/servicios" type="button" variant="shadow" color="primary">

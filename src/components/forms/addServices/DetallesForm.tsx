@@ -25,20 +25,20 @@ import { toast } from "react-toastify";
 
 const schema = yup.object().shape({
   costo: yup.number().typeError('Debes ingresar un monto').required('Este campo es requerido').min(0, 'El monto debe ser mayor a 0'),
-  tiposervicioid: yup.string().required('Este campo es requerido'),
+  tiposervicioid: yup.string().optional(),
   direccion: yup.string().min(10).required('Necesitas ingresar una dirección'),
   fecha: yup.string().required('Es necesario ingresar una fecha'),
   descripcion: yup.string().optional(),
-  equipo: yup.string().required('Este campo es requerido')
+  equipo: yup.string().optional()
 })
 
 export type FormData = {
   costo: number
-  tiposervicioid: string
+  tiposervicioid?: string
   direccion: string
   descripcion?: string
   fecha: string
-  equipo: string
+  equipo?: string
 }
 
 export type FormDataEquipo = {
@@ -65,7 +65,12 @@ export default function DetallesForm() {
   })
 
   const onSubmit = handleSubmit((data: FormData) => {
+    
+    if (equipo === null && (data.tiposervicioid === undefined || data.equipo === undefined)) {
+      return toast.error('Por favor, selecciona un tipo de servicio y un equipo')
+    }
     onClose()
+
     if (Object.keys(errors).length === 0) {
       dispatch(setDetalleServicio({
         costo: data.costo,
@@ -74,8 +79,15 @@ export default function DetallesForm() {
         fecha: data.fecha.toString(),
         tiposervicioid: data.tiposervicioid,
         equipoid: data.equipo,
+        equipo: equipo ? {
+          capacidad: equipo!.capacidad,
+          marca: equipo!.marca,
+          numero_serie: equipo!.numero_serie,
+          tipo_equipo: equipo!.tipoequipoid,
+        } : undefined
       }))
       reset()
+      setEquipo(null)
     }
   })
 

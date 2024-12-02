@@ -36,7 +36,6 @@ export async function POST(req: NextRequest) {
   if (body.cliente.isNew) {
     cliente = {
       create: {
-        clienteid: `${countList[0] + 1}`.padStart(5, 'C0020'),
         ruc: body.cliente.ruc,
         nombre: body.cliente.nombre,
         apellido: body.cliente.apellido,
@@ -53,12 +52,10 @@ export async function POST(req: NextRequest) {
   }
 
   let detalleServicio = body.detalle_servicio.map((detalle: Prisma.detalle_servicioCreateManyInput, index: number) => {
-    let detalleServicioId = `${countList[2] + index + 1}`.padStart(8, 'DSV00004')
     return {
       costo: detalle.costo,
       // transform string to date with ISO-8601 DateTime
       fecha: new Date(detalle.fecha as string),
-      detalleservicioid: detalleServicioId,
       descripcion: detalle.descripcion,
       direccion: detalle.direccion,
       tiposervicioid: detalle.tiposervicioid,
@@ -71,6 +68,8 @@ export async function POST(req: NextRequest) {
     data: {
       servicioid: `${ countList[1] + 1}`.padStart(7, 'SV00000'),
       clientes: cliente,
+      factura_number: body.numeroFactura,
+      factura_date: new Date(body.fechaFactura),
       detalle_servicio: {
         createMany: {
           data: detalleServicio

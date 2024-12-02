@@ -5,6 +5,7 @@ export const servicioApi = RefrikarApi.injectEndpoints({
   endpoints: (builder) => ({
     createService: builder.mutation({
       query: (data: any) => {
+        debugger
         return {
           url: '/api/services',
           method: 'POST',

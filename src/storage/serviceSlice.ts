@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface AddServiceState {
+export interface AddServiceState {
   fechaFactura: string;
   fechaRegistro: string;
   numeroFactura: string;
@@ -23,7 +23,7 @@ interface AddServiceState {
     fecha: string;
     descripcion?: string;
     direccion: string;
-    tiposervicioid: string;
+    tiposervicioid?: string;
     equipoid?: string;
     equipo?: {
       tipo_equipo: string;
@@ -110,7 +110,8 @@ const addServiceSlice = createSlice({
 
 
 // export const { openMenu, closeMenu } = menuSlice.actions
-export const { setDetalleServicio,
+export const {
+  setDetalleServicio,
   setCliente,
   clearCliente,
   clearDetalleServicio,
