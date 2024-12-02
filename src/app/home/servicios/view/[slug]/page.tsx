@@ -46,19 +46,17 @@ export default async function ViewService(props: {
   return (
     <section className="px-6 py-4">
       <div className="flex max-w-[920px] m-auto flex-col items-start">
-        <div className="relative">
-          <div className="absolute inset-0 pl-6 pt-4 flex justify-between">
-            <div className="">
-              <h2 className="text-6xl text-white bg-refrikar-gradient bg-clip-text" style={{...refrikarFont.style, WebkitTextFillColor: 'transparent'}}>Refrikar</h2>
-              <p className="text-white">Taller de refrigeración y aire acondicionado</p>
-              <p className="text-white">Propietaria: Karla Yesenia Rivera Hernandez</p>
-            </div>
-            <div className="">
-              <Image className="max-w-full" src="/images/pingu.png" alt="pinguino de refrikar" width={119} height={166} />
-            </div>
-          </div>
-          <Image className="max-w-full" src="/images/service-bg.png" alt="fondo" width={1023} height={208} />
-        </div>
+      <section className="relative w-full" style={{ height: 'auto' }}>
+      <Image
+        src="/images/bannercompleto.jpg" // Ruta de tu imagen
+        alt="Banner principal"
+        layout="responsive" // Usar layout responsive para ajustar proporciones
+        width={1920} // Ancho en píxeles
+        height={600} // Altura en píxeles (ajústalo según las proporciones de tu imagen)
+        objectFit="cover" // Asegura que llene el contenedor
+        quality={100} // Calidad óptima
+      />
+    </section>
         <div className="flex justify-between w-full pt-4">
           <div className="">
             <p className="font-bold">Cedula/Ruc cliente: {servicio.clientes.ruc}</p>

@@ -6,7 +6,8 @@ import { Key } from "react"
 export default function DetallesServicio({ detalles }: {detalles: any[]}) {
 
   function CellValue({ columnKey, item }: {columnKey: Key, item: any}) {
-    switch (columnKey) {
+    console.log('columnkey>>>',item);
+    switch (columnKey) {    
       case 'cantidad':
         return 1
       case 'descripcion':

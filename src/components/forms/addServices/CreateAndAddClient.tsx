@@ -110,7 +110,17 @@ export default function CreateAndAddClient() {
             <Image className="max-w-full" src="/images/pingu.png" alt="pinguino de refrikar" width={119} height={166} />
           </div>
         </div>
-        <Image className="max-w-full" src="/images/service-bg.png" priority alt="fondo" width={1023} height={208} />
+        <section className="relative w-full" style={{ height: 'auto' }}>
+      <Image
+        src="/images/bannercompleto.jpg" // Ruta de tu imagen
+        alt="Banner principal"
+        layout="responsive" // Usar layout responsive para ajustar proporciones
+        width={1920} // Ancho en píxeles
+        height={600} // Altura en píxeles (ajústalo según las proporciones de tu imagen)
+        objectFit="cover" // Asegura que llene el contenedor
+        quality={100} // Calidad óptima
+      />
+    </section>
       </div>
       { !currentUser.isNew && (
         <div className="bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3" role="alert">
