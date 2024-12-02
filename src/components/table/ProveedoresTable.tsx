@@ -8,8 +8,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 type formData = {
 nombre:string
 }
-const resolver = yup.object().shape({
-  nombre: yup.string()// .required('Campo requerido')
+
+const schema = yup.object().shape({
+  nombre: yup.string().required(),
+  telefono: yup.string(),
+  ruc: yup.string()
 })
 
 import {
