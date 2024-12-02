@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 'use client'
+import { useState } from "react";
 import { AiFillEdit } from "react-icons/ai";
 import { useForm } from "react-hook-form";
 import * as yup from "yup"
@@ -38,6 +39,7 @@ import { capitalize } from "@/utils/capitalize";
 const INITIAL_VISIBLE_COLUMNS = ["nombre", "apellido", "ruc","direccion", "actions"];
 
 export default function ProveedoresTable() {
+  const [selectedUser, setSelectedUser] = useState<Proveedores | null>(null);
   const {isOpen, onOpen, onOpenChange, onClose} = useDisclosure();
   const { data: proveedorList, isLoading, isError } = useGetProveedoresQuery("")
   const [filterValue, setFilterValue] = React.useState("");
@@ -141,7 +143,10 @@ export default function ProveedoresTable() {
         return (
           <div className="flex justify-end">
       <button
-        onClick={onOpen}
+         onClick={() => {
+          setSelectedUser(user);  // Establece el proveedor seleccionado
+          onOpen();  // Abre el modal
+        }}
         className="p-0 w-auto h-auto flex bg-blue-500 hover:bg-blue-600 text-white rounded"
       >
         <AiFillEdit size={24} />
@@ -319,25 +324,49 @@ export default function ProveedoresTable() {
         <ModalContent>
           <ModalHeader className="flex flex-col gap-1">Editar datos de proveedor</ModalHeader>
           <ModalBody>
-          <Input
+                  <Input
                   label="Proveedor"
                   placeholder="Nombre de proveedor"
                   variant="bordered"
-                />
+                  value={selectedUser?.nombre || ""}
+                  onChange={(e) => {
+                    if (selectedUser) {  // Verifica que selectedUser no sea null
+                      setSelectedUser({ ...selectedUser, nombre: e.target.value });
+                    }
+                  }}
+                  />
                 <Input
                   label="Telefono"
                   placeholder="Telefono de proveedor"
                   variant="bordered"
+                  value={selectedUser?.telefono?.toString() || ""}  // Asegura que 'telefono' sea una cadena
+                  onChange={(e) => {
+                    if (selectedUser) {
+                      setSelectedUser({ ...selectedUser, telefono: parseInt(e.target.value)});  // 'telefono' será una cadena
+                    }
+                  }}
                 />
                 <Input
                   label="RUC"
                   placeholder="Cedula RUC del proveedor"
                   variant="bordered"
+                  value={selectedUser?.ruc || ""}
+                  onChange={(e) => {
+                    if (selectedUser) {  // Verifica que selectedUser no sea null
+                      setSelectedUser({ ...selectedUser, ruc: e.target.value });
+                    }
+                  }}
                 />
                 <Input
                   label="Direccion"
                   placeholder="Direccion del proveedor"
                   variant="bordered"
+                  value={selectedUser?.direccion || ""}
+                  onChange={(e) => {
+                    if (selectedUser) {  // Verifica que selectedUser no sea null
+                      setSelectedUser({ ...selectedUser, direccion: e.target.value });
+                    }
+                  }}
                 />
           </ModalBody>
           <ModalFooter>
@@ -355,3 +384,4 @@ export default function ProveedoresTable() {
   );
   
 }
+
