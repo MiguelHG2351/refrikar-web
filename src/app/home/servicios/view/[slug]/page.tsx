@@ -61,14 +61,14 @@ export default async function ViewService(props: {
         </div>
         <div className="flex justify-between w-full pt-4">
           <div className="">
-            <p className="font-bold">RUC: {servicio?.clientes?.nombre}</p>
+            <p className="font-bold">Cedula/Ruc cliente: {servicio.clientes.ruc}</p>
             <p className="font-bold">Fecha: {DateInputFormat(servicio?.detalle_servicio[0].fecha.toString())}</p>
             <p className="font-bold">Cliente: {`${servicio?.clientes.nombre} ${servicio?.clientes.apellido}`}</p>
             <p className="font-bold">Dirección: {servicio?.detalle_servicio[0].direccion}</p>
           </div>
           <div className="flex flex-col">
             <p className="font-bold">Registro No <b>{servicio.servicioid}</b></p>
-            <p className="font-bold">RUC #H1545DAW88881E</p>
+            <p className="font-bold">RUC #0011408760008G</p>
           </div>
         </div>
         <div className="pt-4 w-full">

@@ -55,7 +55,7 @@ export default function SignInForm() {
         toast('Inicio de sesión exitoso', {
           type: 'success'
         });
-        router.push('/home/dashboard');
+        router.push('/home/presentation');
       }
     } catch (err: any) {
       // This can return an array of errors.
