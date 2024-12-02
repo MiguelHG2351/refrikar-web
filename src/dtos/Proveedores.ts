@@ -6,3 +6,7 @@ export interface Proveedores {
   direccion: string;
   ruc: string;
 }
+
+export interface ProveedoresEdit extends Partial<Proveedores>{
+
+}

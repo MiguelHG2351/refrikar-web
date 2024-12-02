@@ -34,10 +34,11 @@ import {
   SortDescriptor,
 } from "@nextui-org/react";
 import { PlusIcon, VerticalDotsIcon, ChevronDownIcon, SearchIcon, EditIcon } from "@/components/icons/Icons";
-import { useGetProveedoresQuery } from "@/storage/api/proveedores"
+import { useActualizarProveedorMutation, useGetProveedoresQuery } from "@/storage/api/proveedores"
 import React from "react";
 import { Proveedores } from "@/dtos";
 import { capitalize } from "@/utils/capitalize";
+import { toast } from "react-toastify";
 
 const INITIAL_VISIBLE_COLUMNS = ["nombre", "apellido", "ruc","direccion", "actions"];
 
@@ -54,6 +55,7 @@ export default function ProveedoresTable() {
     column: "age",
     direction: "ascending",
   });
+  const [onEditProveedor] = useActualizarProveedorMutation()
 
   const {
     register,handleSubmit,
@@ -376,7 +378,21 @@ export default function ProveedoresTable() {
             <Button color="default" variant="bordered" onPress={onClose}>
               Cancelar
             </Button>
-            <Button color="primary" onPress={onClose}>
+            <Button color="primary" onPress={()=>{
+               onEditProveedor({
+                proveedorid: selectedUser?.proveedorid,
+                nombre: selectedUser?.nombre,
+                apellido: selectedUser?.apellido,
+                telefono: selectedUser?.telefono,
+                direccion: selectedUser?.direccion,
+                ruc: selectedUser?.ruc,
+              }).unwrap()
+              .then((data)=>{ 
+              toast.success(data.message)
+              onClose()
+            })
+              .catch((data)=>{toast.error(data.error)});
+            }}>
               Aceptar
             </Button>
           </ModalFooter>

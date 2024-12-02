@@ -44,3 +44,26 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json(proveedores);
 }
+
+export async function PUT(req: NextRequest){
+  const body = await req.json();
+  try {
+    await prisma.proveedores.update({
+      where: {
+        proveedorid:body.proveedorid
+      }, 
+      data: {
+        nombre:body.nombre,
+        apellido:body.apellido,
+        telefono: body.telefono,
+        direccion: body.direccion,
+        ruc: body.ruc,
+      }
+    })
+    return NextResponse.json({message:'El proveedor se actualizo'})
+  } catch {
+    return NextResponse.json({error:'Error al actualizar proveedor'})
+  }
+  
+
+}
