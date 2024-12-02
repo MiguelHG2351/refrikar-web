@@ -34,6 +34,11 @@ export async function POST(req: NextRequest) {
     let _cliente = await prisma.clientes.create({
       data: {
         ruc: body.cliente.ruc,
+        tipo_cliente: {
+          connect: {
+            tipoclienteid: body.cliente.tipo_cliente.tipo_clienteid
+          }
+        },
         nombre: body.cliente.nombre,
         apellido: body.cliente.apellido,
         telefono: body.cliente.telefono,
@@ -58,32 +63,36 @@ export async function POST(req: NextRequest) {
   ) => {
     if (detalle.tiposervicioid!?.length > 1) {
       return true
-      // return {
-      //   costo: detalle.costo,
-      //   fecha: new Date(detalle.fecha as string),
-      //   descripcion: detalle.descripcion,
-      //   direccion: detalle.direccion,
-      //   tiposervicioid: detalle.tiposervicioid,
-      //   equipoid: detalle.equipoid,
-      // }
     }
-    // const equipo = await prisma.equipo.create({
-    //   data: {
-    //     tipoequipoid: detalle.equipo.tipo_equipo,
-    //     capacidad: detalle.equipo.capacidad,
-    //     marca: detalle.equipo.marca,
-    //     numero_serie: detalle.equipo.numero_serie
-    //   }
-    // })
-
-    // return {
-    //   costo: detalle.costo,
-    //   fecha: new Date(detalle.fecha as string),
-    //   descripcion: detalle.descripcion,
-    //   direccion: detalle.direccion,
-    //   tiposervicioid: detalle.tiposervicioid,
-    //   equipoid: equipo.equipoid,
-    // }
+  })
+  detalleServicio = detalleServicio.map((detalle: Prisma.detalle_servicioCreateManyInput & {
+    equipo: {
+      tipo_equipo: string;
+      capacidad: number;
+      marca: string;
+      numero_serie: string;
+    }
+  }) => {
+    let fecha = detalle.fecha ? new Date(detalle.fecha).toISOString() : new Date().toISOString()
+    return {
+      costo: detalle.costo,
+      fecha,
+      descripcion: detalle.descripcion,
+      direccion: detalle.direccion,
+      tipo_servicio: {
+        connect: {
+          tiposervicioid: detalle.tiposervicioid
+        }
+      },
+      equipo: {
+        create: {
+          tipoequipoid: detalle.equipo.tipo_equipo,
+          capacidad: detalle.equipo.capacidad,
+          marca: detalle.equipo.marca,
+          numero_serie: detalle.equipo.numero_serie
+        }
+      }
+    }
   })
   
   console.log(detalleServicio)
@@ -91,7 +100,7 @@ export async function POST(req: NextRequest) {
     data: {
       clienteid: cliente,
       factura_number: body.numeroFactura,
-      factura_date: new Date(body.fechaFactura),
+      factura_date: new Date(body.fechaFactura).toISOString(),
       detalle_servicio: {
         createMany: {
           data: detalleServicio

@@ -16,6 +16,7 @@ import { toast } from "react-toastify";
 import {AddServiceState, clearCliente, clearDetalleServicio} from "@/storage/serviceSlice";
 import {Link} from "@nextui-org/link";
 import { useState } from "react";
+import { useRouter } from 'next/navigation'
 
 export default function AddServiceForm() {
   const service = useAppSelector(state => state.addService)
@@ -24,7 +25,8 @@ export default function AddServiceForm() {
   const [onService, { isLoading, isError, error }] = useCreateServiceMutation()
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
   const [ equipo, setEquipo ] = useState<AddServiceState["detalle_servicio"][0]['equipo']>()
-  
+  const router = useRouter()
+
 
   const handlerAddService = () => {
     if (service.cliente.tipo_cliente.tipo_clienteid === '' && service.detalle_servicio.length === 0) {
@@ -53,7 +55,7 @@ export default function AddServiceForm() {
           })
           dispatch(clearCliente());
           dispatch(clearDetalleServicio());
-
+          router.push(`/home/servicios/views/${data.servicioid}`)
         })
         .catch((error) => {
           toast('Error al crear el servicio', {
