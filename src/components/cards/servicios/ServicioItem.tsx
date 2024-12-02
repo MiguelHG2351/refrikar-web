@@ -34,13 +34,13 @@ export default function ServicioItem({ data, openModal }: {data: ServicioModel, 
         <p className="select-none"><b>Servicios</b>: {data.detalle_servicio.length}</p>
         <p className="select-none"><b>Fecha factura</b>: {DateInputFormat(data.factura_date)}</p>
       </CardHeader>
-      <CardBody>
+      {/*<CardBody>
         <div className="flex" >
           <Button size="sm" onClick={() => openModal(data.clientes.clienteid as string)}>
             Ver más detalles
           </Button>
         </div>
-      </CardBody>
+      </CardBody>*/}
     </Card>
     // <div className="flex flex-col justify-between shadow-card-secondary pt-4 overflow-hidden rounded-md">
     //   <div className="py-2 px-2">
