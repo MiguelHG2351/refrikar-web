@@ -33,8 +33,8 @@ let indice=1;
         <TableColumn key="servicio">Tipo de servicio</TableColumn>
         <TableColumn key="equipo">Equipo</TableColumn>
         <TableColumn key="descripcion">Descripcion</TableColumn>
-        <TableColumn key="precio_unit">Precio unitario</TableColumn>
-        <TableColumn key="precio">Total</TableColumn>
+        <TableColumn key="precio_unit">Precio unitario C$</TableColumn>
+        <TableColumn key="precio">Total C$</TableColumn>
       </TableHeader>
       <TableBody items={detalles}>
         {
