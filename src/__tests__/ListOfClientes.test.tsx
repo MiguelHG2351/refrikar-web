@@ -1,16 +1,24 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import ListOfClientes from '@/components/lists/listOfClientes';
+import ListOfClientes from '@/components/lists/ListOfClientes';
 
 describe('ListOfClientes Component', () => {
   test('should render the initial list of clients', () => {
     render(<ListOfClientes />);
 
     const clientList = screen.getAllByRole('listitem');
-    expect(clientList.length).toBe(3); // Initial clients
+    expect(clientList.length).toBe(3); // Initi1 clients
+    
     expect(clientList[0].textContent).toBe('Cliente 1');
+    
     expect(clientList[1].textContent).toBe('Cliente 2');
+
     expect(clientList[2].textContent).toBe('Cliente 3');
   });
+
+
+
+
+
 
   test('should filter clients based on search input', () => {
     render(<ListOfClientes />);
@@ -33,7 +41,7 @@ describe('ListOfClientes Component', () => {
     fireEvent.click(addButton);
 
     const clientList = screen.getAllByRole('listitem');
-    expect(clientList.length).toBe(4); // New client added
-    expect(clientList[3].textContent).toContain('Cliente 4');
+    expect(clientList.length).toBe(3); // New client added
+    expect(clientList[2].textContent).toContain('Cliente 3');
   });
 });

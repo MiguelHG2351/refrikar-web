@@ -22,7 +22,6 @@ const ListOfClientes = () => {
 
   const handleAddClient = () => {
     if (!clientType) {
-      alert('Seleccione un tipo de cliente antes de agregar.');
       return;
     }
     const newClient = { id: clientes.length + 1, name: `Cliente ${clientes.length + 1} (${clientType})` };
